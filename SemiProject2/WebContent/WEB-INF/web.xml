@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	XML(eXtend Markup Language)
+	= 데이터를 태그(tag) 형태로 저장하는 문서
+	= HTML과는 사촌 관계(합쳐서 XHTML이라고 부름)
+	= HTML은 약속된 태그만 사용하지만, XML은 자유로운 태그 사용이 가능
+	= XML은 반드시 XML Header가 첫 번째 줄에 위치해야 한다는 강력한 규제가 있다.
+	= 해석하는 프로그램이 이해하는 태그만 사용이 가능하다.
+	= 자동완성을 되려면 힌트를 제공하는 주소(URL)를 설정해야 한다.
+	= xmlns - XML NameSpace의 줄임말. 힌트를 제공하는 저장소를 의미
+	= xmlns:xsi - Xml Schema Instance의 줄임말. XML NameSpace의 보증서
+	= xsi:schemaLocation - 실제 힌트가 담긴 위치 정보
+ -->
+ 
+<web-app version="4.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee                       http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
+	
+	<!-- 오류 발생 시 운영 설정 -->
+	<error-page>
+		<error-code>401</error-code>
+		<location>/error/401.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/error/403.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/error/404.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/error/500.jsp</location>
+	</error-page>
+	
+</web-app>

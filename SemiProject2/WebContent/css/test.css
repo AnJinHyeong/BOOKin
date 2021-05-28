@@ -1,0 +1,5 @@
+@charset "UTF-8";
+
+main,header,section,article,footer,aside,div,nav,span,p,label{
+	border:1px solid lightgray;
+}

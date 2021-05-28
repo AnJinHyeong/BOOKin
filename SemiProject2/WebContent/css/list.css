@@ -1,0 +1,67 @@
+@charset "UTF-8";
+
+.book-list{
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+	flex-flow: wrap;
+}
+
+/* 5개짜리 */
+.book-item {
+    width: 16%;
+    height: 275px;
+    margin: 0 24px 12% 24px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+} 
+
+/* 6개짜리 */
+/* .book-item {                   
+    width: 14.5%;
+    height: 280px;
+    margin: 2% 13px;
+} */
+ 
+.book-img{
+	width:100%;
+	height:100%;
+	object-fit:fill;
+}
+.book-img-a{
+	display:block;
+	width: 100%;
+	height:100%;
+}
+.book-img-a>img{
+	border-radius: 10px;
+}
+.book-publisher{
+	display:block;
+	font-size: 12px;
+	padding:10px 2px;
+	color:rgba(0,0,0,0.5);
+}
+.book-title{
+	display:block;
+	
+}
+.book-author{
+	display:block;
+	text-align: right;
+	padding:10px 2px;
+	font-size: 14px;
+	font-weight: 900;
+	color:rgba(0,0,0,0.7);
+}
+.book-price{
+	font-size: 18px;
+	font-weight: 900;
+	color: #ff9f43; 
+}
+
+.book-discount{
+	font-size: 18px;
+	font-weight: 900;
+	color:#ff6b6b; 
+}

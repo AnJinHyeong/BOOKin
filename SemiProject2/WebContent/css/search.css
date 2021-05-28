@@ -1,0 +1,124 @@
+@charset "UTF-8";
+.goods_image{
+padding:0;
+ 
+}
+
+.searchTitle, .searchPrice, .searchDiscount{
+	font-size:20px;
+	font-weight:bold; 
+
+	}
+.searchAuthor, .searchPublisher, .searchPubdate, .searchGenre{
+	font-size:10px;
+}
+
+.searchTable{
+	border-bottom:1px solid black; 
+}
+
+
+
+
+
+
+
+.keyword{
+	font-size: 20px;
+	color:#ff9f43;
+	font-weight: 900;
+}
+
+.search-head{
+	align-self: flex-start;
+	width: 100%;
+	border-bottom: 1px solid rgba(0,0,0,0.5);
+	padding-bottom: 4px;
+	margin-bottom: 20px;
+}
+.search-list-area{
+	width:100%;
+	
+}
+.book-info{
+	display:flex;
+	flex-direction:column;
+	justify-content:flex-start;
+	align-items: flex-start;
+	width: 50%;
+}
+.book-info>*{
+	padding : 4px 0;
+}
+.search-list{
+	width: 100%;
+	padding: 30px 0;
+	border-bottom: 1px solid rgba(0,0,0,0.2);
+	font-size: 12px;
+}
+.search-img{
+	height: 150px;
+	width:100px;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.author_pub{
+	color:rgba(0,0,0,0.6);
+}
+.search-book-title{
+	 overflow: hidden;
+     text-overflow: ellipsis;
+     white-space: nowrap;
+     display: block;
+     width: 100%;
+     font-size: 16px;
+     font-weight: 900;
+     color:#ff9f43;
+}
+.search-book-review{
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items: center;
+	width: 10%;
+}
+.search-book-price{
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items: center;
+	width: 12%;
+}
+.final-price{
+	font-size: 16px;
+	font-weight: 900;
+	color:#ff6b6b;
+}
+.discount-rate{
+	color:#193b78;
+}
+.search-button>a{
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+	padding: 0.25rem 1.5rem;
+	margin: 10px;
+	color:white;
+}
+.search-button>a:first-child {
+	background-color: #ff9f43;
+}
+.search-button>a:nth-child(2) {
+	background-color: #f78c4d;
+}
+
+.search-head-margintop{
+	margin-top: 40px;
+}
+.search-more{
+	align-self: flex-end;
+	font-size: 12px;
+	padding: 3px;
+}
+.nosearch{
+	align-self: flex-start;
+	font-size: 20px;
+	font-weight: 900;
+}

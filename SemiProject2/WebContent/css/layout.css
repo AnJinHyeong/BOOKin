@@ -1,0 +1,16 @@
+@charset "UTF-8";
+
+main{
+	width: 1200px;
+	margin-left: auto;
+	margin-right: auto
+}
+
+header,section,footer{
+	text-align: center;
+	padding: 25px;
+}
+
+section{
+	min-height: 400px;
+}

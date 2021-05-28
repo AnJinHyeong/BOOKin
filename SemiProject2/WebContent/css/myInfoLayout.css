@@ -1,0 +1,102 @@
+@charset "UTF-8";
+
+.myInfo-main {
+	width:1200px;
+	margin:auto;
+}
+.myInfo-main::after {
+	content:"";
+	display:block;
+	clear: both;
+}
+.myInfo-aside {
+	float:left;
+	width:20%;
+	min-height:500px;
+	border: 1px solid #cfcfcf;
+    border-radius: 10px;
+}
+.myInfo-aside > .tit{
+    padding: 54px 0 58px 0;
+    font-family: 'Noto-B';
+    font-size: 34px;
+    color: #ff9f43;
+    text-align: center;
+    border-bottom: 1px solid #cfcfcf;
+}
+.myInfo-aside > .menu {
+    padding: 0 0 70px 0;
+}
+.myInfo-aside > .menu > li > a {
+    display: block;
+    padding: 0 0 0 40px;
+    height: 63px;
+    font-family: 'Noto-M';
+    font-size: 16px;
+    line-height: 63px;
+    color: #010101;
+}
+.myInfo-aside > .menu > li > a:hover,
+.myInfo-aside > .menu > .on > a {
+    font-size: 16px;
+    color: #fff;
+    background: #39373a;
+}
+.myInfo-section {
+	float:left;
+	width:80%;
+	min-height:500px;
+}
+
+.myInfo-article {
+	min-height:200px;
+}
+
+.myInfo-header{
+	background-color: #fff7f9;
+	border: 1px solid #cfcfcf;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.myInfo-inline-block{
+	height:200px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.bottom {
+    padding: 51px 0 62px 0;
+    font-family: 'Noto-M';
+    font-size: 0;
+    text-align: center;
+}
+.bottom > * {
+    display: inline-block;
+    font-size: 16px;
+    color: #000;
+    vertical-align: middle;
+}
+.bottom dt {
+    margin: 0 40px 0 0;
+    font-size: 24px;
+}
+
+.bottom dt + dd {
+    margin: 0;
+}
+
+.bottom dd {
+
+    margin: 0 0 0 0px;
+    width: 120px;
+}
+
+.bottom dd .tit {
+    margin: 0 0 16px 0;
+    font-size: 35px;
+    color: #686868;
+}
+.bottom > .bottom-next{
+	width: 30px;
+}
