@@ -14,8 +14,17 @@
     margin: 0 24px 12% 24px;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    position: relative;
 } 
 
+.myInfo-article > .book-list > .book-item{
+	width: 20%;
+    height: 245px;
+    margin: 0 24px 15% 24px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    position: relative;
+}
 /* 6개짜리 */
 /* .book-item {                   
     width: 14.5%;
@@ -26,7 +35,7 @@
 .book-img{
 	width:100%;
 	height:100%;
-	object-fit:fill;
+	object-fit:fill;	
 }
 .book-img-a{
 	display:block;
@@ -35,6 +44,7 @@
 }
 .book-img-a>img{
 	border-radius: 10px;
+	display:block;
 }
 .book-publisher{
 	display:block;
@@ -64,4 +74,73 @@
 	font-size: 18px;
 	font-weight: 900;
 	color:#ff6b6b; 
+}
+
+.book-good{
+	position: absolute; 
+	left: auto;
+    right: 14px;
+    top: auto;
+    bottom: 14px;
+    width: auto;
+    height: auto;
+    text-align: left;
+    background: url(/SemiProject/image/pc_good.png);
+    background-size: 27px;
+    width: 27px;
+    height: 27px;
+    background-repeat: no-repeat;
+    display: inline-block; 
+    border: 0px;
+    border-style: none;
+}
+
+.book-good-on{
+	position: absolute; 
+	left: auto;
+    right: 14px;
+    top: auto;
+    bottom: 14px;
+    width: auto;
+    height: auto;
+    text-align: left;
+    background-size: 27px;
+    background: url(/SemiProject/image/pc_good_on.png);
+    width: 27px;
+    height: 27px;
+    background-repeat: no-repeat;
+	display: inline-block; 
+    background-size: 27px;
+    animation-name: scale;
+    animation-duration: 1s; 
+    border: 0px;
+    border-style: none;
+}
+
+.book-like-checkbox{
+	position: absolute; 
+	width: 20px;
+	height: 20px;
+	top: 10px;
+	left: 10px;
+}
+
+.book-like-btn{
+	display: inline-block;
+	height:50px;
+    line-height: 1;
+    vertical-align: top;
+    border: none;
+    background: none;
+    min-width: 220px;
+    color: #fff;
+    background: #39373a;
+    margin-right: 15px;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 6px;
+}
+
+.book-like-delete-btn{
+	background: #ff6b6b;
 }
