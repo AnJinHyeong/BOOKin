@@ -13,6 +13,8 @@ public class BookDto {
 	private String bookDescription;
 	private Date bookPubDate;
 	private long bookGenreNo;
+	
+	private int bookget;
 	public BookDto() {
 		super();
 	}
