@@ -287,22 +287,41 @@ public class BookDao {
 		return bookList;
 	}
 
+	
+	public int getSequence() throws Exception{
+		Connection con = JdbcUtils.getConnection();
+		
+		String sql = "select book_seq.nextval from dual";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		rs.next();
+		int bookNo = rs.getInt(1);
+		
+		con.close();
+		return bookNo;
+	}
+	
 	// 책등록
 	public void registBook(BookDto bookDto) throws Exception {
 		Connection con = JdbcUtils.getConnection();
 
-		String sql = "insert into book values(book_seq.nextval,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into book values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement ps = con.prepareStatement(sql);
-
-		ps.setString(1, bookDto.getBookTitle());
-		ps.setString(2, bookDto.getBookImage());
-		ps.setString(3, bookDto.getBookAuthor());
-		ps.setInt(4, bookDto.getBookPrice());
-		ps.setInt(5, bookDto.getBookDiscount());
-		ps.setString(6, bookDto.getBookPublisher());
-		ps.setString(7, bookDto.getBookDescription());
-		ps.setDate(8, bookDto.getBookPubDate());
-		ps.setLong(9, bookDto.getBookGenreNo());
+		
+		ps.setInt(1, bookDto.getBookNo());
+		ps.setString(2, bookDto.getBookTitle());
+		ps.setString(3, bookDto.getBookImage());
+		ps.setString(4, bookDto.getBookAuthor());
+		ps.setInt(5, bookDto.getBookPrice());
+		ps.setInt(6, bookDto.getBookDiscount());
+		ps.setString(7, bookDto.getBookPublisher());
+		ps.setString(8, bookDto.getBookDescription());
+		ps.setDate(9, bookDto.getBookPubDate());
+		ps.setLong(10, bookDto.getBookGenreNo());
+		
+		ps.setString(11, bookDto.getImagefileUploadName());
+		ps.setString(12, bookDto.getImagefileSaveName());
+		
 
 		ps.execute();
 
