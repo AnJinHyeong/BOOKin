@@ -64,7 +64,7 @@
 		</form>
 	</div>
 	<div class="icon-area align-row">
-		<a class="icon-item align-column" href="#">
+		<a class="icon-item align-column" href="<%=root%>/member/bookLike.jsp">
 			<img class ="icon" src="<%=root%>/image/like.svg">
 			<span>좋아요</span>
 		</a>
@@ -103,7 +103,7 @@
 		</div>
 	</div>
 </div>
-<div class="container-1200 align-row space-between">
+<div class="container-1200 align-row space-between" style="z-index: 1;">
 	<ul class="font-weight-900 ul-row main-menu">
 		<li><a class="site-color change-a" href="#">베스트</a></li>
 		<li><a class="site-color-red change-a"  href="#" >NEW</a></li>

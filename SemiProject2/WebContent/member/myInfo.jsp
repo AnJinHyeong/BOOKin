@@ -128,7 +128,7 @@
 				<li><a href="#">배송지 / 환불계좌 관리</a></li>
 				<li><a href="#">고객센터</a></li>
 				<li><a href="#">장바구니</a></li>
-				<li><a href="#">좋아요</a></li>
+				<li><a href="<%=root %>/member/bookLike.jsp">좋아요</a></li>
 			</ul>
 		</aside>
 		
