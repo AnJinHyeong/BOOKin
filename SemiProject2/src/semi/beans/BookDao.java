@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.spi.DirStateFactory.Result;
 
@@ -15,7 +17,7 @@ public class BookDao {
 
 	// 등록 기능
 
-	public BookDto get(Long no) throws Exception {
+	public BookDto get(int no) throws Exception {
 		Connection con = JdbcUtils.getConnection();
 
 		String sql = "select * from book where book_no = ?";
@@ -156,8 +158,8 @@ public class BookDao {
 	public boolean edit(BookDto bookDto) throws Exception {
 		Connection con = JdbcUtils.getConnection();
 
-		String sql = "update book set book_title=?, book_image=?,book_author,book_price,"
-				+ "book_discount,book_publisher=?,book_description=?,book_pubdate=?,book_genre=?";
+		String sql = "update book set book_title=?, book_image=?,book_author=?,book_price=?,"
+				+ "book_discount=?,book_publisher=?,book_description=?,book_pubdate=?,book_genre=? where book_no=?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, bookDto.getBookTitle());
 		ps.setString(2, bookDto.getBookImage());
@@ -165,9 +167,10 @@ public class BookDao {
 		ps.setInt(4, bookDto.getBookPrice());
 		ps.setInt(5, bookDto.getBookDiscount());
 		ps.setString(6, bookDto.getBookPublisher());
-		ps.setString(8, bookDto.getBookDescription());
-		ps.setDate(9, bookDto.getBookPubDate());
-		ps.setLong(10, bookDto.getBookGenreNo());
+		ps.setString(7, bookDto.getBookDescription());
+		ps.setDate(8, bookDto.getBookPubDate());
+		ps.setLong(9, bookDto.getBookGenreNo());
+		ps.setInt(10, bookDto.getBookNo());
 		int count = ps.executeUpdate();
 
 		con.close();
@@ -305,23 +308,19 @@ public class BookDao {
 	public void registBook(BookDto bookDto) throws Exception {
 		Connection con = JdbcUtils.getConnection();
 
-		String sql = "insert into book values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into book values(book_seq.nextval,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement ps = con.prepareStatement(sql);
 		
-		ps.setInt(1, bookDto.getBookNo());
-		ps.setString(2, bookDto.getBookTitle());
-		ps.setString(3, bookDto.getBookImage());
-		ps.setString(4, bookDto.getBookAuthor());
-		ps.setInt(5, bookDto.getBookPrice());
-		ps.setInt(6, bookDto.getBookDiscount());
-		ps.setString(7, bookDto.getBookPublisher());
-		ps.setString(8, bookDto.getBookDescription());
-		ps.setDate(9, bookDto.getBookPubDate());
-		ps.setLong(10, bookDto.getBookGenreNo());
 		
-		ps.setString(11, bookDto.getImagefileUploadName());
-		ps.setString(12, bookDto.getImagefileSaveName());
-		
+		ps.setString(1, bookDto.getBookTitle());
+		ps.setString(2, bookDto.getBookImage());
+		ps.setString(3, bookDto.getBookAuthor());
+		ps.setInt(4, bookDto.getBookPrice());
+		ps.setInt(5, bookDto.getBookDiscount());
+		ps.setString(6, bookDto.getBookPublisher());
+		ps.setString(7, bookDto.getBookDescription());
+		ps.setDate(8, bookDto.getBookPubDate());
+		ps.setLong(9, bookDto.getBookGenreNo());
 
 		ps.execute();
 
@@ -410,6 +409,58 @@ public class BookDao {
 		con.close();
 
 		return count;
+	}
+	
+	public List<BookDto> adminSearch(String title,String author,String publisher,long genreNo) throws Exception{
+		List<BookDto> bookList = new ArrayList<>();
+		if(title.equals("")&&author.equals("")&&publisher.equals("")) {
+			return bookList;
+		}
+		Connection con = JdbcUtils.getConnection();;
+		Map<String,String> keywordMap = new HashMap<>();
+		if(!title.equals(""))keywordMap.put("book_title",title);
+		if(!author.equals(""))keywordMap.put("book_author",author);
+		if(!publisher.equals(""))keywordMap.put("book_publisher",publisher);
+		String sql = "select * from book ";
+		int count=0;
+		for ( String key : keywordMap.keySet() ) {
+			if(count==0) {
+				sql+="where instr("+key+",'"+keywordMap.get(key)+"')>0  ";
+				count+=1;
+			}else {
+				sql+="and instr("+key+",'"+keywordMap.get(key)+"')>0 ";
+			}
+		}
+		if(genreNo!=0) {
+			if(count==0) {
+				sql+="where book_genre="+genreNo;
+			}else {
+				sql+="and book_genre="+genreNo;
+			}
+		}
+		PreparedStatement ps = con.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+
+		
+		while (rs.next()) {
+			BookDto bookDto = new BookDto();
+			bookDto.setBookNo(rs.getInt("book_no"));
+			bookDto.setBookTitle(rs.getString("book_title"));
+			bookDto.setBookAuthor(rs.getString("book_author"));
+			bookDto.setBookImage(rs.getString("book_image"));
+			bookDto.setBookPrice(rs.getInt("book_price"));
+			bookDto.setBookDiscount(rs.getInt("book_discount"));
+			bookDto.setBookPublisher(rs.getString("book_publisher"));
+			bookDto.setBookDescription(rs.getString("book_description"));
+			bookDto.setBookPubDate(rs.getDate("book_pubdate"));
+			bookDto.setBookGenreNo(rs.getLong("book_genre"));
+
+			bookList.add(bookDto);
+		}
+
+		con.close();
+
+		return bookList;
 	}
 
 }

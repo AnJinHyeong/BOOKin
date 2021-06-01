@@ -10,6 +10,7 @@
 <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="<%= root%>/css/template.css">
     <link rel="stylesheet" type="text/css" href="<%= root%>/css/adminPage.css">
+    
 </head>
 <body>
 	<aside>
@@ -17,7 +18,7 @@
 		<ul>
 			<li class="admin-aside-top_menu"><span class="admin-aside-top_text">상품관리</span>
 				<ul class="admin-aside-side_menus">
-					<li><a>상품 조회/수정</a></li>
+					<li><a href="<%=root%>/admin/bookSearch.jsp">상품 조회/수정</a></li>
 					<li><a href="<%=root%>/admin/bookInsert.jsp">상품 등록</a></li>
 				</ul>
 			</li>
