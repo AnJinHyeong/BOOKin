@@ -132,7 +132,7 @@ public class SaveBook extends HttpServlet{
 						}
 						System.out.println("book_genre:::value="+gerneNo);
 						System.out.println(dbList);
-						String sql2 = "insert into book values(book_seq.nextval,?,?,?,?,?,?,?,?,?)";
+						String sql2 = "insert into book values(book_seq.nextval,?,?,?,?,?,?,?,?,?,0)";
 						PreparedStatement ps2 = conn.prepareStatement(sql2);
 						ps2.setString(1, dbList.get(0));
 						ps2.setString(2, dbList.get(1));

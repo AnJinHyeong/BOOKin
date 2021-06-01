@@ -13,6 +13,8 @@ public class BookDto {
 	private String bookDescription;
 	private Date bookPubDate;
 	private long bookGenreNo;
+	private int bookView;
+	
 	public BookDto() {
 		super();
 	}
@@ -88,6 +90,13 @@ public class BookDto {
 	public void setBookGenreNo(long genreNo) {
 		this.bookGenreNo = genreNo;
 	}
+	public int getBookView() {
+		return bookView;
+	}
+	public void setBookView(int bookView) {
+		this.bookView = bookView;
+	}
+	
 	
 	
 }

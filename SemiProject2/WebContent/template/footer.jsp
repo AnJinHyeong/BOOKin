@@ -1,7 +1,15 @@
+<%@page import="semi.beans.NoticeBoardDto"%>
+<%@page import="java.util.List"%>
+<%@page import="semi.beans.NoticeBoardDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
 	String root = request.getContextPath();
+	
+	int startRow = 1;
+	int endRow = 5;
+	NoticeBoardDao noticeBoardDao = new NoticeBoardDao();
+	List<NoticeBoardDto> noticeBoardList = noticeBoardDao.list(startRow, endRow);
 %>
 </section>
 <div class="line"></div>
@@ -18,15 +26,12 @@
 		<span class="small-font">점심 12:00~13:00</span>
 		<span class="small-font site-color-red">일요일 14:00~17:00</span>
 	</div>
-	<div class="align-column notice" style="align-items: flex-start;">
+	<div class="align-column notice overflow" style="align-items: flex-start;">
 		<div class="line-nomargin"></div>
 		<h5 style="padding:0.5rem 0">NOTICE</h5>
-		<div  class="line "></div>
-		<a href="#"><span class="small-font">2021 새로워진 BOOKin</span></a>
-		<a href="#"><span class="small-font">2021 적립금 안내</span></a>
-		<a href="#"><span class="small-font">2021 새로운 공지사항</span></a>
-		<a href="#"><span class="small-font">2021 새로운 공지사항</span></a>
-		<a href="#"><span class="small-font">2021 새로운 공지사항</span></a>
+		<%for(NoticeBoardDto noticeBoardDto : noticeBoardList){ %>
+			<a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=noticeBoardDto.getNoticeBoardNo()%>"><span class="small-font overflow" style="display: inline-block;width: 180px;"><%=noticeBoardDto.getNoticeBoardTitle() %></span></a>
+		<%} %>
 		<a href="<%=root%>/qna/qnaNotice.jsp"><span class="small-font">더보기 +</span></a>
 	</div>
 	<div class="align-column" style="align-items: flex-start;">
@@ -44,10 +49,5 @@
 		<p style="color:white;font-size: 12px">COPYRIGHT (C) 2021 BOOKin ALL RIGHTS RESERVED.</p>
 	</div>
 </div>
-
-
-	
-
-
 </body>
 </html>

@@ -30,13 +30,15 @@
 	List<BookDto> bookList2=bookDao.publisherSearch(bookDto.getBookPublisher(),1,10);
 	List<BookDto> bookList3=bookDao.genreSearch(bookDto.getBookGenreNo());
 	List<GenreDto> genreList=genreDao.sameGenreList(bookDto.getBookGenreNo());
-
+	
+	bookDao.bookView((int)no);
 %>
 <%
 	int price=bookDto.getBookPrice();
 	int discount=bookDto.getBookDiscount();
 	int priceDif=price-discount;
 	int discountPercent=price/priceDif;
+	
 %>
 <jsp:include page="/template/header.jsp"></jsp:include>
 
