@@ -13,10 +13,14 @@
 	Integer memberNo = (Integer) session.getAttribute("member");
 	MemberDao memberDao = new MemberDao();
 	boolean isLogin = false;
+	boolean isAdmin=false;
 	MemberDto memberDto = null;
 	if(memberNo!=null){
 		isLogin=true;
 		memberDto = memberDao.getMember(memberNo);
+		if(memberDto.getMemberAdmin().equals("Y")){
+			isAdmin=true;
+		}
 	}
 	GenreDao genreDao=new GenreDao();
 	List<GenreDto> genreList=genreDao.topGenreList();
@@ -83,7 +87,11 @@
 
 	<% if(isLogin){ %>
 	<ul class="ul-row member-menu ">
+		<% if(isAdmin){ %>
+		<li><a class="change-a" href="<%=root %>/admin/adminHome.jsp">관리자페이지</a></li>
+		<%}else{ %>
 		<li><a class="change-a" href="<%=root %>/member/myInfo_check.jsp">마이페이지</a></li>
+		<%} %>
 		<li><a class="change-a" href="<%=root%>/qna/qnaList.jsp">QnA</a></li>
 		<li><a class="change-a" href="<%=root%>/member/logout.kh">로그아웃</a></li>
 	</ul>
@@ -92,7 +100,7 @@
 		<li><a class="change-a" href="<%=root%>/member/signup.jsp">회원가입</a></li>
 		<li><a class="change-a" href="<%=root%>/qna/qnaList.jsp">QnA</a></li>
 		<li><a class="change-a" href="<%=root%>/member/login.jsp">로그인</a></li>
-	</ul>
+	</ul> 
 	<%} %>	
 	
 </div>
@@ -159,18 +167,18 @@
 		<li><a class="site-color-red change-a"  href="#" >NEW</a></li>
 	<% for(int i=0;i<genreList.size();i++){ %>
 		<li>
-			<a class="change-a" href="?genre=<%=genreList.get(i).getGenreNo()%>"> <%=genreList.get(i).getGenreName() %></a>
+			<a class="change-a" href="<%=root%>?genre=<%=genreList.get(i).getGenreNo()%>"> <%=genreList.get(i).getGenreName() %></a>
 			<ul class="sub-menu">
 			<% 
 			List<GenreDto> sublist=	genreDao.childGenreList(genreList.get(i).getGenreNo());
 			for(int j =0;j<sublist.size();j++){ %>
 				<li>
-					<a href="?genre=<%=sublist.get(j).getGenreNo()%>" class="change-a_noani overflow"><%=sublist.get(j).getGenreName() %></a>
+					<a href="<%=root%>?genre=<%=sublist.get(j).getGenreNo()%>" class="change-a_noani overflow"><%=sublist.get(j).getGenreName() %></a>
 					<ul class="sub-sub-menu">
 						<%
 						List<GenreDto> sublist2=genreDao.childGenreList(sublist.get(j).getGenreNo());
 						for(int k =0;k<sublist2.size();k++){ %>
-							<li><a href="?genre=<%=sublist2.get(k).getGenreNo()%>" class="change-a_noani overflow"><%=sublist2.get(k).getGenreName() %></a></li>
+							<li><a href="<%=root%>?genre=<%=sublist2.get(k).getGenreNo()%>" class="change-a_noani overflow"><%=sublist2.get(k).getGenreName() %></a></li>
 						
 						<%} %>
 					</ul>

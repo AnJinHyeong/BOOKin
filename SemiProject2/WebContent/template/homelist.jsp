@@ -110,7 +110,12 @@
 		<%if(bookDto.getBookImage()==null){
 			bookDto.setBookImage(root+"/image/nullbook.png");
 		} %>
-			<img title="<%=bookDto.getBookTitle() %>" class="book-img" src="<%=bookDto.getBookImage()%>" >
+			<%if(bookDto.getBookImage().startsWith("https")){ %>
+			<img title="<%=bookDto.getBookTitle() %>" class="book-img" src="<%=bookDto.getBookImage()%>">
+			<%}else{ %>
+			<img title="<%=bookDto.getBookTitle() %>" class="book-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">
+			<%} %>
+
 		</a>
 		
 		<a href="javascript:void(0);" class="book-like book-good" id="like<%=bookDto.getBookNo()%>"></a> 
