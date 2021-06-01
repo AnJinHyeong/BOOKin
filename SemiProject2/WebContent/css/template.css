@@ -246,6 +246,10 @@
       .small-font{
          font-size: 12px;
       }
+      .small-font.size{
+      	width: 50px;
+      	position: absolute;
+      }
       footer>div>h5{
          margin-bottom: 4px;
       }
