@@ -16,8 +16,12 @@
 	QnaBoardDao qnaBoardDao = new QnaBoardDao();
 	QnaBoardDto qnaBoardDto = qnaBoardDao.get(qnaBoardNo);
 	
+	
+ 
 	QnaReplyMemberDao qnaReplyMemberDao = new QnaReplyMemberDao();
 	List<QnaReplyMemberDto> list = qnaReplyMemberDao.list(qnaBoardNo);
+	
+	
 	
 	int memberNo = (int)session.getAttribute("member");
 	MemberDao memberDao = new MemberDao();
@@ -282,11 +286,15 @@
 					
 		<div class="notice-reply">
 			<%if(list != null) { %>
+				
+
 				<%for(QnaReplyMemberDto qnaReplyMemberDto : list){ %>
 					<div class="row re" id="re<%=qnaReplyMemberDto.getQnaReplyNo() %>">
 						<div class="row">
 							<span><%=qnaReplyMemberDto.getMemberId() %></span>
 						</div>
+						
+
 						<div class="row">
 							<span><%=qnaReplyMemberDto.getQnaReplyContent() %></span>
 						</div>

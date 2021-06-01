@@ -48,9 +48,6 @@ public class BookInsertServlet extends HttpServlet{
 			bookDto.setBookPubDate(Date.valueOf(mRequest.getParameter("book_pubdate")));
 			bookDto.setBookGenreNo(Long.parseLong(mRequest.getParameter("book_genre")));
 			
-		
-		
-			
 			bookDto.setBookImage(mRequest.getParameter("book_image"));
 			
 		

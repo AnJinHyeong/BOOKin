@@ -15,7 +15,7 @@ public class BookDao {
 
 	// 등록 기능
 
-	public BookDto get(Long no) throws Exception {
+	public BookDto get(int no) throws Exception {
 		Connection con = JdbcUtils.getConnection();
 
 		String sql = "select * from book where book_no = ?";
@@ -45,7 +45,14 @@ public class BookDao {
 		con.close();
 
 		return bookDto;
+		
+		
 	}
+	
+	
+	
+	
+	
 
 	public List<BookDto> genreList(Long genreNo, int num) throws Exception {
 		Connection con = JdbcUtils.getConnection();

@@ -109,18 +109,18 @@
 		<li><a class="site-color-red change-a"  href="#" >NEW</a></li>
 	<% for(int i=0;i<genreList.size();i++){ %>
 		<li>
-			<a class="change-a" href="?genre=<%=genreList.get(i).getGenreNo()%>"> <%=genreList.get(i).getGenreName() %></a>
+			<a class="change-a" href="<%=root%>?genre=<%=genreList.get(i).getGenreNo()%>"> <%=genreList.get(i).getGenreName() %></a>
 			<ul class="sub-menu">
 			<% 
 			List<GenreDto> sublist=	genreDao.childGenreList(genreList.get(i).getGenreNo());
 			for(int j =0;j<sublist.size();j++){ %>
 				<li>
-					<a href="?genre=<%=sublist.get(j).getGenreNo()%>" class="change-a_noani overflow"><%=sublist.get(j).getGenreName() %></a>
+					<a href="<%=root%>?genre=<%=sublist.get(j).getGenreNo()%>" class="change-a_noani overflow"><%=sublist.get(j).getGenreName() %></a>
 					<ul class="sub-sub-menu">
 						<%
 						List<GenreDto> sublist2=genreDao.childGenreList(sublist.get(j).getGenreNo());
 						for(int k =0;k<sublist2.size();k++){ %>
-							<li><a href="?genre=<%=sublist2.get(k).getGenreNo()%>" class="change-a_noani overflow"><%=sublist2.get(k).getGenreName() %></a></li>
+							<li><a href="<%=root%>?genre=<%=sublist2.get(k).getGenreNo()%>" class="change-a_noani overflow"><%=sublist2.get(k).getGenreName() %></a></li>
 						
 						<%} %>
 					</ul>
