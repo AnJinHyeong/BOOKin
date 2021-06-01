@@ -8,11 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.spi.DirStateFactory.Result;
-
-import semi.beans.JdbcUtils;
-import semi.beans.BookDto;
-
 public class BookDao {
 
 	// 등록 기능
@@ -39,6 +34,7 @@ public class BookDao {
 			bookDto.setBookDescription(rs.getString("book_description"));
 			bookDto.setBookPubDate(rs.getDate("book_pubdate"));
 			bookDto.setBookGenreNo(rs.getLong("book_genre"));
+			bookDto.setBookView(rs.getInt("book_view"));
 
 		} else {
 			bookDto = null;
@@ -73,6 +69,7 @@ public class BookDao {
 			bookDto.setBookDiscount(rs.getInt("book_discount"));
 			bookDto.setBookPubDate(rs.getDate("book_pubdate"));
 			bookDto.setBookGenreNo(rs.getLong("book_genre"));
+			bookDto.setBookView(rs.getInt("book_view"));
 			bookList.add(bookDto);
 		}
 
@@ -104,6 +101,7 @@ public class BookDao {
 			bookDto.setBookDiscount(rs.getInt("book_discount"));
 			bookDto.setBookPubDate(rs.getDate("book_pubdate"));
 			bookDto.setBookGenreNo(rs.getLong("book_genre"));
+			bookDto.setBookView(rs.getInt("book_view"));
 			bookList.add(bookDto);
 		}
 
@@ -132,6 +130,7 @@ public class BookDao {
 			bookDto.setBookDescription(rs.getString("book_description"));
 			bookDto.setBookPubDate(rs.getDate("book_pubdate"));
 			bookDto.setBookGenreNo(rs.getLong("book_genre"));
+			bookDto.setBookView(rs.getInt("book_view"));
 
 			bookList.add(bookDto);
 		}
@@ -205,6 +204,7 @@ public class BookDao {
 			bookDto.setBookDescription(rs.getString("book_description"));
 			bookDto.setBookPubDate(rs.getDate("book_pubdate"));
 			bookDto.setBookGenreNo(rs.getLong("book_genre"));
+			bookDto.setBookView(rs.getInt("book_view"));
 
 			bookList.add(bookDto);
 		}
@@ -243,6 +243,7 @@ public class BookDao {
 			bookDto.setBookDescription(rs.getString("book_description"));
 			bookDto.setBookPubDate(rs.getDate("book_pubdate"));
 			bookDto.setBookGenreNo(rs.getLong("book_genre"));
+			bookDto.setBookView(rs.getInt("book_view"));
 
 			bookList.add(bookDto);
 		}
@@ -281,6 +282,7 @@ public class BookDao {
 			bookDto.setBookDescription(rs.getString("book_description"));
 			bookDto.setBookPubDate(rs.getDate("book_pubdate"));
 			bookDto.setBookGenreNo(rs.getLong("book_genre"));
+			bookDto.setBookView(rs.getInt("book_view"));
 
 			bookList.add(bookDto);
 		}
@@ -308,7 +310,7 @@ public class BookDao {
 	public void registBook(BookDto bookDto) throws Exception {
 		Connection con = JdbcUtils.getConnection();
 
-		String sql = "insert into book values(book_seq.nextval,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into book values(book_seq.nextval,?,?,?,?,?,?,?,?,?,0)";
 		PreparedStatement ps = con.prepareStatement(sql);
 		
 		
@@ -354,8 +356,8 @@ public class BookDao {
 			bookDto.setBookDescription(rs.getString("book_description"));
 			bookDto.setBookImage(rs.getString("book_image"));
 			bookDto.setBookPubDate(rs.getDate("book_date"));
-
 			bookDto.setBookGenreNo(rs.getInt("book_genre"));
+			bookDto.setBookView(rs.getInt("book_view"));
 
 			bookList.add(bookDto);
 		}
@@ -463,4 +465,56 @@ public class BookDao {
 		return bookList;
 	}
 
+	
+//	조회수 증가 기능 : 책 상세 페이지 들어온 경우 조회수 증가
+	public boolean bookView(int bookNo) throws Exception{
+		Connection con = JdbcUtils.getConnection();
+		
+		String sql = "update book "
+					+ "set book_view = book_view + 1 "
+					+ "where book_no = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, bookNo);
+		int count = ps.executeUpdate();
+		
+		con.close();
+		return count > 0;
+	}
+	
+//	조회수 탑 10 인기 도서 
+	public List<BookDto> bookViewTop(int startRow, int endRow) throws Exception{
+		Connection con = JdbcUtils.getConnection();
+		
+		String sql = "select * from(\n"
+				+ "select rownum rn, TMP.* from(\n"
+						+ "	select * from book order by book_view desc \n"
+					+ "	)TMP\n"
+				+ ") where rn between ? and ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, startRow);
+		ps.setInt(2, endRow);
+		ResultSet rs = ps.executeQuery();
+
+		List<BookDto> bookList = new ArrayList<>();
+		while (rs.next()) {
+			BookDto bookDto = new BookDto();
+			
+			bookDto.setBookNo(rs.getInt("book_no"));
+			bookDto.setBookTitle(rs.getString("book_title"));
+			bookDto.setBookImage(rs.getString("book_image"));
+			bookDto.setBookAuthor(rs.getString("book_author"));
+			bookDto.setBookPrice(rs.getInt("book_price"));
+			bookDto.setBookDiscount(rs.getInt("book_discount"));
+			bookDto.setBookPublisher(rs.getString("book_publisher"));
+			bookDto.setBookDescription(rs.getString("book_description"));
+			bookDto.setBookPubDate(rs.getDate("book_pubdate"));
+			bookDto.setBookGenreNo(rs.getLong("book_genre"));
+			bookDto.setBookView(rs.getInt("book_view"));
+
+			bookList.add(bookDto);
+		}
+		con.close();
+		return bookList;
+	}
+	
 }

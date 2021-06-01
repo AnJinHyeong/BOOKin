@@ -143,6 +143,7 @@
       .searchrank-list{
          display: none;
          padding: 0 10px;
+         z-index: 99;
       }
       .searchrank-area{
          font-size: 13px;
@@ -244,6 +245,10 @@
       }
       .small-font{
          font-size: 12px;
+      }
+      .small-font.size{
+      	width: 50px;
+      	position: absolute;
       }
       footer>div>h5{
          margin-bottom: 4px;
