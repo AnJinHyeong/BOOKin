@@ -117,7 +117,7 @@
 					<span>수량&emsp;&emsp;&emsp;</span>
 					<span>
 						 <span><button type="button" name="button"onclick="minus()"><img src="<%=root %>/image/minus-solid.svg" alt="minus" class="amount-image"/></button></span>
-                <span><input type="text" name="name" value="0" size="10" id="count" class="text-center"></span>
+                <span><input type="text" name="name" value="1" size="10" id="count" class="text-center"></span>
                 <span><button type="button" name="button"onclick="plus()"><img src="<%=root %>/image/plus-solid.svg" alt="plus" class="amount-image"/></button></span>
 					</span>
 				</div>

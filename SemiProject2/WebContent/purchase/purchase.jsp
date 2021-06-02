@@ -24,6 +24,7 @@
 	</div>
 	
  	<form action="purchaseInsert.kh"  method="post">
+ 		
  		<input type="hidden" value="<%=bookDto.getBookNo()%>" name="purchaseBook" >
 		<div class="book-detail-semi-box" style="border:1px solid lightgray; padding:0px;">
          <div class="book-price-semi-image">
@@ -34,7 +35,7 @@
             <div><%=bookDto.getBookAuthor() %></div><br>
             <div><%=bookDto.getBookPublisher() %></div><br>
          </div>
-         <div class="book-price-semi-price">
+         	<div class="book-price-semi-price">
             <div class="price-top-box">
 	            <div>가격: <%=bookDto.getBookDiscount() %>원</div>
 	            <div>+</div>
@@ -42,9 +43,9 @@
             </div>
             <hr>
             <div class="price-bottom-box"><span style="font-size:20px;"><%=bookDto.getBookDiscount() %></span><span>원</span></div>
+         	</div>
+      	</div>
       
-         </div>
-      </div>
 		<div class="row text-left book-detail-semi-box"> 
 			<div class="book-detail-semi-title">주문자 정보</div>
 			<div>
@@ -73,11 +74,11 @@
 				<div >배송지 선택</div><br>
 						<input type="radio" name="address" value="1" checked="checked" onclick="newRecipientInfo(this.value);">&nbsp;&nbsp;기본배송지&nbsp;&nbsp;
 						<input type="radio" name="address" value="2" onclick="newRecipientInfo(this.value);">&nbsp;&nbsp;신규배송지&nbsp;&nbsp;
-						<div>
-							<div><span>수령인</span><input type="text" name="purchaseRecipient" placeholder=" 50자 이내로 입력하세요" value="<%=memberDto.getMemberName()%>" id="member-name"></div>
-							<div><span>연락처</span><input type="text" name="purchasePhone" placeholder="-를 제외하고 입력하세요" value="<%=memberDto.getMemberPhone()%>" id="member-phone"></div>
-							<div><span>주소</span><input type="text" name="purchaseAddress" value="<%=memberDto.getMemberAddress()%>" id="member-address"></div>
-							<a href="#" onclick="showDiv2()" class="button-style">수정</a> 
+						<div style="margin-top:10px;">
+							<div><span class="recipient-span">수령인&ensp;</span><input type="text" name="purchaseRecipient" placeholder=" 50자 이내로 입력하세요" value="<%=memberDto.getMemberName()%>" id="member-name"></div>
+							<div><span class="recipient-span">연락처&ensp;</span><input type="text" name="purchasePhone" placeholder="-를 제외하고 입력하세요" value="<%=memberDto.getMemberPhone()%>" id="member-phone"></div>
+							<div><span class="recipient-span">주소&ensp;&ensp;</span><input type="text" name="purchaseAddress" value="<%=memberDto.getMemberAddress()%>" id="member-address">&ensp;<a  href="#" onclick="showDiv2()" class="button-style">수정</a> </div>
+							
 								<div id="show-div2" style="display:none">	
 									<div class="show-div">
 										<div>
@@ -110,7 +111,7 @@
 			<input type="checkbox" class="check-item" id="c1"><label>위 상품의 구매조건 확인 및 결제진행 동의</label>
 		</div>
 		
-		<input type="submit" value="결제하기">
+		<input type="submit" value="결제하기" class="pay-button">
 	</form> 
 </div>
 

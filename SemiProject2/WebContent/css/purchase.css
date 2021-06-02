@@ -73,8 +73,50 @@
 	margin-top:100px;
 	padding-top:20px;
 	padding-bottom:20px;
-	border:1px solid black;
+	border:none;
+}
+.purchase-success-box-btn{
+	margin-top:20px;
+	border:none;
 }
 .success-main-btn{
+	border:none;
+	padding:20px 30px;
+	margin-right:10px;
+	background-color:#ff9f43;
+	color:white;
+	font-weight:bold;
+	font-size:18px;
+}
+.success-main-btn2{
+	border:none;
+	padding:20px 30px;
+	margin-left:10px;
+	background-color:#ff6b6b;
+	color:white;
+	font-weight:bold;
+	font-size:18px;
+}
+.purchase-success-text{
+	font-size:15px;
+	text-align:left;
+	padding-left:10px;
+}
+.recipient-span{
+	display:inline-block;
+	width: 60px;
+	margin-bottom:10px;
 	
+}
+.pay-button{
+	padding:1rem 3rem;
+	background-color:#ff9f43;
+	border: none;
+	color:white;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+	font-size:18px;
+	text-align:center;
+	margin-left:275px;
+	margin-top:20px;
+	font-weight:900;
 }
