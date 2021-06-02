@@ -37,8 +37,7 @@
 	int price=bookDto.getBookPrice();
 	int discount=bookDto.getBookDiscount();
 	int priceDif=price-discount;
-	int discountPercent=price/priceDif;
-	
+	int discountPercent=(int)(((double)priceDif/(double)price)*(100.0));
 %>
 <jsp:include page="/template/header.jsp"></jsp:include>
 
@@ -50,6 +49,9 @@
 			<span><%=bookDto.getBookAuthor() %> (지은이)&nbsp;&nbsp;</span>
 			<span><%=bookDto.getBookPublisher()%>&nbsp;&nbsp;</span>
 			<span><%=bookDto.getBookPubDate()%></span>
+			<span class="container-right"><a href="<%= root%>/book/bookEdit.jsp?no=<%=bookDto.getBookNo()%>">수정</a></span>
+      	    <span class="container-right"><a href="bookDelete.kh?bookNo=<%=bookDto.getBookNo()%>">삭제</a></span>
+			
 		</div>
 	</div>
 	<hr>
@@ -129,7 +131,7 @@
 				</div>
 				<div class="payment-button-box">
 					<div class="payment-button"><a href="#" class="payment-button-text">장바구니 담기</a></div>
-					<div class="payment-button"><a href="#" class="payment-button-text">바로구매</a></div>
+					<div class="payment-button"><a href="<%=root %>/purchase/purchase.jsp?no=<%=bookDto.getBookNo() %>" class="payment-button-text">바로구매</a></div>
 					<div class="payment-button"><a href="#" class="payment-button-text-red">보관함+</a></div>
 					<div class="payment-button"><a href="#" class="payment-button-text-red">선물하기</a></div>
 					

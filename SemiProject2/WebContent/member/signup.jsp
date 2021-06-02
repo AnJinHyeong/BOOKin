@@ -13,7 +13,7 @@
 		
 		//회원가입 regex 검사
 		//아이디 검사
-/* 		var js_id = document.querySelector(".js_id");
+ 		var js_id = document.querySelector(".js_id");
 		js_id.addEventListener("blur",function(){
 			var id_regex = /^[\da-z]{4,20}$/;
 			this.parentElement.nextElementSibling.classList.remove("visible","hidden");
@@ -51,7 +51,7 @@
 				this.value="";
 			}
 
-		});  */
+		});  
 	});
 
 </script>			

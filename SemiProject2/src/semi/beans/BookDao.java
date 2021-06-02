@@ -140,12 +140,12 @@ public class BookDao {
 		return bookList;
 	}
 
-	public boolean delete(int no) throws Exception {
+	public boolean delete(long no) throws Exception {
 		Connection con = JdbcUtils.getConnection();;
 
-		String sql = "delete book where book_no = ?";
+		String sql = "delete from book where book_no = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setInt(1, no);
+		ps.setLong(1, no);
 		int count = ps.executeUpdate();
 
 		con.close();
