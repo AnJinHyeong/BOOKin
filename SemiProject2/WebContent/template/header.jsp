@@ -28,6 +28,7 @@
     <link rel="stylesheet" type="text/css" href="<%= root%>/css/template.css">
     <link rel="stylesheet" type="text/css" href="<%= root%>/css/signup.css">
     <link rel="stylesheet" type="text/css" href="<%= root%>/css/detail.css">
+    <link rel="stylesheet" type="text/css" href="<%= root%>/css/purchase.css">
    <style>
 		
    </style>

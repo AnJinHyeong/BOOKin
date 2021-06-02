@@ -22,14 +22,20 @@ public class BookEditServlet extends HttpServlet{
 			BookDto bookDto = new BookDto();
 			bookDto.setBookNo(Integer.parseInt(req.getParameter("book_no")));
 			bookDto.setBookTitle(req.getParameter("book_title"));
-			bookDto.setBookImage(req.getParameter("book_img"));
+			if(req.getParameter("file").equals("")) {
+				bookDto.setBookImage(req.getParameter("book_image"));
+			}else {
+				bookDto.setBookImage(req.getParameter("file"));
+				System.out.println(req.getParameter("file")+"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
+			}
+			
 			bookDto.setBookAuthor(req.getParameter("book_author"));
 			bookDto.setBookPrice(Integer.parseInt(req.getParameter("book_price")));
 			bookDto.setBookDiscount(Integer.parseInt(req.getParameter("book_discount")));
 			bookDto.setBookPublisher(req.getParameter("book_publisher"));
 			bookDto.setBookDescription(req.getParameter("book_description"));
-			bookDto.setBookPubDate(Date.valueOf(req.getParameter("book_pubdate")));
-			bookDto.setBookGenreNo(Long.parseLong(req.getParameter("book_genre")));
+			
+			//bookDto.setBookGenreNo(Long.parseLong(req.getParameter("book_genre")));
 			
 			//계산
 			BookDao bookDao = new BookDao();

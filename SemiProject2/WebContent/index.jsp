@@ -3,3 +3,5 @@
 <jsp:include page="/template/header.jsp"></jsp:include>
 <jsp:include page="/template/homelist.jsp"></jsp:include>
 <jsp:include page="/template/footer.jsp"></jsp:include>
+
+

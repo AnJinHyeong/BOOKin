@@ -27,6 +27,8 @@
 	
 	DecimalFormat format = new DecimalFormat("###,###");
 %>
+
+
 <link rel="stylesheet" type="text/css" href="<%= root%>/css/list.css">
 
 
@@ -49,7 +51,7 @@
 
 	<%if(bookDto.getBookDiscount()!=0 && bookDto.getBookDiscount()!=bookDto.getBookPrice()){ %>
 		<div style="width: 100%;text-align: right;">
-		<a class="book-discount"><%=bookDto.getBookPrice()/(bookDto.getBookPrice()-bookDto.getBookDiscount())%>%</a>
+		<a class="book-discount"><%=(int)(((double)(bookDto.getBookPrice()-bookDto.getBookDiscount())/(double)bookDto.getBookPrice())*(100.0))%>%</a>
 		<a class="book-price"><%=format.format(bookDto.getBookDiscount()) %></a><a style="font-weight: 900;color:rgba(0,0,0,0.5);"> 원</a>
 		</div>
 	<%}else{ %>
