@@ -222,7 +222,7 @@
 				</div>
 				<div class="book-list inf-list" style="min-height: 200px;">					
 					<%for(BookLikeDto bookLikeDto : bookLikeList){ %>
-						<%BookDto bookDto = bookDao.get((long)bookLikeDto.getBookOrigin()); %>
+						<%BookDto bookDto = bookDao.get(bookLikeDto.getBookOrigin()); %>
 						<div class="book-item">	
 							<a href="<%=root%>/book/bookDetail.jsp?no=<%=bookDto.getBookNo()%>" class="book-img-a" >
 								<%if(bookDto.getBookImage()==null){

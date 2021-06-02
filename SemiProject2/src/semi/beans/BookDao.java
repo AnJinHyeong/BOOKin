@@ -258,10 +258,11 @@ public class BookDao {
 			int endRow) throws Exception {
 		Connection con = JdbcUtils.getConnection();;
 
-		String sql = "select * from(" + "select rownum rn, TMP.* from("
-
+		String sql = "select * from(" 
+				+ "select rownum rn, TMP.* from("
 				+ "select * from book where instr(book_publisher,?)>0  "
-				+ ")TMP" + ") where rn between ? and ?";
+				+ ")TMP" 
+				+ ") where rn between ? and ?";
 
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, keyword);
@@ -334,11 +335,11 @@ public class BookDao {
 	public List<BookDto> bookList(int startRow, int endRow) throws Exception {
 		Connection con = JdbcUtils.getConnection();;
 
-		String sql = "select * from(" + "select rownum rn, TMP.* from("
-
-				+ "select * from book "
-
-				+ "order by book_no asc " + ")TMP"
+		String sql = "select * from(" 
+				+ "select rownum rn, TMP.* from"
+				+ "(select * from book "
+				+ "order by book_no asc " 
+				+ ")TMP"
 				+ ") where rn between ? and ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, startRow);
@@ -413,7 +414,50 @@ public class BookDao {
 		return count;
 	}
 	
-	public List<BookDto> adminSearch(String title,String author,String publisher,long genreNo) throws Exception{
+	public int adminSearchCount(String title,String author,String publisher,long genreNo) throws Exception{
+		int countQ=0;
+		if(title.equals("")&&author.equals("")&&publisher.equals("")) {
+			return countQ;
+		}
+		Connection con = JdbcUtils.getConnection();;
+		Map<String,String> keywordMap = new HashMap<>();
+		if(!title.equals(""))keywordMap.put("book_title",title);
+		if(!author.equals(""))keywordMap.put("book_author",author);
+		if(!publisher.equals(""))keywordMap.put("book_publisher",publisher);
+		String sql = "select count(*) from book ";
+		int count=0;
+		for ( String key : keywordMap.keySet() ) {
+			if(count==0) {
+				sql+="where instr("+key+",'"+keywordMap.get(key)+"')>0  ";
+				count+=1;
+			}else {
+				sql+="and instr("+key+",'"+keywordMap.get(key)+"')>0 ";
+			}
+		}
+		if(genreNo!=0) {
+			if(count==0) {
+				sql+="where book_genre="+genreNo;
+			}else {
+				sql+="and book_genre="+genreNo;
+			}
+		}
+		
+		
+		
+		PreparedStatement ps = con.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+
+		
+		while (rs.next()) {
+			countQ=rs.getInt(1);
+		}
+
+		con.close();
+
+		return countQ;
+	}
+	
+	public List<BookDto> adminSearch(String title,String author,String publisher,long genreNo,int start,int end) throws Exception{
 		List<BookDto> bookList = new ArrayList<>();
 		if(title.equals("")&&author.equals("")&&publisher.equals("")) {
 			return bookList;
@@ -440,9 +484,19 @@ public class BookDao {
 				sql+="and book_genre="+genreNo;
 			}
 		}
-		PreparedStatement ps = con.prepareStatement(sql);
+		
+		String finalSql = "select * from (" 
+				+ "select rownum rn, TMP.* from"
+				+ "( "
+				+sql
+				+ " ) TMP"
+				+ " ) where rn between ? and ?";
+		System.out.println(finalSql);
+		PreparedStatement ps = con.prepareStatement(finalSql);
+		ps.setInt(1, start);
+		ps.setInt(2, end);
 		ResultSet rs = ps.executeQuery();
-
+		
 		
 		while (rs.next()) {
 			BookDto bookDto = new BookDto();

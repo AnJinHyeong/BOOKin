@@ -15,7 +15,9 @@ aside{
 	height: 100vh;
 }
 section{
+	margin:0;
 	margin-left:220px;
+	
 	width: 100%;
 	background-color: rgb(237, 240, 245);
 	display:flex;
@@ -223,17 +225,16 @@ thead>tr>th:first-child{
 	width: 5%;
 }
 thead>tr>th:nth-child(2){
-	width: 5%;
+	width: 30%;
 }
 thead>tr>th:nth-child(3){
-	width: 30%;
-	
+	width: 10%;
 }
 thead>tr>th:nth-child(4){
-	width: 15%;
+	width: 10%;
 }
 thead>tr>th:nth-child(5){
-	width: 10%;
+	width: 5%;
 }
 thead>tr>th:nth-child(6){
 	width: 5%;
@@ -242,12 +243,15 @@ thead>tr>th:nth-child(7){
 	width: 10%;
 }
 thead>tr>th:nth-child(8){
-	width: 10%;
+	width: 8%;
 }
 thead>tr>th:nth-child(9){
-	width: 10%;
+	width: 7%;
+	text-align: center;
 }
-
+thead>tr>th:nth-child(10){
+	width: 7%;
+}
 .table > thead > tr > th, 
 .table > thead > tr > td,
 .table > tbody > tr > th,

@@ -296,7 +296,7 @@
 		<%} %>
 		<% for(int i = startBlock;i<=endBlock;i++){ %>
 		<%if(pageNo==i){ %>
-		<li><a class="on"><%=i %></a></li>
+		<li class="on"><a><%=i %></a></li>
 		<%}else{ %>
 		<li><a><%=i %></a></li>
 		<%} %>
