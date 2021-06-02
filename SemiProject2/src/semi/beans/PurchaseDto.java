@@ -10,9 +10,40 @@ public class PurchaseDto {
 	private int purchaseBook;
 	private int purchaseMember;
 	private Date purchaseDate;
+	private String purchaseRecipient;
+	private int purchasePhone;
+	private String purchaseAddress;
+	
 	public int getPurchaseNo() {
 		return purchaseNo;
 	}
+	
+	public String getPurchaseRecipient() {
+		return purchaseRecipient;
+	}
+
+	public void setPurchaseRecipient(String purchaseRecipient) {
+		this.purchaseRecipient = purchaseRecipient;
+	}
+
+	public int getPurchasePhone() {
+		return purchasePhone;
+	}
+
+	public void setPurchasePhone(int purchasePhone) {
+		this.purchasePhone = purchasePhone;
+	}
+
+	
+
+	public String getPurchaseAddress() {
+		return purchaseAddress;
+	}
+
+	public void setPurchaseAddress(String purchaseAddress) {
+		this.purchaseAddress = purchaseAddress;
+	}
+
 	public void setPurchaseNo(int purchaseNo) {
 		this.purchaseNo = purchaseNo;
 	}

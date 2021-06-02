@@ -14,18 +14,11 @@ private int reviewMember;
 private int reviewBook;
 
 
+
+
+
 public ReviewDto() {
 	super();
-}
-
-
-public int getReviewMember() {
-	return reviewMember;
-}
-
-
-public void setReviewMember(int reviewMember) {
-	this.reviewMember = reviewMember;
 }
 
 
@@ -36,6 +29,16 @@ public int getReviewBook() {
 
 public void setReviewBook(int reviewBook) {
 	this.reviewBook = reviewBook;
+}
+
+
+public int getReviewMember() {
+	return reviewMember;
+}
+
+
+public void setReviewMember(int reviewMember) {
+	this.reviewMember = reviewMember;
 }
 
 

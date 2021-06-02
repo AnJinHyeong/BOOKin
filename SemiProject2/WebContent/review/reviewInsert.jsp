@@ -9,8 +9,9 @@
 <%
 PurchaseDto purchaseDto = new PurchaseDto();
 PurchaseDao purchaseDao = new PurchaseDao();
-int no =purchaseDto.getPurchaseBook();
 
+// int no =purchaseDto.getPurchaseBook();
+int no=5;
 BookDao bookDao = new BookDao();
 
 BookDto bookDto=bookDao.get(no);
@@ -37,7 +38,9 @@ BookDto bookDto=bookDao.get(no);
 	
 		<div class="row text-left">
 		<label>리뷰 평점</label>
-		<input name="reviewRate" type="radio">
+		<input name="reviewRate" type="text">
+		
+		<input type="submit" >
 	</div>
 
 
@@ -47,7 +50,6 @@ BookDto bookDto=bookDao.get(no);
 
 
 
-<label></label>
-<textarea name="review_content"></textarea>
+
 </body>
 </html>

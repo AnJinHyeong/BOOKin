@@ -20,7 +20,7 @@ public class BookDao {
 
 		String sql = "select * from book where book_no = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setLong(1, no);
+		ps.setInt(1, no);
 		ResultSet rs = ps.executeQuery();
 
 		BookDto bookDto;

@@ -25,11 +25,12 @@ public class ReviewInsertServlet extends HttpServlet{
 			
 			req.setCharacterEncoding("UTF-8");
 			ReviewDto reviewDto = new ReviewDto();
-			reviewDto.setReviewContent(req.getParameter("review_content"));
-			reviewDto.setReviewRate(Long.parseLong(req.getParameter("review_rate")));
+			reviewDto.setReviewContent(req.getParameter("reviewContent"));
+			reviewDto.setReviewRate(Long.parseLong(req.getParameter("reviewRate")));
 			
 			
-			int memberNo = (int)req.getSession().getAttribute("memberNo");
+			int memberNo = (int)req.getSession().getAttribute("member");
+//			int memberNo = 1;
 			reviewDto.setReviewMember(memberNo);
 			
 			
