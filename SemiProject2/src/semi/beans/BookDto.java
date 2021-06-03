@@ -57,9 +57,13 @@ public class BookDto {
 		this.bookPrice = bookPrice;
 	}
 	public int getBookDiscount() {
+		if(bookDiscount==0)return bookPrice;
 		return bookDiscount;
 	}
 	public void setBookDiscount(int bookDiscount) {
+		if(bookDiscount==0) {
+			this.bookDiscount = this.bookPrice;
+		}
 		this.bookDiscount = bookDiscount;
 	}
 	public String getBookPublisher() {

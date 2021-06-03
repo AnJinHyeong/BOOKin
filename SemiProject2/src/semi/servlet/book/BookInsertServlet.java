@@ -1,6 +1,7 @@
 package semi.servlet.book;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
 
 import javax.servlet.ServletException;
@@ -52,7 +53,10 @@ public class BookInsertServlet extends HttpServlet{
 			bookDao.registBook(bookDto);
 			
 			//출력
-			resp.sendRedirect(req.getContextPath()+"/admin/adminHome.jsp");
+			resp.setContentType("text/html; charset=UTF-8");
+			PrintWriter writer = resp.getWriter();
+			writer.println("<script>alert('등록되었습니다'); location.href='"+req.getContextPath()+"/admin/adminHome.jsp'"+"</script>"); 
+			writer.close();
 		}
 		catch(Exception e) {
 			e.printStackTrace();

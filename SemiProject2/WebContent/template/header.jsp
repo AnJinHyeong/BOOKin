@@ -45,6 +45,7 @@
     <link rel="stylesheet" type="text/css" href="<%= root%>/css/detail.css">
 	<link rel="stylesheet" type="text/css" href="<%= root%>/css/bookRankLolling.css">
 	<link rel="stylesheet" type="text/css" href="<%= root%>/css/list.css">
+	<link rel="stylesheet" type="text/css" href="<%= root%>/css/purchase.css">
 	
 	<style>
 	
