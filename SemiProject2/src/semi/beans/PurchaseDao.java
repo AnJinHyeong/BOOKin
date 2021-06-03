@@ -41,6 +41,7 @@ public class PurchaseDao {
 			purchaseDto.setPurchaseRecipient(rs.getString("purchase_recipient"));
 			purchaseDto.setPurchasePhone(rs.getString("purchase_phone"));
 			purchaseDto.setPurchaseAddress(rs.getString("purchase_address"));
+			purchaseDto.setPurchaseAmount(rs.getInt("purchase_amount"));
 		}else {
 			purchaseDto=null;
 		}
@@ -50,7 +51,7 @@ public class PurchaseDao {
 	}
 	public void insert(PurchaseDto purchaseDto) throws Exception{
 		Connection con = JdbcUtils.getConnection();
-		String sql="insert into purchase values(purchase_pk_seq.nextval,?,'결제완료',?,?,sysdate,?,?,?)";
+		String sql="insert into purchase values(purchase_pk_seq.nextval,?,'결제완료',?,?,sysdate,?,?,?,?)";
 				
 		
 		PreparedStatement ps = con.prepareStatement(sql);
@@ -60,6 +61,7 @@ public class PurchaseDao {
 		ps.setString(4,purchaseDto.getPurchaseRecipient());
 		ps.setString(5, purchaseDto.getPurchasePhone());
 		ps.setString(6, purchaseDto.getPurchaseAddress());
+		ps.setInt(7, purchaseDto.getPurchaseAmount());
 	
 		ps.execute();
 		con.close();

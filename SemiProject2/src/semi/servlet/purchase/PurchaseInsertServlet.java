@@ -31,6 +31,7 @@ public class PurchaseInsertServlet extends HttpServlet{
 			 purchaseDto.setPurchaseRecipient(req.getParameter("purchaseRecipient"));
 			 purchaseDto.setPurchasePhone(req.getParameter("purchasePhone"));
 			 purchaseDto.setPurchaseAddress(req.getParameter("purchaseAddress"));
+			 purchaseDto.setPurchaseAmount(Integer.parseInt(req.getParameter("purchaseAmount")));
 	
 			
 			 purchaseDao.insert(purchaseDto);

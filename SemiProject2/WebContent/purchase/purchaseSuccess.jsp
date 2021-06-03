@@ -18,10 +18,13 @@
     
     <div class="purchase-success-box container-500 text-center">
 	    <div style="font-size:30px; font-weight:bold;">주문이 완료되었습니다.</div>
-	    <br>
-	    <div class="purchase-success-text">주분번호 : <%=purchaseDto.getPurchaseNo() %></div>
+	    <br><br>
+	    <div style="margin-left:120px;">
+	    <div class="purchase-success-text">주문일자 : <%=purchaseDto.getPurchaseDate() %></div><br>
+	    <div class="purchase-success-text">주문번호 : <%=purchaseDto.getPurchaseNo() %></div><br>
 	    <div class="purchase-success-text">주문목록 : <%=bookDto.getBookTitle() %></div>
-    </div>
+	    </div>
+    </div><br>
     <div class="purchase-success-box-btn container-500 text-center">
     	<span><a href="<%=root%>/index.jsp" class="success-main-btn">메인페이지로</a></span>
     	<span><a href="#" class="success-main-btn2">내 주문목록</a></span>

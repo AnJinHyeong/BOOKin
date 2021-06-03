@@ -12,8 +12,15 @@ public class PurchaseDto {
 	private String purchaseRecipient;
 	private String purchasePhone;
 	private String purchaseAddress;
+	private int purchaseAmount;
 	
 	
+	public int getPurchaseAmount() {
+		return purchaseAmount;
+	}
+	public void setPurchaseAmount(int purchaseAmount) {
+		this.purchaseAmount = purchaseAmount;
+	}
 	public int getPurchasePk() {
 		return purchasePk;
 	}

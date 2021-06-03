@@ -1,3 +1,5 @@
+<%@page import="semi.beans.PurchaseDto"%>
+<%@page import="semi.beans.PurchaseDao"%>
 <%@page import="semi.beans.BookDto"%>
 <%@page import="semi.beans.BookDao"%>
 <%@page import="semi.beans.MemberDto"%>
@@ -13,6 +15,8 @@
 	
 	BookDao bookDao=new BookDao();
 	BookDto bookDto=bookDao.get(Integer.parseInt(request.getParameter("no")));
+	
+	
 %>
 
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
@@ -34,17 +38,28 @@
             <div class="book-price-semi-title"><%=bookDto.getBookTitle() %></div><br>
             <div><%=bookDto.getBookAuthor() %></div><br>
             <div><%=bookDto.getBookPublisher() %></div><br>
+            <div>
+				<span>수량&emsp;</span>
+				<span>
+					<span><button type="button" name="button" onclick="minus()"><img src="<%=root %>/image/minus-solid.svg" alt="minus" class="amount-image"/></button></span>
+	                <span><input type="text" name="purchaseAmount" value="1" size="10" id="count" class="text-center"></span>
+	                <span><button type="button" name="button" onclick="plus()"><img src="<%=root %>/image/plus-solid.svg" alt="plus" class="amount-image"/></button></span>
+				</span>
+			</div>
          </div>
          	<div class="book-price-semi-price">
             <div class="price-top-box">
-	            <div>가격: <%=bookDto.getBookDiscount() %>원</div>
+	            <div><span>가격: </span><%=bookDto.getBookDiscount()%><span>원</span></div>
 	            <div>+</div>
 	            <div>배송료: 0원</div>
+	            
+	            
             </div>
             <hr>
             <div class="price-bottom-box"><span style="font-size:20px;"><%=bookDto.getBookDiscount() %></span><span>원</span></div>
          	</div>
       	</div>
+      	
       
 		<div class="row text-left book-detail-semi-box"> 
 			<div class="book-detail-semi-title">주문자 정보</div>
@@ -105,11 +120,8 @@
 			<input type="radio" value="카드 간편결제">&nbsp;&nbsp;카드 간편결제&nbsp;&nbsp;
 			<input type="radio" value="일반결제">&nbsp;&nbsp;일반결제
 		</div>
-		<hr>
-		<div>
-			
-			<input type="checkbox" class="check-item" id="c1"><label>위 상품의 구매조건 확인 및 결제진행 동의</label>
-		</div>
+		
+		
 		
 		<input type="submit" value="결제하기" class="pay-button">
 	</form> 
@@ -177,7 +189,23 @@ function sample6_execDaumPostcode() {
         }
     }).open();
 } 
-
+//수량
+var count = 1;
+var countEl = document.getElementById("count");
+var totalCount=0;
+function plus(){
+    count++;
+    countEl.value = count;
+    document.getElementById("aa").innerHTML=count;
+    totalCount=count;
+}
+function minus(){
+    if (count > 1) {
+        count--;
+        countEl.value = count;
+    }
+    document.getElementById("aa").innerHTML=count;
+}
 
 
 </script>
