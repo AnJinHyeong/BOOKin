@@ -1,3 +1,5 @@
+<%@page import="semi.beans.BookReviewDto"%>
+<%@page import="semi.beans.BookReviewDao"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="semi.beans.GenreDto"%>
 <%@page import="java.util.List"%>
@@ -8,7 +10,7 @@
     pageEncoding="UTF-8"%>
 
 <%
-	long no = Long.parseLong(request.getParameter("no"));
+	int no = Integer.parseInt(request.getParameter("no"));
 	String root = request.getContextPath();
 
 	BookDao bookDao = new BookDao();
@@ -30,15 +32,104 @@
 	List<BookDto> bookList2=bookDao.publisherSearch(bookDto.getBookPublisher(),1,10);
 	List<BookDto> bookList3=bookDao.genreSearch(bookDto.getBookGenreNo());
 	List<GenreDto> genreList=genreDao.sameGenreList(bookDto.getBookGenreNo());
-
+	
+	bookDao.bookView((int)no);
+	
+	
 %>
 <%
 	int price=bookDto.getBookPrice();
 	int discount=bookDto.getBookDiscount();
 	int priceDif=price-discount;
-	int discountPercent=price/priceDif;
+	int discountPercent=(int)(((double)priceDif/(double)price)*(100.0));
+%>
+<%
+	//페이지 네이셔 구현 코드
+	int pageNo;//현재 페이지 번호
+	try{
+		pageNo = Integer.parseInt(request.getParameter("pageNo"));
+		if(pageNo < 1) {
+			throw new Exception();
+		}
+	}
+	catch(Exception e){
+		pageNo = 1;//기본값 1페이지
+	}
+	
+	int pageSize;
+	try{
+		pageSize = Integer.parseInt(request.getParameter("pageSize"));
+		if(pageSize < 10){
+			throw new Exception();
+		}
+	}
+	catch(Exception e){
+		pageSize = 5;//기본값 15개
+	}
+	
+	//rownum의 시작번호(startRow)와 종료번호(endRow)를 계산
+	int startRow = pageNo * pageSize - (pageSize-1);
+	int endRow = pageNo * pageSize;
+	
+	//해당 책 리뷰
+	BookReviewDao bookReviewDao = new BookReviewDao();
+	List<BookReviewDto> reviewList = bookReviewDao.list(no, startRow, endRow);
+	
+	//해당 책 리뷰 개수
+	int reviewCount = bookReviewDao.count(no);
+	//해당 책 리뷰 평점
+	int reviewAvg = bookReviewDao.avg(no);
+	
+	int count = bookReviewDao.count(no);
+		
+	int blockSize = 10;
+	int lastBlock = (count + pageSize - 1) / pageSize;
+	//	int lastBlock = (count - 1) / pageSize + 1;
+	int startBlock = (pageNo - 1) / blockSize * blockSize + 1;
+	int endBlock = startBlock + blockSize - 1;
+	
+	if(endBlock > lastBlock){//범위를 벗어나면
+		endBlock = lastBlock;//범위를 수정
+	}
+	
+%>
+<%
+	int bookNo = (int)Long.parseLong(request.getParameter("no"));
+
+	int member;
+	try{
+		member = (int)session.getAttribute("member");
+	}
+	catch(Exception e){
+		member = 0;
+	}
+	
 %>
 <jsp:include page="/template/header.jsp"></jsp:include>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script>
+	//페이지 네이션 
+	$(function(){
+		$(".pagination > a").click(function(){
+			//주인공 == a태그
+			var pageNo = $(this).text();
+			if(pageNo == "이전"){//이전 링크 : 현재 링크 중 첫 번째 항목 값 - 1
+				pageNo = parseInt($(".pagination > a:not(.move-link)").first().text()) - 1;
+				$("input[name=pageNo]").val(pageNo);
+				$(".page-form").submit();//강제 submit 발생
+			}	
+			else if(pageNo == "다음"){//다음 링크 : 현재 링크 중 마지막 항목 값 + 1
+				pageNo = parseInt($(".pagination > a:not(.move-link)").last().text()) + 1;
+				$("input[name=pageNo]").val(pageNo);
+				$(".page-form").submit();//강제 submit 발생
+			}
+			else{//숫자 링크
+				$("input[name=pageNo]").val(pageNo);
+				$(".page-form").submit();//강제 submit 발생
+			}
+		});
+	});	
+</script>
 
 <div class="container-700">
 
@@ -48,12 +139,23 @@
 			<span><%=bookDto.getBookAuthor() %> (지은이)&nbsp;&nbsp;</span>
 			<span><%=bookDto.getBookPublisher()%>&nbsp;&nbsp;</span>
 			<span><%=bookDto.getBookPubDate()%></span>
+			<span class="container-right"><a href="<%= root%>/book/bookEdit.jsp?no=<%=bookDto.getBookNo()%>">수정</a></span>
+      	    <span class="container-right"><a href="bookDelete.kh?bookNo=<%=bookDto.getBookNo()%>">삭제</a></span>
+			
 		</div>
 	</div>
 	<hr>
 	
 	<div class="main-detail">
-		<div class="book-image-box"><img title="<%=bookDto.getBookTitle()%>" src="<%=bookDto.getBookImage()%>" class="book-image"></div>
+		<div class="book-image-box">
+		
+		
+			<%if(bookDto.getBookImage().startsWith("https")){ %>
+			<img title="<%=bookDto.getBookTitle()%>" src="<%=bookDto.getBookImage()%>" class="book-image">
+			<%}else{ %>
+			<img title="<%=bookDto.getBookTitle() %>" class="book-image" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">
+			<%} %>
+		</div>
 		<div class="book-table-box">
 			<div class="site-color-red">신구간의 매력적인 조합, 인문ON! 와이드 데스크 매트</div><br><br>
 			
@@ -86,12 +188,17 @@
 						<span>&emsp;|&emsp;Sales Point : </span><span class="detail-etc-text-highlight">29,900</span>
 					</div>
 					<span class="star-image-box">
-						<span><img src="<%=root %>/image/star-solid.svg" class="star-image"></span>
-						<span><img src="<%=root %>/image/star-solid.svg" class="star-image"></span>
-						<span><img src="<%=root %>/image/star-solid.svg" class="star-image"></span>
-						<span><img src="<%=root %>/image/star-solid.svg" class="star-image"></span>
-						<span><img src="<%=root %>/image/star-half-solid.svg" class="star-image"></span>
-						<span class="site-color-red detail-etc-text-highlight">8.8</span>
+						<%if(reviewAvg == 0){ %>
+							<span class="site-color-red detail-etc-text-highlight">리뷰가 없습니다.</span>
+						<%} else{%>
+							<%for(int i=0; i<reviewAvg;i++){ %>
+								<span><img src="<%=root %>/image/star_on.png" class="star-image"></span>
+							<%} %>
+							<%for(int i=0; i<5-reviewAvg; i++){ %>
+								<span><img src="<%=root %>/image/star_off.png" class="star-image"></span>
+							<%} %>
+							<span class="site-color-red detail-etc-text-highlight"><%=reviewAvg %></span>
+						<%} %>
 					</span>
 	
 					<span>
@@ -108,17 +215,23 @@
 					<div class="payment-text">카드/간편결제 할인 &gt;</div>
 					<div class="payment-text">무이자 할부 &gt;</div>
 					<div class="payment-text">소득공제 690원</div>
-				</div><br><br><br>
-				<div>
-					<span>수량&emsp;&emsp;&emsp;</span>
-					<span>
-						 <span><button type="button" name="button"onclick="minus()"><img src="<%=root %>/image/minus-solid.svg" alt="minus" class="amount-image"/></button></span>
-                <span><input type="text" name="name" value="0" size="10" id="count" class="text-center"></span>
-                <span><button type="button" name="button"onclick="plus()"><img src="<%=root %>/image/plus-solid.svg" alt="plus" class="amount-image"/></button></span>
-					</span>
-				</div>
+
+				</div><br><br>
+				
 				<div class="payment-button-box">
-					<div class="payment-button"><a href="#" class="payment-button-text">장바구니 담기</a></div>
+
+				
+				<form action="<%=root %>/member/cartInsert.kh" method="post" onsubmit="foo();">
+					<input type="hidden" name="memberNo" value="<%=member %>">
+					<input type="hidden" name="bookNo" value="<%=bookNo %>"><br>
+						
+						수량<span><button type="button" name="button"onclick="minus()"><img src="<%=root %>/image/minus-solid.svg" alt="minus" class="amount-image"/></button></span>
+                <span><input type="text" name="cartAmount" value="1" size="10" id="count" class="text-center"></span>
+                <span><button type="button" name="button"onclick="plus()"><img src="<%=root %>/image/plus-solid.svg" alt="plus" class="amount-image"/></button></span>
+                	<br><br>
+                	<input type="submit" value="장바구니 담기" class="payment-button">
+					</form>
+					
 					<div class="payment-button"><a href="#" class="payment-button-text">바로구매</a></div>
 					<div class="payment-button"><a href="#" class="payment-button-text-red">보관함+</a></div>
 					<div class="payment-button"><a href="#" class="payment-button-text-red">선물하기</a></div>
@@ -157,14 +270,7 @@
 		<div class="book-detail-semi-subtitle"><%=bookDto.getBookDescription()%></div>
 	</div>
 	<hr>
-	<%-- <div class="row text-left book-detail-semi-box">
-		<div class="book-detail-semi-title"><span>이벤트</span></div>
-		<div class="book-detail-semi-subtitle">
-			<div class="event-image"><img src="<%=root%>/image/event1.PNG"></div>
-			<div class="event-image"><img src="<%=root%>/image/event2.PNG"></div>
-			<div class="event-image"><img src="<%=root%>/image/event3.PNG"></div>
-		</div>
-	</div> --%>
+	
 	<div class="row text-left book-detail-semi-box2">
 		<div class="book-detail-semi-title2">
 		<span ><%=bookDto.getBookAuthor() %></span>
@@ -177,13 +283,29 @@
 					<%if(bookDto.getBookNo()==bookList.get(i).getBookNo()){ continue;}%>
 					
 					 
-				<a href="#"><img title="<%=bookList.get(i).getBookTitle() %>" src="<%=bookList.get(i).getBookImage() %>" class="same-author-book-img"></a>
+				<a href="<%=root %>/book/bookDetail.jsp?no=<%=bookList.get(i).getBookNo()%>">
+				<%if(bookList.get(i).getBookImage().startsWith("https")){ %>
+				<img title="<%=bookList.get(i).getBookTitle() %>" src="<%=bookList.get(i).getBookImage() %>" class="same-author-book-img">
+				<%}else{ %>
+				<img title="<%=bookList.get(i).getBookTitle() %>" class="same-author-book-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookList.get(i).getBookNo()%>">
+				<%} %>
+				
+				
+				</a>
 				<%} %> 
 				
 			<%}else{ %>
 				<%for(int i=0;i<4;i++){ %>
 				<%if(bookDto.getBookNo()==bookList.get(i).getBookNo()){ continue;}%>
-				<a href="#"><img title="<%=bookList.get(i).getBookTitle() %>" src="<%=bookList.get(i).getBookImage() %>" class="same-author-book-img"></a>
+				<a href="<%=root %>/book/bookDetail.jsp?no=<%=bookList.get(i).getBookNo()%>">
+				
+				<%if(bookList.get(i).getBookImage().startsWith("https")){ %>
+				<img title="<%=bookList.get(i).getBookTitle() %>" src="<%=bookList.get(i).getBookImage() %>" class="same-author-book-img">
+				<%}else{ %>
+				<img title="<%=bookList.get(i).getBookTitle() %>" class="same-author-book-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookList.get(i).getBookNo()%>">
+				<%} %>
+				
+				</a>
 				<%} %>
 			<%} %>
 			
@@ -204,13 +326,29 @@
 					<%if(bookDto.getBookNo()==bookList2.get(i).getBookNo()){ continue;}%>
 					
 					 
-				<a href="#"><img title="<%=bookList2.get(i).getBookTitle() %>" src="<%=bookList2.get(i).getBookImage() %>" class="same-author-book-img"></a>
+				<a href="<%=root %>/book/bookDetail.jsp?no=<%=bookList2.get(i).getBookNo()%>">
+				
+				<%if(bookList2.get(i).getBookImage().startsWith("https")){ %>
+				<img title="<%=bookList2.get(i).getBookTitle() %>" src="<%=bookList2.get(i).getBookImage() %>" class="same-author-book-img">
+				<%}else{ %>
+				<img title="<%=bookList2.get(i).getBookTitle() %>" class="same-author-book-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookList2.get(i).getBookNo()%>">
+				<%} %>
+				
+				</a>
 				<%} %> 
 				
 			<%}else{ %>
 				<%for(int i=0;i<4;i++){ %>
 				<%if(bookDto.getBookNo()==bookList2.get(i).getBookNo()){ continue;}%>
-				<a href="#"><img title="<%=bookList2.get(i).getBookTitle() %>" src="<%=bookList2.get(i).getBookImage() %>" class="same-author-book-img"></a>
+				<a href="<%=root %>/book/bookDetail.jsp?no=<%=bookList2.get(i).getBookNo()%>">
+				
+				<%if(bookList2.get(i).getBookImage().startsWith("https")){ %>
+				<img title="<%=bookList2.get(i).getBookTitle() %>" src="<%=bookList2.get(i).getBookImage() %>" class="same-author-book-img">
+				<%}else{ %>
+				<img title="<%=bookList2.get(i).getBookTitle() %>" class="same-author-book-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookList2.get(i).getBookNo()%>">
+				<%} %>
+				
+				</a>
 				<%} %>
 			<%} %>
 		</div>
@@ -228,35 +366,108 @@
 					<%if(bookDto.getBookNo()==bookList3.get(i).getBookNo()){ continue;}%>
 					
 					 
-				<a href="#"><img title="<%=bookList3.get(i).getBookTitle() %>" src="<%=bookList3.get(i).getBookImage() %>" class="same-author-book-img "></a>
+				<a href="<%=root %>/book/bookDetail.jsp?no=<%=bookList3.get(i).getBookNo()%>">
+				
+				<%if(bookList3.get(i).getBookImage().startsWith("https")){ %>
+				<img title="<%=bookList3.get(i).getBookTitle() %>" src="<%=bookList3.get(i).getBookImage() %>" class="same-author-book-img">
+				<%}else{ %>
+				<img title="<%=bookList3.get(i).getBookTitle() %>" class="same-author-book-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookList3.get(i).getBookNo()%>">
+				<%} %>
+				
+				</a>
 				<%} %> 
 				
 			<%}else{ %>
 				<%for(int i=0;i<4;i++){ %>
 				<%if(bookDto.getBookNo()==bookList3.get(i).getBookNo()){ continue;}%>
-				<a href="#"><img title="<%=bookList3.get(i).getBookTitle() %>" src="<%=bookList3.get(i).getBookImage() %>" class="same-author-book-img "></a>
+				<a href="<%=root %>/book/bookDetail.jsp?no=<%=bookList3.get(i).getBookNo()%>">
+				
+				<%if(bookList3.get(i).getBookImage().startsWith("https")){ %>
+				<img title="<%=bookList3.get(i).getBookTitle() %>" src="<%=bookList3.get(i).getBookImage() %>" class="same-author-book-img">
+				<%}else{ %>
+				<img title="<%=bookList3.get(i).getBookTitle() %>" class="same-author-book-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookList3.get(i).getBookNo()%>">
+				<%} %>
+				
+				</a>
 				<%} %>
 			<%} %>
 		</div>
 		<hr>
 	</div>
+	<div class="row text-left book-detail-semi-box2">
+		<!-- 리뷰 -->
+		<div class="book-detail-semi-title2">
+			<span>BOOK 리뷰</span> 
+		</div>
+		<%if(reviewCount > 0){ %>
+			<%for(BookReviewDto bookReviewDto : reviewList){ %>
+				<div class="row" style="padding-bottom: 15px;">
+					<div class="row">
+						<span style="display: none;"><%=bookReviewDto.getReviewRate() %></span>
+						<%int reviewRate = bookReviewDto.getReviewRate() ; %>
+						<%for(int i=0; i<reviewRate; i++){ %>
+							<img src="<%=root%>/image/star_on.png">
+						<%} %>
+						<%for(int i=0; i<5-reviewRate; i++){ %>
+							<img src="<%=root%>/image/star_off.png">
+						<%} %>
+					</div>
+					
+					<div class="row text-left">
+						<p style="min-height: 40px;"><%=bookReviewDto.getReviewContent() %></p>
+					</div>
+					
+					<div class="row text-left">
+						<span style="font-size: 12px;"><%=bookReviewDto.getMemberId() %></span>
+						<span style="font-size: 12px;"><%=bookReviewDto.getReviewTime() %></span>
+					</div>
+				</div>
+				
+			<%} %>
+		<%} else{%>
+			<div class="row text-center">
+				<div class="row" style="height: 100px; ">
+					<span style="color: lightgray;">작성된 리뷰가 없습니다.</span>
+				</div>
+			</div>
+		<%} %>
+		
+		<!-- 페이지 네이션 -->
+		<div class="pagination text-center">
+		
+			<%if(startBlock > 1){ %>
+			<a class="move-link">이전</a>
+			<%} %>
+			
+			<%for(int i = startBlock; i <= endBlock; i++){ %>
+				<%if(i == pageNo){ %>
+					<a class="on"><%=i%></a>
+				<%}else{ %>
+					<a><%=i%></a>
+				<%} %>
+			<%} %>
+			
+			<%if(endBlock < lastBlock){ %>
+			<a class="move-link">다음</a>
+			<%} %>
+			
+		</div>
+		
+		<form class="page-form" action="bookDetail.jsp?no=<%=no %>" method="post">
+			<input type="hidden" name="pageNo">
+		</form>
+		
+	</div>
 	
 	
 </div>
 
+
+
 <script>
-var count = 1;
-var countEl = document.getElementById("count");
-function plus(){
-    count++;
-    countEl.value = count;
-}
-function minus(){
-    if (count > 1) {
-        count--;
-        countEl.value = count;
-    }
-}
+	function foo(){
+		alert("장바구니에 담겼습니다.");
+	};
 </script>
 
 <jsp:include page="/template/footer.jsp"></jsp:include>

@@ -182,21 +182,7 @@
 		</dd>
 		<dd>
 			<div class="tit">0</div>
-			<div class="txt">결제완료</div>
-		</dd>
-		<dd class="bottom-next">
-			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
-		</dd>
-		<dd>
-			<div class="tit">0</div>
 			<div class="txt">상품준비중</div>
-		</dd>
-		<dd class="bottom-next">
-			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
-		</dd>
-		<dd>
-			<div class="tit">0</div>
-			<div class="txt">출고시작</div>
 		</dd>
 		<dd class="bottom-next">
 			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
@@ -221,11 +207,10 @@
 			<ul class="menu" >
 				<li ><a href="myInfo_check.jsp" id="edit-info">회원정보 수정 / 탈퇴</a></li>
 				<li><a href="#">주문목록 / 배송조회</a></li>
-				<li><a href="#">리뷰관리</a></li>				
-				<li><a href="#">배송지 / 환불계좌 관리</a></li>
-				<li><a href="#">고객센터</a></li>
-				<li><a href="#">장바구니</a></li>
-				<li class="on"><a href="<%=root%>/member/bookLike.jsp">좋아요</a></li>
+				<li><a href="review.jsp">리뷰관리</a></li>				
+				<li><a href="<%=root%>/qna/qnaNotice.jsp">고객센터</a></li>
+				<li><a href="cart.jsp">장바구니</a></li>
+				<li class="on"><a href="bookLike.jsp">좋아요</a></li>
 			</ul>
 		</aside>
 		
@@ -235,9 +220,10 @@
 				<div class="row ">
 					<h3 style=" margin-bottom: 40px;font-size:40px;" class="site-color">좋아요</h3>
 				</div>
+				<form action="<%=root%>/purchase/purchase.jsp">
 				<div class="book-list inf-list" style="min-height: 200px;">					
 					<%for(BookLikeDto bookLikeDto : bookLikeList){ %>
-						<%BookDto bookDto = bookDao.get((long)bookLikeDto.getBookOrigin()); %>
+						<%BookDto bookDto = bookDao.get(bookLikeDto.getBookOrigin()); %>
 						<div class="book-item">	
 							<a href="<%=root%>/book/bookDetail.jsp?no=<%=bookDto.getBookNo()%>" class="book-img-a" >
 								<%if(bookDto.getBookImage()==null){
@@ -246,7 +232,7 @@
 								<img title="<%=bookDto.getBookTitle() %>" class="book-img" src="<%=bookDto.getBookImage()%>" >
 							</a>
 							
-							<input type="checkbox" class="book-like-checkbox">	
+							<input type="checkbox" class="book-like-checkbox" name="no" value="<%=bookDto.getBookNo()%>">	
 							<a href="javascript:void(0);" class="book-like book-good-on" id="like<%=bookDto.getBookNo()%>" style="visibility: hidden;"></a>	
 							<a class="book-publisher"><span><%=bookDto.getBookPublisher() %></span></a>
 							<a href="<%=root%>/book/bookDetail.jsp?no=<%=bookDto.getBookNo()%>" class="book-title overflow"  title="<%=bookDto.getBookTitle() %>"><%=bookDto.getBookTitle() %></a>
@@ -271,10 +257,10 @@
 				
 				<div class="row text-center" style="margin-bottom: 30px; margin-top: 30px;">
 					<input type="button" id="allSelect-btn" class="book-like-btn" value="전체선택">
-					<input type="button" class="book-like-btn" value="선택상품 장바구니에 담기">
+					<input type="submit" class="book-like-btn" value="선택상품 장바구니에 담기">
 					<input type="button" class="book-like-btn book-like-delete-btn" value="선택상품 삭제">
 				</div>
-				
+				</form>
 				<div class="pagination">	
 					<%if(startBlock > 1){ %>
 					<a class="move-link">이전</a>

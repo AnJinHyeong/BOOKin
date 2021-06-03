@@ -110,7 +110,12 @@
 		<%if(bookDto.getBookImage()==null){
 			bookDto.setBookImage(root+"/image/nullbook.png");
 		} %>
-			<img title="<%=bookDto.getBookTitle() %>" class="book-img" src="<%=bookDto.getBookImage()%>" >
+			<%if(bookDto.getBookImage().startsWith("https")){ %>
+			<img title="<%=bookDto.getBookTitle() %>" class="book-img" src="<%=bookDto.getBookImage()%>">
+			<%}else{ %>
+			<img title="<%=bookDto.getBookTitle() %>" class="book-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">
+			<%} %>
+
 		</a>
 		
 		<a href="javascript:void(0);" class="book-like book-good" id="like<%=bookDto.getBookNo()%>"></a> 
@@ -123,7 +128,7 @@
 
 	<%if(bookDto.getBookDiscount()!=0 && bookDto.getBookDiscount()!=bookDto.getBookPrice()){ %>
 		<div style="width: 100%;text-align: right;">
-		<a class="book-discount"><%=bookDto.getBookPrice()/(bookDto.getBookPrice()-bookDto.getBookDiscount())%>%</a>
+		<a class="book-discount"><%=(int)(((double)(bookDto.getBookPrice()-bookDto.getBookDiscount())/(double)bookDto.getBookPrice())*(100.0))%>%</a>
 		<a class="book-price"><%=format.format(bookDto.getBookDiscount()) %></a><a style="font-weight: 900;color:rgba(0,0,0,0.5);"> 원</a>
 		</div>
 	<%}else{ %>
