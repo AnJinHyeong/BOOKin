@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 <%@page import="semi.beans.PurchaseDto"%>
 <%@page import="semi.beans.PurchaseDao"%>
+=======
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+>>>>>>> refs/remotes/origin/minsoo
 <%@page import="semi.beans.BookDto"%>
 <%@page import="semi.beans.BookDao"%>
 <%@page import="semi.beans.MemberDto"%>
@@ -12,11 +17,17 @@
 	String root=request.getContextPath();
 	MemberDao memberDao=new MemberDao();
 	MemberDto memberDto=memberDao.getMember(no);
-	
 	BookDao bookDao=new BookDao();
-	BookDto bookDto=bookDao.get(Integer.parseInt(request.getParameter("no")));
-	
-	
+
+	String[] bookNos = request.getParameterValues("no");
+	List<BookDto> bookList = new ArrayList<>();
+	for(String bookNo : bookNos){
+		int bookNotoInt = Integer.parseInt(bookNo);
+		BookDto bookDto=bookDao.get(bookNotoInt);
+		bookList.add(bookDto);
+	}
+	int sum=0;
+
 %>
 
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
@@ -28,11 +39,27 @@
 	</div>
 	
  	<form action="purchaseInsert.kh"  method="post">
- 		
- 		<input type="hidden" value="<%=bookDto.getBookNo()%>" name="purchaseBook" >
+
+ 	
+ 		<%for(BookDto bookDto : bookList){
+ 			if(bookDto.getBookDiscount()==0)bookDto.setBookDiscount(bookDto.getBookPrice());
+ 			sum+=bookDto.getBookDiscount();
+ 		%>
+
 		<div class="book-detail-semi-box" style="border:1px solid lightgray; padding:0px;">
+ 		<input type="hidden" value="<%=bookDto.getBookNo()%>" name="purchaseBook" >
          <div class="book-price-semi-image">
-            <a href=""><img src="<%=bookDto.getBookImage() %>" style="width:80%;"></a>
+         
+            <a href="">
+            
+            <%if(bookDto.getBookImage().startsWith("https")){ %>
+            <img src="<%=bookDto.getBookImage() %>" style="width:80%;">
+			<%}else{ %>
+			<img src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>" style="width:80%;">
+			<%} %>
+            
+            </a>
+            
          </div>
          <div class="book-price-semi-info">
             <div class="book-price-semi-title"><%=bookDto.getBookTitle() %></div><br>
@@ -47,82 +74,99 @@
 				</span>
 			</div>
          </div>
-         	<div class="book-price-semi-price">
+
+         
+         
+         <div class="book-price-semi-price">
+
             <div class="price-top-box">
-	            <div><span>가격: </span><%=bookDto.getBookDiscount()%><span>원</span></div>
+
+	            <div>가격: <span><%=bookDto.getBookDiscount() %></span> 원</div>
+	            <div>수량: <input class="purchaseAmount" name="purchaseAmount" type="number" min="1" value="1"/></div>
 	            <div>+</div>
 	            <div>배송료: 0원</div>
 	            
 	            
             </div>
             <hr>
-            <div class="price-bottom-box"><span style="font-size:20px;"><%=bookDto.getBookDiscount() %></span><span>원</span></div>
-         	</div>
-      	</div>
-      	
+
+            <div class="price-bottom-box"><span style="font-size:20px;" class="final_price"><%=bookDto.getBookDiscount()%></span><span>원</span></div>
+
       
+
+         </div>
+      </div>
+      <%} %>
+      <div >총 <span class="sum_price"><%=sum%></span>원</div>
+      
+      
+
 		<div class="row text-left book-detail-semi-box"> 
-			<div class="book-detail-semi-title">주문자 정보</div>
-			<div>
-				<input type="hidden" name="purchaseMember" value="<%=memberDto.getMemberNo()%>">
-				<div><%=memberDto.getMemberName() %></div><br>
-				<div>
-					<span><%=memberDto.getMemberPhone() %></span>&ensp;
-					<span><a href="<%=root %>/member/myInfo_check.jsp" class="button-style">수정</a></span>
-					
-				</div>
-				<br>
-				<div>
-					<span><%=memberDto.getMemberEmail() %></span>&ensp;
-					<a href="<%=root %>/member/myinfo.jsp?memberNo=<%=memberDto.getMemberNo()%>" class="button-style">수정</a>
-				</div>
-				
-				
-			
-				
-			</div>
-		</div>
+
+         <div class="book-detail-semi-title">주문자 정보</div>
+         <div>
+            <input type="hidden" name="purchaseMember" value="<%=memberDto.getMemberNo()%>">
+            <div><%=memberDto.getMemberName() %></div><br>
+            <div>
+               <span><%=memberDto.getMemberPhone() %></span>&ensp;
+               <span><a href="<%=root %>/member/myInfo_check.jsp" class="button-style">수정</a></span>
+               
+            </div>
+            <br>
+            <div>
+               <span><%=memberDto.getMemberEmail() %></span>&ensp;
+               <a href="<%=root %>/member/myinfo.jsp?memberNo=<%=memberDto.getMemberNo()%>" class="button-style">수정</a>
+            </div>
+            
+            
+         
+            
+         </div>
+      </div>
+      <hr>
+      <div class="row text-left book-detail-semi-box">
+         <div class="book-detail-semi-title">배송지 정보</div>
+         <div >
+            <div >배송지 선택</div><br>
+                  <input type="radio" name="address" value="1" checked="checked" onclick="newRecipientInfo(this.value);">&nbsp;&nbsp;기본배송지&nbsp;&nbsp;
+                  <input type="radio" name="address" value="2" onclick="newRecipientInfo(this.value);">&nbsp;&nbsp;신규배송지&nbsp;&nbsp;
+                  <div style="margin-top:10px;">
+                     <div><span class="recipient-span">수령인&ensp;</span><input type="text" name="purchaseRecipient" placeholder=" 50자 이내로 입력하세요" value="<%=memberDto.getMemberName()%>" id="member-name"></div>
+                     <div><span class="recipient-span">연락처&ensp;</span><input type="text" name="purchasePhone" placeholder="-를 제외하고 입력하세요" value="<%=memberDto.getMemberPhone()%>" id="member-phone"></div>
+                     <div><span class="recipient-span">주소&ensp;&ensp;</span><input type="text" name="purchaseAddress" value="<%=memberDto.getMemberAddress()%>" id="member-address">&ensp;<a  href="#" onclick="showDiv2()" class="button-style">수정</a> </div>
+                     
+                        <div id="show-div2" style="display:none">   
+                           <div class="show-div">
+                              <div>
+                                 <input type="text" name="zipcode" size="7" id="sample6_postcode" placeholder="우편번호">
+                                  <input type="button" class="btn-style" value="우편번호찾기" onclick="sample6_execDaumPostcode()">      
+                              </div>
+                              <div class="address-div"><input type="text" name="address1" size="40" id="sample6_address" placeholder="주소" class="input-style"></div>
+                              <div class="address-div"><input type="text" name="address2" size="40" id="sample6_address2" placeholder="상세주소" class="input-style"></div>
+                              <div style="margin-top:10px;">
+                                 <input type="button" value="확인" class="button-style" onclick="changeAddress()">
+                                 <input type="reset" value="초기화" class="button-style">
+                                 <input type="button" value="취소" class="button-style" onclick="hideDiv2()">
+                              </div>
+            </div>
+         </div>      
+   </div>
+   </div>
+   </div>
+      <hr>
+      
+      <div class="row text-left book-detail-semi-box">
+         <div  class="book-detail-semi-title">결제수단</div>
+         <input type="radio"  value="계좌 간편결제" checked="checked">&nbsp;&nbsp;계좌 간편결제&nbsp;&nbsp;
+         <input type="radio" value="카드 간편결제">&nbsp;&nbsp;카드 간편결제&nbsp;&nbsp;
+         <input type="radio" value="일반결제">&nbsp;&nbsp;일반결제
+      </div>
+
 		<hr>
-		<div class="row text-left book-detail-semi-box">
-			<div class="book-detail-semi-title">배송지 정보</div>
-			<div >
-				<div >배송지 선택</div><br>
-						<input type="radio" name="address" value="1" checked="checked" onclick="newRecipientInfo(this.value);">&nbsp;&nbsp;기본배송지&nbsp;&nbsp;
-						<input type="radio" name="address" value="2" onclick="newRecipientInfo(this.value);">&nbsp;&nbsp;신규배송지&nbsp;&nbsp;
-						<div style="margin-top:10px;">
-							<div><span class="recipient-span">수령인&ensp;</span><input type="text" name="purchaseRecipient" placeholder=" 50자 이내로 입력하세요" value="<%=memberDto.getMemberName()%>" id="member-name"></div>
-							<div><span class="recipient-span">연락처&ensp;</span><input type="text" name="purchasePhone" placeholder="-를 제외하고 입력하세요" value="<%=memberDto.getMemberPhone()%>" id="member-phone"></div>
-							<div><span class="recipient-span">주소&ensp;&ensp;</span><input type="text" name="purchaseAddress" value="<%=memberDto.getMemberAddress()%>" id="member-address">&ensp;<a  href="#" onclick="showDiv2()" class="button-style">수정</a> </div>
-							
-								<div id="show-div2" style="display:none">	
-									<div class="show-div">
-										<div>
-											<input type="text" name="zipcode" size="7" id="sample6_postcode" placeholder="우편번호">
-									    	<input type="button" class="btn-style" value="우편번호찾기" onclick="sample6_execDaumPostcode()">		
-										</div>
-										<div class="address-div"><input type="text" name="address1" size="40" id="sample6_address" placeholder="주소" class="input-style"></div>
-										<div class="address-div"><input type="text" name="address2" size="40" id="sample6_address2" placeholder="상세주소" class="input-style"></div>
-										<div style="margin-top:10px;">
-											<input type="button" value="확인" class="button-style" onclick="changeAddress()">
-											<input type="reset" value="초기화" class="button-style">
-											<input type="button" value="취소" class="button-style" onclick="hideDiv2()">
-										</div>
-				</div>
-			</div>		
-	</div>
-	</div>
-	</div>
-		<hr>
 		
-		<div class="row text-left book-detail-semi-box">
-			<div  class="book-detail-semi-title">결제수단</div>
-			<input type="radio"  value="계좌 간편결제" checked="checked">&nbsp;&nbsp;계좌 간편결제&nbsp;&nbsp;
-			<input type="radio" value="카드 간편결제">&nbsp;&nbsp;카드 간편결제&nbsp;&nbsp;
-			<input type="radio" value="일반결제">&nbsp;&nbsp;일반결제
-		</div>
+
 		
-		
-		
+
 		<input type="submit" value="결제하기" class="pay-button">
 	</form> 
 </div>
@@ -131,6 +175,8 @@
 var memberName='<%=memberDto.getMemberName()%>';
 var memberPhone='<%=memberDto.getMemberPhone()%>';
 var memberAddress='<%=memberDto.getMemberAddress()%>';
+
+
 
 //radio box 신규배송지 체크시 div 출력
  function newRecipientInfo(v){
@@ -189,23 +235,26 @@ function sample6_execDaumPostcode() {
         }
     }).open();
 } 
-//수량
-var count = 1;
-var countEl = document.getElementById("count");
-var totalCount=0;
-function plus(){
-    count++;
-    countEl.value = count;
-    document.getElementById("aa").innerHTML=count;
-    totalCount=count;
-}
-function minus(){
-    if (count > 1) {
-        count--;
-        countEl.value = count;
-    }
-    document.getElementById("aa").innerHTML=count;
-}
+
+
+window.addEventListener("load",function(){
+	const purchaseAmount = document.querySelectorAll('.purchaseAmount');
+	for(var i =0 ; i< purchaseAmount.length;i++){
+		purchaseAmount[i].addEventListener("input",function(){
+			var amo = this.value;
+			this.parentNode.parentNode.nextElementSibling.nextElementSibling.children[0].textContent=amo*this.parentNode.previousElementSibling.children[0].textContent;
+			var sum_price = document.querySelector(".sum_price");
+			var final_prices = document.querySelectorAll(".final_price");
+			var sum=0;
+			for(var j =0 ; j< final_prices.length;j++){
+				console.dir(final_prices[j].textContent)
+				sum+=final_prices[j].textContent*1;
+				console.dir(sum)
+			}
+			sum_price.textContent = sum;
+		})
+	}
+});
 
 
 </script>

@@ -62,7 +62,7 @@ public class PurchaseDao {
 		ps.setString(5, purchaseDto.getPurchasePhone());
 		ps.setString(6, purchaseDto.getPurchaseAddress());
 		ps.setInt(7, purchaseDto.getPurchaseAmount());
-	
+
 		ps.execute();
 		con.close();
 	}

@@ -13,6 +13,8 @@ public class BookDto {
 	private String bookDescription;
 	private Date bookPubDate;
 	private long bookGenreNo;
+	private int bookView;
+	
 	public BookDto() {
 		super();
 	}
@@ -33,7 +35,7 @@ public class BookDto {
 	}
 	public void setBookImage(String bookImage) {
 		if(bookImage==null) {
-			this.bookImage="/SemiProject/image/nullbook.png";
+			this.bookImage="nullbook.png";
 			return;
 		}
 		this.bookImage = bookImage;
@@ -55,9 +57,13 @@ public class BookDto {
 		this.bookPrice = bookPrice;
 	}
 	public int getBookDiscount() {
+		if(bookDiscount==0)return bookPrice;
 		return bookDiscount;
 	}
 	public void setBookDiscount(int bookDiscount) {
+		if(bookDiscount==0) {
+			this.bookDiscount = this.bookPrice;
+		}
 		this.bookDiscount = bookDiscount;
 	}
 	public String getBookPublisher() {
@@ -88,6 +94,13 @@ public class BookDto {
 	public void setBookGenreNo(long genreNo) {
 		this.bookGenreNo = genreNo;
 	}
+	public int getBookView() {
+		return bookView;
+	}
+	public void setBookView(int bookView) {
+		this.bookView = bookView;
+	}
+	
 	
 	
 }

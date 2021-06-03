@@ -3,6 +3,8 @@ package semi.beans;
 import java.sql.Date;
 
 public class PurchaseDto {
+	
+
 	private int purchasePk;
 	private int purchaseNo;
 	private String purchaseState;
@@ -15,17 +17,18 @@ public class PurchaseDto {
 	private int purchaseAmount;
 	
 	
-	public int getPurchaseAmount() {
-		return purchaseAmount;
-	}
-	public void setPurchaseAmount(int purchaseAmount) {
-		this.purchaseAmount = purchaseAmount;
-	}
 	public int getPurchasePk() {
 		return purchasePk;
 	}
 	public void setPurchasePk(int purchasePk) {
 		this.purchasePk = purchasePk;
+	}
+	public int getPurchaseAmount() {
+		return purchaseAmount;
+	}
+	public void setPurchaseAmount(int purchaseAmount) {
+		this.purchaseAmount = purchaseAmount;
+
 	}
 	public int getPurchaseNo() {
 		return purchaseNo;

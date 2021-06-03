@@ -260,4 +260,39 @@ public class NoticeBoardDao {
 		return count > 0;
 	}
 	
+////	최신 등록글 5개 조회
+//	public List<NoticeBoardDto> listSelect(int startRow, int endRow) throws Exception{
+//		Connection con = JdbcUtils.getConnection();
+//		
+//		String sql = "select * from(\n"
+//				+ "select rownum rn, TMP.* from(\n"
+//				+ "	select * from notice_board order by notice_board_time desc \n"
+//				+ "	)TMP\n"
+//				+ ") where rn between ? and ?";
+//		PreparedStatement ps = con.prepareStatement(sql);
+//		ps.setInt(1, startRow);
+//		ps.setInt(2, endRow);
+//		ResultSet rs = ps.executeQuery();
+//		
+//		List<NoticeBoardDto> list = new ArrayList<>();
+//		
+//		if(rs.next()) {
+//			NoticeBoardDto noticeBoardDto = new NoticeBoardDto();
+//			
+//			noticeBoardDto = new NoticeBoardDto();
+// 			noticeBoardDto.setNoticeBoardNo(rs.getInt("notice_board_no"));
+// 			noticeBoardDto.setNoticeBoardHeader(rs.getString("notice_board_header"));
+// 			noticeBoardDto.setNoticeBoardTitle(rs.getString("notice_board_title"));
+// 			noticeBoardDto.setNoticeBoardContent(rs.getString("notice_board_content"));
+// 			noticeBoardDto.setNoticeBoardWriter(rs.getInt("notice_board_writer"));
+// 			noticeBoardDto.setNoticeBoardTime(rs.getDate("notice_board_time"));
+// 			noticeBoardDto.setNoticeBoardRead(rs.getInt("notice_board_read"));
+//			
+// 			list.add(noticeBoardDto);
+//		}
+//		con.close();
+//		return list;
+//	}
+	
+	
 }

@@ -9,7 +9,6 @@
 
 <%
 	int no = Integer.parseInt(request.getParameter("no"));
-//long no=5622;
 	String root = request.getContextPath();
 
 	BookDao bookDao = new BookDao();
@@ -31,7 +30,8 @@
 	List<BookDto> bookList2=bookDao.publisherSearch(bookDto.getBookPublisher(),1,10);
 	List<BookDto> bookList3=bookDao.genreSearch(bookDto.getBookGenreNo());
 	List<GenreDto> genreList=genreDao.sameGenreList(bookDto.getBookGenreNo());
-
+	
+	bookDao.bookView((int)no);
 %>
 <%
 	int price=bookDto.getBookPrice();
@@ -57,7 +57,15 @@
 	<hr>
 	
 	<div class="main-detail">
-		<div class="book-image-box"><img title="<%=bookDto.getBookTitle()%>" src="<%=bookDto.getBookImage()%>" class="book-image"></div>
+		<div class="book-image-box">
+		
+		
+			<%if(bookDto.getBookImage().startsWith("https")){ %>
+			<img title="<%=bookDto.getBookTitle()%>" src="<%=bookDto.getBookImage()%>" class="book-image">
+			<%}else{ %>
+			<img title="<%=bookDto.getBookTitle() %>" class="book-image" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">
+			<%} %>
+		</div>
 		<div class="book-table-box">
 			<div class="site-color-red">신구간의 매력적인 조합, 인문ON! 와이드 데스크 매트</div><br><br>
 			
@@ -167,13 +175,29 @@
 					<%if(bookDto.getBookNo()==bookList.get(i).getBookNo()){ continue;}%>
 					
 					 
-				<a href="#"><img title="<%=bookList.get(i).getBookTitle() %>" src="<%=bookList.get(i).getBookImage() %>" class="same-author-book-img"></a>
+				<a href="<%=root %>/book/bookDetail.jsp?no=<%=bookList.get(i).getBookNo()%>">
+				<%if(bookList.get(i).getBookImage().startsWith("https")){ %>
+				<img title="<%=bookList.get(i).getBookTitle() %>" src="<%=bookList.get(i).getBookImage() %>" class="same-author-book-img">
+				<%}else{ %>
+				<img title="<%=bookList.get(i).getBookTitle() %>" class="same-author-book-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookList.get(i).getBookNo()%>">
+				<%} %>
+				
+				
+				</a>
 				<%} %> 
 				
 			<%}else{ %>
 				<%for(int i=0;i<4;i++){ %>
 				<%if(bookDto.getBookNo()==bookList.get(i).getBookNo()){ continue;}%>
-				<a href="#"><img title="<%=bookList.get(i).getBookTitle() %>" src="<%=bookList.get(i).getBookImage() %>" class="same-author-book-img"></a>
+				<a href="<%=root %>/book/bookDetail.jsp?no=<%=bookList.get(i).getBookNo()%>">
+				
+				<%if(bookList.get(i).getBookImage().startsWith("https")){ %>
+				<img title="<%=bookList.get(i).getBookTitle() %>" src="<%=bookList.get(i).getBookImage() %>" class="same-author-book-img">
+				<%}else{ %>
+				<img title="<%=bookList.get(i).getBookTitle() %>" class="same-author-book-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookList.get(i).getBookNo()%>">
+				<%} %>
+				
+				</a>
 				<%} %>
 			<%} %>
 			
@@ -194,13 +218,29 @@
 					<%if(bookDto.getBookNo()==bookList2.get(i).getBookNo()){ continue;}%>
 					
 					 
-				<a href="#"><img title="<%=bookList2.get(i).getBookTitle() %>" src="<%=bookList2.get(i).getBookImage() %>" class="same-author-book-img"></a>
+				<a href="<%=root %>/book/bookDetail.jsp?no=<%=bookList2.get(i).getBookNo()%>">
+				
+				<%if(bookList2.get(i).getBookImage().startsWith("https")){ %>
+				<img title="<%=bookList2.get(i).getBookTitle() %>" src="<%=bookList2.get(i).getBookImage() %>" class="same-author-book-img">
+				<%}else{ %>
+				<img title="<%=bookList2.get(i).getBookTitle() %>" class="same-author-book-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookList2.get(i).getBookNo()%>">
+				<%} %>
+				
+				</a>
 				<%} %> 
 				
 			<%}else{ %>
 				<%for(int i=0;i<4;i++){ %>
 				<%if(bookDto.getBookNo()==bookList2.get(i).getBookNo()){ continue;}%>
-				<a href="#"><img title="<%=bookList2.get(i).getBookTitle() %>" src="<%=bookList2.get(i).getBookImage() %>" class="same-author-book-img"></a>
+				<a href="<%=root %>/book/bookDetail.jsp?no=<%=bookList2.get(i).getBookNo()%>">
+				
+				<%if(bookList2.get(i).getBookImage().startsWith("https")){ %>
+				<img title="<%=bookList2.get(i).getBookTitle() %>" src="<%=bookList2.get(i).getBookImage() %>" class="same-author-book-img">
+				<%}else{ %>
+				<img title="<%=bookList2.get(i).getBookTitle() %>" class="same-author-book-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookList2.get(i).getBookNo()%>">
+				<%} %>
+				
+				</a>
 				<%} %>
 			<%} %>
 		</div>
@@ -218,13 +258,29 @@
 					<%if(bookDto.getBookNo()==bookList3.get(i).getBookNo()){ continue;}%>
 					
 					 
-				<a href="#"><img title="<%=bookList3.get(i).getBookTitle() %>" src="<%=bookList3.get(i).getBookImage() %>" class="same-author-book-img "></a>
+				<a href="<%=root %>/book/bookDetail.jsp?no=<%=bookList3.get(i).getBookNo()%>">
+				
+				<%if(bookList3.get(i).getBookImage().startsWith("https")){ %>
+				<img title="<%=bookList3.get(i).getBookTitle() %>" src="<%=bookList3.get(i).getBookImage() %>" class="same-author-book-img">
+				<%}else{ %>
+				<img title="<%=bookList3.get(i).getBookTitle() %>" class="same-author-book-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookList3.get(i).getBookNo()%>">
+				<%} %>
+				
+				</a>
 				<%} %> 
 				
 			<%}else{ %>
 				<%for(int i=0;i<4;i++){ %>
 				<%if(bookDto.getBookNo()==bookList3.get(i).getBookNo()){ continue;}%>
-				<a href="#"><img title="<%=bookList3.get(i).getBookTitle() %>" src="<%=bookList3.get(i).getBookImage() %>" class="same-author-book-img "></a>
+				<a href="<%=root %>/book/bookDetail.jsp?no=<%=bookList3.get(i).getBookNo()%>">
+				
+				<%if(bookList3.get(i).getBookImage().startsWith("https")){ %>
+				<img title="<%=bookList3.get(i).getBookTitle() %>" src="<%=bookList3.get(i).getBookImage() %>" class="same-author-book-img">
+				<%}else{ %>
+				<img title="<%=bookList3.get(i).getBookTitle() %>" class="same-author-book-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookList3.get(i).getBookNo()%>">
+				<%} %>
+				
+				</a>
 				<%} %>
 			<%} %>
 		</div>

@@ -34,21 +34,7 @@
 		</dd>
 		<dd>
 			<div class="tit">0</div>
-			<div class="txt">결제완료</div>
-		</dd>
-		<dd class="bottom-next">
-			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
-		</dd>
-		<dd>
-			<div class="tit">0</div>
 			<div class="txt">상품준비중</div>
-		</dd>
-		<dd class="bottom-next">
-			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
-		</dd>
-		<dd>
-			<div class="tit">0</div>
-			<div class="txt">출고시작</div>
 		</dd>
 		<dd class="bottom-next">
 			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
@@ -74,10 +60,9 @@
 				<li class="on"><a href="myInfo_check.jsp" id="edit-info">회원정보 수정 / 탈퇴</a></li>
 				<li><a href="#">주문목록 / 배송조회</a></li>
 				<li><a href="#">리뷰관리</a></li>				
-				<li><a href="#">배송지 / 환불계좌 관리</a></li>
-				<li><a href="#">고객센터</a></li>
+				<li><a href="<%=root%>/qna/qnaList.jsp">고객센터</a></li>
 				<li><a href="#">장바구니</a></li>
-				<li><a href="#">좋아요</a></li>
+				<li ><a href="<%=root %>/member/bookLike.jsp">좋아요</a></li>
 			</ul>
 		</aside>
 		
