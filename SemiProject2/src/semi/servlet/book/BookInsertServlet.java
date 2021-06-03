@@ -38,6 +38,7 @@ public class BookInsertServlet extends HttpServlet{
 			BookDao bookDao = new BookDao();
 			
 			
+
 			bookDto.setBookTitle(mRequest.getParameter("bookTitle"));
 			bookDto.setBookAuthor(mRequest.getParameter("bookAuthor"));
 			bookDto.setBookPrice(Integer.parseInt(mRequest.getParameter("bookPrice")));
@@ -47,6 +48,7 @@ public class BookInsertServlet extends HttpServlet{
 			bookDto.setBookPubDate(Date.valueOf(mRequest.getParameter("bookPubDate")));
 			bookDto.setBookGenreNo(genreDao.getGenreNoByName(mRequest.getParameter("bookGenre")));
 			bookDto.setBookImage(mRequest.getFilesystemName("bookImage"));
+
 			
 		
 			
