@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import semi.beans.NoticeBoardDao;
 
-@WebServlet(urlPatterns = "/qna/qnaNoticeDelete.kh")
+@WebServlet(urlPatterns = "/admin/qnaNoticeDelete.kh")
 public class QnaNoticeDeleteServlet extends HttpServlet{
    @Override
    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -21,7 +21,7 @@ public class QnaNoticeDeleteServlet extends HttpServlet{
          NoticeBoardDao noticeBoardDao = new NoticeBoardDao();
          noticeBoardDao.delete(noticeBoardNo);
          
-         resp.sendRedirect("qnaNotice.jsp");
+         resp.sendRedirect(req.getContextPath()+"/admin/notice.jsp");
       } 
       catch (Exception e) {
          e.printStackTrace();

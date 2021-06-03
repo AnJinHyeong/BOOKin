@@ -336,25 +336,6 @@
 				<%} %>
 			<%} %>
 		</div>
-		
-		<div class="notice-regit-reply">
-				<form action="insertQnaReply.kh" method="post">
-					<div class="row">
-						<div class="row">
-							<strong><%=memberDto.getMemberId() %></strong>
-						</div>
-						<div class="row">							
-							<textarea name="qnaReplyContent" placeholder="댓글을 남겨보세요" rows="1" class="comment_inbox_text" style="overflow: hidden; overflow-wrap: break-word; height: 30px;" required></textarea>
-							<input type="hidden" name="qnaReplyWriter" value="<%=memberNo %>">
-							<input type="hidden" name="qnaReplyOrigin" value="<%=qnaBoardNo %>" >
-						</div>
-					</div>
-					
-					<div class="row text-right" style="padding:0 10px 5px 0;">
-						<input type="submit" class="form-btn form-btn-normal regit-btn" value="등록">
-					</div>
-				</form>
-		</div>	
 	</div>
 	
 	<div class="notice-bottom">

@@ -1,7 +1,7 @@
 package semi.servlet.book;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
 
 import javax.servlet.ServletException;
@@ -15,8 +15,7 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import semi.beans.BookDao;
 import semi.beans.BookDto;
-import semi.beans.BookimageDao;
-import semi.beans.BookimageDto;
+import semi.beans.GenreDao;
 
 @WebServlet(urlPatterns = "/book/bookInsert.kh")
 public class BookInsertServlet extends HttpServlet{
@@ -32,41 +31,34 @@ public class BookInsertServlet extends HttpServlet{
 		
 			MultipartRequest mRequest = new MultipartRequest(req,path,maximumSize,encoding,policy);
 			
-			
+			GenreDao genreDao = new GenreDao();
 			//준비 : 데이터 5개(번호 제외)
 		
 			BookDto bookDto = new BookDto();
-			File file = mRequest.getFile("bookimagefile");
+			BookDao bookDao = new BookDao();
 			
 			
-			bookDto.setBookTitle(mRequest.getParameter("book_title"));
-			bookDto.setBookAuthor(mRequest.getParameter("book_author"));
-			bookDto.setBookPrice(Integer.parseInt(mRequest.getParameter("book_price")));
-			bookDto.setBookDiscount(Integer.parseInt(mRequest.getParameter("book_discount")));
-			bookDto.setBookPublisher(mRequest.getParameter("book_publisher"));
-			bookDto.setBookDescription(mRequest.getParameter("book_description"));
-			bookDto.setBookPubDate(Date.valueOf(mRequest.getParameter("book_pubdate")));
-			bookDto.setBookGenreNo(Long.parseLong(mRequest.getParameter("book_genre")));
-			
-			bookDto.setBookImage(mRequest.getParameter("book_image"));
-			
-		
-			
-//			bookDao.registBook(bookDto);
-			
+
+			bookDto.setBookTitle(mRequest.getParameter("bookTitle"));
+			bookDto.setBookAuthor(mRequest.getParameter("bookAuthor"));
+			bookDto.setBookPrice(Integer.parseInt(mRequest.getParameter("bookPrice")));
+			bookDto.setBookDiscount(Integer.parseInt(mRequest.getParameter("bookDiscount")));
+			bookDto.setBookPublisher(mRequest.getParameter("bookPublisher"));
+			bookDto.setBookDescription(mRequest.getParameter("bookDescription"));
+			bookDto.setBookPubDate(Date.valueOf(mRequest.getParameter("bookPubDate")));
+			bookDto.setBookGenreNo(genreDao.getGenreNoByName(mRequest.getParameter("bookGenre")));
+			bookDto.setBookImage(mRequest.getFilesystemName("bookImage"));
 
 			
 		
 			
-			
-			
-			
-			
-			
-			
+			bookDao.registBook(bookDto);
 			
 			//출력
-			resp.sendRedirect("bookList.jsp");
+			resp.setContentType("text/html; charset=UTF-8");
+			PrintWriter writer = resp.getWriter();
+			writer.println("<script>alert('등록되었습니다'); location.href='"+req.getContextPath()+"/admin/adminHome.jsp'"+"</script>"); 
+			writer.close();
 		}
 		catch(Exception e) {
 			e.printStackTrace();

@@ -91,7 +91,19 @@
 	<div class="search-list-area align-column">
 	<%for(BookDto bookDto:bookTitleList){ %>
 		<div class="align-row space-between search-list">
-			<a href="bookDetail.jsp?no=<%=bookDto.getBookNo()%>"><img class="search-img" title="<%=bookDto.getBookTitle()%>" src="<%=bookDto.getBookImage() %>"/></a>
+			<a href="bookDetail.jsp?no=<%=bookDto.getBookNo()%>">
+			
+			
+			<%if(bookDto.getBookImage().startsWith("https")){ %>
+			<img title="<%=bookDto.getBookTitle() %>" class="search-img" src="<%=bookDto.getBookImage()%>">
+			<%}else{ %>
+			<img title="<%=bookDto.getBookTitle() %>" class="search-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">
+			<%} %>
+			
+			
+			
+			
+			</a>
 			<div class="book-info">
 				<span>[<%=genreDao.get(bookDto.getBookGenreNo()).getGenreName() %>]</span>
 				<a class="search-book-title" href="bookDetail.jsp?no=<%=bookDto.getBookNo()%>"><span class="overflow block" title="<%=bookDto.getBookTitle()%>"><%=bookDto.getBookTitle() %></span></a>
@@ -132,7 +144,15 @@
 	<div class="search-list-area align-column">
 	<%for(BookDto bookDto:bookAuthorList){ %>
 		<div class="align-row space-between search-list">
-			<a href="bookDetail.jsp?no=<%=bookDto.getBookNo()%>"><img class="search-img" title="<%=bookDto.getBookTitle()%>" src="<%=bookDto.getBookImage() %>"/></a>
+			<a href="bookDetail.jsp?no=<%=bookDto.getBookNo()%>">
+			
+			<%if(bookDto.getBookImage().startsWith("https")){ %>
+			<img title="<%=bookDto.getBookTitle() %>" class="search-img" src="<%=bookDto.getBookImage()%>">
+			<%}else{ %>
+			<img title="<%=bookDto.getBookTitle() %>" class="search-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">
+			<%} %>
+			
+			</a>
 			<div class="book-info">
 				<span>[<%=genreDao.get(bookDto.getBookGenreNo()).getGenreName() %>]</span>
 				<a class="search-book-title" href="bookDetail.jsp?no=<%=bookDto.getBookNo()%>"><span class="overflow block" title="<%=bookDto.getBookTitle()%>"><%=bookDto.getBookTitle() %></span></a>
@@ -176,7 +196,15 @@
 	<div class="search-list-area align-column">
 	<%for(BookDto bookDto:bookPublisherList){ %>
 		<div class="align-row space-between search-list">
-			<a href="bookDetail.jsp?no=<%=bookDto.getBookNo()%>"><img class="search-img" title="<%=bookDto.getBookTitle()%>" src="<%=bookDto.getBookImage() %>"/></a>
+			<a href="bookDetail.jsp?no=<%=bookDto.getBookNo()%>">
+			
+			<%if(bookDto.getBookImage().startsWith("https")){ %>
+			<img title="<%=bookDto.getBookTitle() %>" class="search-img" src="<%=bookDto.getBookImage()%>">
+			<%}else{ %>
+			<img title="<%=bookDto.getBookTitle() %>" class="search-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">
+			<%} %>
+			
+			</a>
 			<div class="book-info">
 				<span>[<%=genreDao.get(bookDto.getBookGenreNo()).getGenreName() %>]</span>
 				<a class="search-book-title" href="bookDetail.jsp?no=<%=bookDto.getBookNo()%>"><span class="overflow block" title="<%=bookDto.getBookTitle()%>"><%=bookDto.getBookTitle() %></span></a>
@@ -220,7 +248,15 @@
 	<div class="search-list-area align-column">
 	<%for(BookDto bookDto:bookList){ %>
 		<div class="align-row space-between search-list">
-			<a href="bookDetail.jsp?no=<%=bookDto.getBookNo()%>"><img class="search-img" title="<%=bookDto.getBookTitle()%>" src="<%=bookDto.getBookImage() %>"/></a>
+			<a href="bookDetail.jsp?no=<%=bookDto.getBookNo()%>">
+			
+			<%if(bookDto.getBookImage().startsWith("https")){ %>
+			<img title="<%=bookDto.getBookTitle() %>" class="search-img" src="<%=bookDto.getBookImage()%>">
+			<%}else{ %>
+			<img title="<%=bookDto.getBookTitle() %>" class="search-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">
+			<%} %>
+			
+			</a>
 			<div class="book-info">
 				<span>[<%=genreDao.get(bookDto.getBookGenreNo()).getGenreName() %>]</span>
 				<a class="search-book-title" href="bookDetail.jsp?no=<%=bookDto.getBookNo()%>"><span class="overflow block" title="<%=bookDto.getBookTitle()%>"><%=bookDto.getBookTitle() %></span></a>
@@ -259,7 +295,11 @@
 		<li><a>이전</a></li>
 		<%} %>
 		<% for(int i = startBlock;i<=endBlock;i++){ %>
+		<%if(pageNo==i){ %>
+		<li class="on"><a><%=i %></a></li>
+		<%}else{ %>
 		<li><a><%=i %></a></li>
+		<%} %>
 		<%} %>
 		<%if(pageNo-1<endBlock/10*10){ %>
 		<li><a>다음</a></li>

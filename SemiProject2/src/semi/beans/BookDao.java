@@ -1,15 +1,13 @@
+
 package semi.beans;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import javax.naming.spi.DirStateFactory.Result;
-
-import semi.beans.JdbcUtils;
-import semi.beans.BookDto;
+import java.util.Map;
 
 public class BookDao {
 
@@ -20,7 +18,7 @@ public class BookDao {
 
 		String sql = "select * from book where book_no = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setInt(1, no);
+		ps.setLong(1, no);
 		ResultSet rs = ps.executeQuery();
 
 		BookDto bookDto;
@@ -37,6 +35,7 @@ public class BookDao {
 			bookDto.setBookDescription(rs.getString("book_description"));
 			bookDto.setBookPubDate(rs.getDate("book_pubdate"));
 			bookDto.setBookGenreNo(rs.getLong("book_genre"));
+			bookDto.setBookView(rs.getInt("book_view"));
 
 		} else {
 			bookDto = null;
@@ -45,14 +44,7 @@ public class BookDao {
 		con.close();
 
 		return bookDto;
-		
-		
 	}
-	
-	
-	
-	
-	
 
 	public List<BookDto> genreList(Long genreNo, int num) throws Exception {
 		Connection con = JdbcUtils.getConnection();
@@ -78,6 +70,7 @@ public class BookDao {
 			bookDto.setBookDiscount(rs.getInt("book_discount"));
 			bookDto.setBookPubDate(rs.getDate("book_pubdate"));
 			bookDto.setBookGenreNo(rs.getLong("book_genre"));
+			bookDto.setBookView(rs.getInt("book_view"));
 			bookList.add(bookDto);
 		}
 
@@ -109,6 +102,7 @@ public class BookDao {
 			bookDto.setBookDiscount(rs.getInt("book_discount"));
 			bookDto.setBookPubDate(rs.getDate("book_pubdate"));
 			bookDto.setBookGenreNo(rs.getLong("book_genre"));
+			bookDto.setBookView(rs.getInt("book_view"));
 			bookList.add(bookDto);
 		}
 
@@ -137,6 +131,7 @@ public class BookDao {
 			bookDto.setBookDescription(rs.getString("book_description"));
 			bookDto.setBookPubDate(rs.getDate("book_pubdate"));
 			bookDto.setBookGenreNo(rs.getLong("book_genre"));
+			bookDto.setBookView(rs.getInt("book_view"));
 
 			bookList.add(bookDto);
 		}
@@ -146,12 +141,12 @@ public class BookDao {
 		return bookList;
 	}
 
-	public boolean delete(int no) throws Exception {
+	public boolean delete(long no) throws Exception {
 		Connection con = JdbcUtils.getConnection();;
 
-		String sql = "delete book where book_no = ?";
+		String sql = "delete from book where book_no = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setInt(1, no);
+		ps.setLong(1, no);
 		int count = ps.executeUpdate();
 
 		con.close();
@@ -163,8 +158,8 @@ public class BookDao {
 	public boolean edit(BookDto bookDto) throws Exception {
 		Connection con = JdbcUtils.getConnection();
 
-		String sql = "update book set book_title=?, book_image=?,book_author,book_price,"
-				+ "book_discount,book_publisher=?,book_description=?,book_pubdate=?,book_genre=?";
+		String sql = "update book set book_title=?, book_image=?,book_author=?,book_price=?,"
+				+ "book_discount=?,book_publisher=?,book_description=?,book_pubdate=?,book_genre=? where book_no=?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, bookDto.getBookTitle());
 		ps.setString(2, bookDto.getBookImage());
@@ -172,9 +167,10 @@ public class BookDao {
 		ps.setInt(4, bookDto.getBookPrice());
 		ps.setInt(5, bookDto.getBookDiscount());
 		ps.setString(6, bookDto.getBookPublisher());
-		ps.setString(8, bookDto.getBookDescription());
-		ps.setDate(9, bookDto.getBookPubDate());
-		ps.setLong(10, bookDto.getBookGenreNo());
+		ps.setString(7, bookDto.getBookDescription());
+		ps.setDate(8, bookDto.getBookPubDate());
+		ps.setLong(9, bookDto.getBookGenreNo());
+		ps.setInt(10, bookDto.getBookNo());
 		int count = ps.executeUpdate();
 
 		con.close();
@@ -209,6 +205,7 @@ public class BookDao {
 			bookDto.setBookDescription(rs.getString("book_description"));
 			bookDto.setBookPubDate(rs.getDate("book_pubdate"));
 			bookDto.setBookGenreNo(rs.getLong("book_genre"));
+			bookDto.setBookView(rs.getInt("book_view"));
 
 			bookList.add(bookDto);
 		}
@@ -247,6 +244,7 @@ public class BookDao {
 			bookDto.setBookDescription(rs.getString("book_description"));
 			bookDto.setBookPubDate(rs.getDate("book_pubdate"));
 			bookDto.setBookGenreNo(rs.getLong("book_genre"));
+			bookDto.setBookView(rs.getInt("book_view"));
 
 			bookList.add(bookDto);
 		}
@@ -261,10 +259,11 @@ public class BookDao {
 			int endRow) throws Exception {
 		Connection con = JdbcUtils.getConnection();;
 
-		String sql = "select * from(" + "select rownum rn, TMP.* from("
-
+		String sql = "select * from(" 
+				+ "select rownum rn, TMP.* from("
 				+ "select * from book where instr(book_publisher,?)>0  "
-				+ ")TMP" + ") where rn between ? and ?";
+				+ ")TMP" 
+				+ ") where rn between ? and ?";
 
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, keyword);
@@ -285,6 +284,7 @@ public class BookDao {
 			bookDto.setBookDescription(rs.getString("book_description"));
 			bookDto.setBookPubDate(rs.getDate("book_pubdate"));
 			bookDto.setBookGenreNo(rs.getLong("book_genre"));
+			bookDto.setBookView(rs.getInt("book_view"));
 
 			bookList.add(bookDto);
 		}
@@ -312,23 +312,19 @@ public class BookDao {
 	public void registBook(BookDto bookDto) throws Exception {
 		Connection con = JdbcUtils.getConnection();
 
-		String sql = "insert into book values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into book values(book_seq.nextval,?,?,?,?,?,?,?,?,?,0)";
 		PreparedStatement ps = con.prepareStatement(sql);
 		
-		ps.setInt(1, bookDto.getBookNo());
-		ps.setString(2, bookDto.getBookTitle());
-		ps.setString(3, bookDto.getBookImage());
-		ps.setString(4, bookDto.getBookAuthor());
-		ps.setInt(5, bookDto.getBookPrice());
-		ps.setInt(6, bookDto.getBookDiscount());
-		ps.setString(7, bookDto.getBookPublisher());
-		ps.setString(8, bookDto.getBookDescription());
-		ps.setDate(9, bookDto.getBookPubDate());
-		ps.setLong(10, bookDto.getBookGenreNo());
 		
-		ps.setString(11, bookDto.getImagefileUploadName());
-		ps.setString(12, bookDto.getImagefileSaveName());
-		
+		ps.setString(1, bookDto.getBookTitle());
+		ps.setString(2, bookDto.getBookImage());
+		ps.setString(3, bookDto.getBookAuthor());
+		ps.setInt(4, bookDto.getBookPrice());
+		ps.setInt(5, bookDto.getBookDiscount());
+		ps.setString(6, bookDto.getBookPublisher());
+		ps.setString(7, bookDto.getBookDescription());
+		ps.setDate(8, bookDto.getBookPubDate());
+		ps.setLong(9, bookDto.getBookGenreNo());
 
 		ps.execute();
 
@@ -340,11 +336,11 @@ public class BookDao {
 	public List<BookDto> bookList(int startRow, int endRow) throws Exception {
 		Connection con = JdbcUtils.getConnection();;
 
-		String sql = "select * from(" + "select rownum rn, TMP.* from("
-
-				+ "select * from book "
-
-				+ "order by book_no asc " + ")TMP"
+		String sql = "select * from(" 
+				+ "select rownum rn, TMP.* from"
+				+ "(select * from book "
+				+ "order by book_no asc " 
+				+ ")TMP"
 				+ ") where rn between ? and ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, startRow);
@@ -362,8 +358,8 @@ public class BookDao {
 			bookDto.setBookDescription(rs.getString("book_description"));
 			bookDto.setBookImage(rs.getString("book_image"));
 			bookDto.setBookPubDate(rs.getDate("book_date"));
-
 			bookDto.setBookGenreNo(rs.getInt("book_genre"));
+			bookDto.setBookView(rs.getInt("book_view"));
 
 			bookList.add(bookDto);
 		}
@@ -418,5 +414,163 @@ public class BookDao {
 
 		return count;
 	}
+	
+	public int adminSearchCount(String title,String author,String publisher,long genreNo) throws Exception{
+		int countQ=0;
+		if(title.equals("")&&author.equals("")&&publisher.equals("")) {
+			return countQ;
+		}
+		Connection con = JdbcUtils.getConnection();;
+		Map<String,String> keywordMap = new HashMap<>();
+		if(!title.equals(""))keywordMap.put("book_title",title);
+		if(!author.equals(""))keywordMap.put("book_author",author);
+		if(!publisher.equals(""))keywordMap.put("book_publisher",publisher);
+		String sql = "select count(*) from book ";
+		int count=0;
+		for ( String key : keywordMap.keySet() ) {
+			if(count==0) {
+				sql+="where instr("+key+",'"+keywordMap.get(key)+"')>0  ";
+				count+=1;
+			}else {
+				sql+="and instr("+key+",'"+keywordMap.get(key)+"')>0 ";
+			}
+		}
+		if(genreNo!=0) {
+			if(count==0) {
+				sql+="where book_genre="+genreNo;
+			}else {
+				sql+="and book_genre="+genreNo;
+			}
+		}
+		
+		
+		
+		PreparedStatement ps = con.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
 
+		
+		while (rs.next()) {
+			countQ=rs.getInt(1);
+		}
+
+		con.close();
+
+		return countQ;
+	}
+	
+	public List<BookDto> adminSearch(String title,String author,String publisher,long genreNo,int start,int end) throws Exception{
+		List<BookDto> bookList = new ArrayList<>();
+		if(title.equals("")&&author.equals("")&&publisher.equals("")) {
+			return bookList;
+		}
+		Connection con = JdbcUtils.getConnection();;
+		Map<String,String> keywordMap = new HashMap<>();
+		if(!title.equals(""))keywordMap.put("book_title",title);
+		if(!author.equals(""))keywordMap.put("book_author",author);
+		if(!publisher.equals(""))keywordMap.put("book_publisher",publisher);
+		String sql = "select * from book ";
+		int count=0;
+		for ( String key : keywordMap.keySet() ) {
+			if(count==0) {
+				sql+="where instr("+key+",'"+keywordMap.get(key)+"')>0  ";
+				count+=1;
+			}else {
+				sql+="and instr("+key+",'"+keywordMap.get(key)+"')>0 ";
+			}
+		}
+		if(genreNo!=0) {
+			if(count==0) {
+				sql+="where book_genre="+genreNo;
+			}else {
+				sql+="and book_genre="+genreNo;
+			}
+		}
+		
+		String finalSql = "select * from (" 
+				+ "select rownum rn, TMP.* from"
+				+ "( "
+				+sql
+				+ " ) TMP"
+				+ " ) where rn between ? and ?";
+		System.out.println(finalSql);
+		PreparedStatement ps = con.prepareStatement(finalSql);
+		ps.setInt(1, start);
+		ps.setInt(2, end);
+		ResultSet rs = ps.executeQuery();
+		
+		
+		while (rs.next()) {
+			BookDto bookDto = new BookDto();
+			bookDto.setBookNo(rs.getInt("book_no"));
+			bookDto.setBookTitle(rs.getString("book_title"));
+			bookDto.setBookAuthor(rs.getString("book_author"));
+			bookDto.setBookImage(rs.getString("book_image"));
+			bookDto.setBookPrice(rs.getInt("book_price"));
+			bookDto.setBookDiscount(rs.getInt("book_discount"));
+			bookDto.setBookPublisher(rs.getString("book_publisher"));
+			bookDto.setBookDescription(rs.getString("book_description"));
+			bookDto.setBookPubDate(rs.getDate("book_pubdate"));
+			bookDto.setBookGenreNo(rs.getLong("book_genre"));
+
+			bookList.add(bookDto);
+		}
+
+		con.close();
+
+		return bookList;
+	}
+
+	
+//	조회수 증가 기능 : 책 상세 페이지 들어온 경우 조회수 증가
+	public boolean bookView(int bookNo) throws Exception{
+		Connection con = JdbcUtils.getConnection();
+		
+		String sql = "update book "
+					+ "set book_view = book_view + 1 "
+					+ "where book_no = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, bookNo);
+		int count = ps.executeUpdate();
+		
+		con.close();
+		return count > 0;
+	}
+	
+//	조회수 탑 10 인기 도서 
+	public List<BookDto> bookViewTop(int startRow, int endRow) throws Exception{
+		Connection con = JdbcUtils.getConnection();
+		
+		String sql = "select * from(\n"
+				+ "select rownum rn, TMP.* from(\n"
+						+ "	select * from book order by book_view desc \n"
+					+ "	)TMP\n"
+				+ ") where rn between ? and ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, startRow);
+		ps.setInt(2, endRow);
+		ResultSet rs = ps.executeQuery();
+
+		List<BookDto> bookList = new ArrayList<>();
+		while (rs.next()) {
+			BookDto bookDto = new BookDto();
+			
+			bookDto.setBookNo(rs.getInt("book_no"));
+			bookDto.setBookTitle(rs.getString("book_title"));
+			bookDto.setBookImage(rs.getString("book_image"));
+			bookDto.setBookAuthor(rs.getString("book_author"));
+			bookDto.setBookPrice(rs.getInt("book_price"));
+			bookDto.setBookDiscount(rs.getInt("book_discount"));
+			bookDto.setBookPublisher(rs.getString("book_publisher"));
+			bookDto.setBookDescription(rs.getString("book_description"));
+			bookDto.setBookPubDate(rs.getDate("book_pubdate"));
+			bookDto.setBookGenreNo(rs.getLong("book_genre"));
+			bookDto.setBookView(rs.getInt("book_view"));
+
+			bookList.add(bookDto);
+		}
+		con.close();
+		return bookList;
+	}
+	
 }
+

@@ -4,3 +4,7 @@
 <jsp:include page="/template/homelist.jsp"></jsp:include>
 <jsp:include page="/template/footer.jsp"></jsp:include>
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/remotes/origin/main

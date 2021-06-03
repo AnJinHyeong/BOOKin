@@ -1,3 +1,5 @@
+<%@page import="semi.beans.BookLikeDao"%>
+<%@page import="semi.beans.BookLikeDto"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="semi.beans.GenreDto"%>
 <%@page import="semi.beans.GenreDao"%>
@@ -22,24 +24,101 @@
 		bookList=bookdao.genreList(genreNo, infPage);
 	}else{
  		bookList =bookdao.list(infPage);
-	}
-	
+	}	
 	
 	DecimalFormat format = new DecimalFormat("###,###");
+	int member;
+	boolean isLogin;
+	
+	List<BookLikeDto> bookLikeList;
+	try{
+		member = (int)session.getAttribute("member");
+		isLogin = true;
+		BookLikeDao bookLikeDao = new BookLikeDao();
+		bookLikeList = bookLikeDao.list(member);
+	}
+	catch(Exception e){
+		member = 0;
+		isLogin = false;
+		bookLikeList = null;
+	}	
 %>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script>
+	$(function(){
+		<%if(isLogin){%>
+			<%for(BookLikeDto bookLikeDto : bookLikeList){%>
+				$("#like<%=bookLikeDto.getBookOrigin()%>").removeClass("book-good");
+				$("#like<%=bookLikeDto.getBookOrigin()%>").addClass("book-good-on");
+			<%}%>
+		<%}%>
+		
+		$.fn.initBookLike = function(){
+			<%if(isLogin){%>
+				<%for(BookLikeDto bookLikeDto : bookLikeList){%>
+					$("#like<%=bookLikeDto.getBookOrigin()%>").removeClass("book-good");
+					$("#like<%=bookLikeDto.getBookOrigin()%>").addClass("book-good-on");
+				<%}%>
+			<%}%>
+		
+			$(".book-like").click(function(){
+				if(<%=member %> == 0){
+					alert("로그인이 필요한 기능입니다.");
+					return;
+				}
+				var type;
+				
+				if($(this).hasClass("book-good")){
+					$(this).removeClass("book-good");
+					$(this).addClass("book-good-on");
+					type = "insert";
+				}
+				else{
+					$(this).removeClass("book-good-on");
+					$(this).addClass("book-good");
+					type = "delete";
+				}			
+				
+				var url = "<%=root%>/book/bookLike.kh";
+				$.ajax({
+					type:"GET",
+					url:url,
+					dataType:"html",
+					data:{
+						type : type,
+						memberNo : <%=member%>,
+						bookOrigin : $(this).attr("id")
+					},
+					error : function(request,status,error){
+						alert("이미 좋아요한 상품입니다."); //에러 상태에 대한 세부사항 출력						
+					}
+				});
+			});	
+		};
+		
+		$.fn.initBookLike();
+	});
+</script>
 <link rel="stylesheet" type="text/css" href="<%= root%>/css/list.css">
 
 
 <div class="container-1200 inf-container">
 <div class=" book-list inf-list">
 	<%for(BookDto bookDto : bookList){ %>
-	<div class="book-item">
-		<a href="<%=root%>/book/bookDetail.jsp?no=<%=bookDto.getBookNo()%>" class="book-img-a">
+	<div class="book-item">	
+		<a href="<%=root%>/book/bookDetail.jsp?no=<%=bookDto.getBookNo()%>" class="book-img-a" >
 		<%if(bookDto.getBookImage()==null){
 			bookDto.setBookImage(root+"/image/nullbook.png");
 		} %>
+			<%if(bookDto.getBookImage().startsWith("https")){ %>
 			<img title="<%=bookDto.getBookTitle() %>" class="book-img" src="<%=bookDto.getBookImage()%>">
+			<%}else{ %>
+			<img title="<%=bookDto.getBookTitle() %>" class="book-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">
+			<%} %>
+
 		</a>
+		
+		<a href="javascript:void(0);" class="book-like book-good" id="like<%=bookDto.getBookNo()%>"></a> 
 		<a class="book-publisher"><span><%=bookDto.getBookPublisher() %></span></a>
 		<a href="<%=root%>/book/bookDetail.jsp?no=<%=bookDto.getBookNo()%>" class="book-title overflow"  title="<%=bookDto.getBookTitle() %>"><%=bookDto.getBookTitle() %></a>
 		<%if(bookDto.getBookAuthor()==null){
@@ -49,7 +128,7 @@
 
 	<%if(bookDto.getBookDiscount()!=0 && bookDto.getBookDiscount()!=bookDto.getBookPrice()){ %>
 		<div style="width: 100%;text-align: right;">
-		<a class="book-discount"><%=bookDto.getBookPrice()/(bookDto.getBookPrice()-bookDto.getBookDiscount())%>%</a>
+		<a class="book-discount"><%=(int)(((double)(bookDto.getBookPrice()-bookDto.getBookDiscount())/(double)bookDto.getBookPrice())*(100.0))%>%</a>
 		<a class="book-price"><%=format.format(bookDto.getBookDiscount()) %></a><a style="font-weight: 900;color:rgba(0,0,0,0.5);"> 원</a>
 		</div>
 	<%}else{ %>
@@ -76,6 +155,7 @@
 			var fullHeight = inf_container.clientHeight;
 			var scrollPosition = pageYOffset;
 			console.log(fullHeight);
+			
 			if (fullHeight-screenHeight/2 <= scrollPosition && !oneTime) {
 				 oneTime = true;
 				 madeBox(); 
@@ -105,8 +185,9 @@
 			
 			xhr.open('GET', nextURL); 
 			xhr.send();
-			xhr.responseType = "document";
-			
+			xhr.responseType = "document";		
+
+			$.fn.initBookLike();
 		};
 	});
 </script>
