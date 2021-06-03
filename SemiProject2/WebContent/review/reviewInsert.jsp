@@ -10,8 +10,7 @@
 PurchaseDto purchaseDto = new PurchaseDto();
 PurchaseDao purchaseDao = new PurchaseDao();
 
-// int no =purchaseDto.getPurchaseBook();
-int no=5;
+int no =purchaseDto.getPurchaseBook();
 BookDao bookDao = new BookDao();
 
 BookDto bookDto=bookDao.get(no);

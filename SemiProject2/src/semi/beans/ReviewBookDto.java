@@ -8,10 +8,17 @@ public class ReviewBookDto {
 	private long reviewRate;
 	private Date reviewTime;
 	private int reviewPurchase;
+	private int bookNo;
 	private String bookTitle;
 	private String bookImage;
 	public ReviewBookDto() {
 		super();
+	}
+	public int getBookNo() {
+		return bookNo;
+	}
+	public void setBookNo(int bookNo) {
+		this.bookNo = bookNo;
 	}
 	public int getReviewNo() {
 		return reviewNo;

@@ -59,8 +59,35 @@ public class ReviewDao {
 			con.close();
 		}
 
+		//리뷰작성된 리뷰 불러오기
 		
-		
+		public List<ReviewBookDto> ReviewPurchaselist() throws Exception {
+			Connection con = JdbcUtils.getConnection();
+			
+			String sql = "select R.* from purchase P left outer join review R on P.purchase_pk=R.review_purchase_no";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			//List로 변환
+			List<ReviewBookDto> ReviewPurchaselist = new ArrayList<>();
+			while(rs.next()) {
+				ReviewBookDto reviewBookDto = new ReviewBookDto();
+				reviewBookDto.setReviewNo(rs.getInt("R.review_no"));
+				reviewBookDto.setReviewContent(rs.getString("R.review_content"));
+				reviewBookDto.setReviewRate(rs.getInt("R.review_rate"));
+				reviewBookDto.setBookNo(rs.getInt("purchase_book"));
+				
+				
+				
+				
+				
+				ReviewPurchaselist.add(reviewBookDto);
+			}
+			
+			con.close();
+			
+			return ReviewPurchaselist;
+		} 
 	
 	
 	

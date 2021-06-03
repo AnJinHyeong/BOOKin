@@ -29,8 +29,9 @@ public class ReviewInsertServlet extends HttpServlet{
 			reviewDto.setReviewRate(Long.parseLong(req.getParameter("reviewRate")));
 			
 			
-			int memberNo = (int)req.getSession().getAttribute("member");
-//			int memberNo = 1;
+//			int memberNo = (int)req.getSession().getAttribute("member");
+			int memberNo = 1;
+			
 			reviewDto.setReviewMember(memberNo);
 			
 			

@@ -14,8 +14,8 @@
 
 ReviewDao reviewDao = new ReviewDao();
 
-// int memberno=(Integer)session.getAttribute("member");
-int memberno=1;
+int memberno=(Integer)session.getAttribute("member");
+// int memberno=1;
 List<ReviewBookDto> reviewList = reviewDao.memberList(memberno);
 
 %>
