@@ -1,10 +1,6 @@
-<<<<<<< HEAD
-<%@page import="semi.beans.PurchaseDto"%>
-<%@page import="semi.beans.PurchaseDao"%>
-=======
+
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
->>>>>>> refs/remotes/origin/minsoo
 <%@page import="semi.beans.BookDto"%>
 <%@page import="semi.beans.BookDao"%>
 <%@page import="semi.beans.MemberDto"%>
@@ -53,9 +49,9 @@
             <a href="">
             
             <%if(bookDto.getBookImage().startsWith("https")){ %>
-            <img src="<%=bookDto.getBookImage() %>" style="width:80%;">
+            <img src="<%=bookDto.getBookImage() %>" style="width:100%;">
 			<%}else{ %>
-			<img src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>" style="width:80%;">
+			<img src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>" style="width:100%;">
 			<%} %>
             
             </a>
@@ -65,39 +61,25 @@
             <div class="book-price-semi-title"><%=bookDto.getBookTitle() %></div><br>
             <div><%=bookDto.getBookAuthor() %></div><br>
             <div><%=bookDto.getBookPublisher() %></div><br>
-            <div>
-				<span>수량&emsp;</span>
-				<span>
-					<span><button type="button" name="button" onclick="minus()"><img src="<%=root %>/image/minus-solid.svg" alt="minus" class="amount-image"/></button></span>
-	                <span><input type="text" name="purchaseAmount" value="1" size="10" id="count" class="text-center"></span>
-	                <span><button type="button" name="button" onclick="plus()"><img src="<%=root %>/image/plus-solid.svg" alt="plus" class="amount-image"/></button></span>
-				</span>
-			</div>
          </div>
-
-         
-         
+       
          <div class="book-price-semi-price">
 
             <div class="price-top-box">
 
 	            <div>가격: <span><%=bookDto.getBookDiscount() %></span> 원</div>
-	            <div>수량: <input class="purchaseAmount" name="purchaseAmount" type="number" min="1" value="1"/></div>
+	            <div>수량: <input class="purchaseAmount" name="purchaseAmount" type="number" min="1" value="1" /></div>
 	            <div>+</div>
 	            <div>배송료: 0원</div>
 	            
 	            
             </div>
             <hr>
-
             <div class="price-bottom-box"><span style="font-size:20px;" class="final_price"><%=bookDto.getBookDiscount()%></span><span>원</span></div>
-
-      
-
          </div>
       </div>
       <%} %>
-      <div >총 <span class="sum_price"><%=sum%></span>원</div>
+     
       
       
 
