@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebFilter(urlPatterns = {
       "/qna/qnaInsert.jsp", "/qna/qnaDetail.jsp" ,
-      "/qna/qnaMyList.jsp"
+      "/qna/qnaMyList.jsp", "/member/cart.jsp", "/member/cartInsert.kh"
 })
 public class MemberFilter implements Filter{
    @Override
