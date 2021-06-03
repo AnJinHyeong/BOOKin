@@ -25,6 +25,8 @@ public class PurchaseInsertServlet extends HttpServlet{
 			 int no= purchaseDao.getNumber();
 			 String[] bookNoList = req.getParameterValues("purchaseBook");
 			 String[] amountList = req.getParameterValues("purchaseAmount");
+			 int count= -1;
+			 int bookNo=0;
 			 for(int i = 0;i<bookNoList.length;i++) {				 
 				 PurchaseDto purchaseDto= new PurchaseDto();
 				 purchaseDto.setPurchaseNo(no);
@@ -34,10 +36,11 @@ public class PurchaseInsertServlet extends HttpServlet{
 				 purchaseDto.setPurchasePhone(req.getParameter("purchasePhone"));
 				 purchaseDto.setPurchaseAddress(req.getParameter("purchaseAddress"));
 				 purchaseDto.setPurchaseAmount(Integer.parseInt(amountList[i]));
-				
+				 count++;
 				 purchaseDao.insert(purchaseDto);
+				 bookNo=purchaseDto.getPurchaseBook();
 			 }
-			 resp.sendRedirect("purchaseSuccess.jsp");
+			 resp.sendRedirect("purchaseSuccess.jsp?purchaseNo="+no+"&no="+bookNo+"&amount="+count);
 			
 		}
 		catch(Exception e) {
