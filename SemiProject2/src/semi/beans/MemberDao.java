@@ -63,6 +63,7 @@ public class MemberDao {
 			md.setMemberJoin(rs.getDate("member_join"));
 			md.setMemberPoint(rs.getInt("member_point"));
 			md.setMemberAdmin(rs.getString("member_admin"));
+			md.setMemberNo(rs.getInt("member_no"));
 		}
 		con.close();
 		return md;

@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+
 .cart-section {
 	width: 960px;
 	margin-left: 240px;
@@ -184,7 +185,5 @@ table {
    border: solid 1px #acacac;
    border-radius: 2px;
 }
-
-
 
 

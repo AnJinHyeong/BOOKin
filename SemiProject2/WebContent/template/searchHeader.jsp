@@ -11,10 +11,14 @@
 	Integer memberNo = (Integer) session.getAttribute("member");
 	MemberDao memberDao = new MemberDao();
 	boolean isLogin = false;
+	boolean isAdmin = false;
 	MemberDto memberDto = null;
 	if(memberNo!=null){
 		isLogin=true;
 		memberDto = memberDao.getMember(memberNo);
+		if(memberDto.getMemberAdmin().equals("Y")){
+			isAdmin=true;
+		}
 	}
 	String keyword = request.getParameter("keyword");
 %>
@@ -36,7 +40,11 @@
 
 	<% if(isLogin){ %>
 	<ul class="ul-row member-menu ">
+		<% if(isAdmin){ %>
+		<li><a class="change-a" href="<%=root %>/admin/adminHome.jsp">관리자페이지</a></li>
+		<%}else{ %>
 		<li><a class="change-a" href="<%=root %>/member/myInfo_check.jsp">마이페이지</a></li>
+		<%} %>
 		<li><a class="change-a" href="#">QnA</a></li>
 		<li><a class="change-a" href="<%=root%>/member/logout.kh">로그아웃</a></li>
 	</ul>

@@ -16,8 +16,12 @@
 	QnaBoardDao qnaBoardDao = new QnaBoardDao();
 	QnaBoardDto qnaBoardDto = qnaBoardDao.get(qnaBoardNo);
 	
+	
+ 
 	QnaReplyMemberDao qnaReplyMemberDao = new QnaReplyMemberDao();
 	List<QnaReplyMemberDto> list = qnaReplyMemberDao.list(qnaBoardNo);
+	
+	
 	
 	int memberNo = (int)session.getAttribute("member");
 	MemberDao memberDao = new MemberDao();
@@ -282,11 +286,15 @@
 					
 		<div class="notice-reply">
 			<%if(list != null) { %>
+				
+
 				<%for(QnaReplyMemberDto qnaReplyMemberDto : list){ %>
 					<div class="row re" id="re<%=qnaReplyMemberDto.getQnaReplyNo() %>">
 						<div class="row">
 							<span><%=qnaReplyMemberDto.getMemberId() %></span>
 						</div>
+						
+
 						<div class="row">
 							<span><%=qnaReplyMemberDto.getQnaReplyContent() %></span>
 						</div>
@@ -328,25 +336,6 @@
 				<%} %>
 			<%} %>
 		</div>
-		
-		<div class="notice-regit-reply">
-				<form action="insertQnaReply.kh" method="post">
-					<div class="row">
-						<div class="row">
-							<strong><%=memberDto.getMemberId() %></strong>
-						</div>
-						<div class="row">							
-							<textarea name="qnaReplyContent" placeholder="댓글을 남겨보세요" rows="1" class="comment_inbox_text" style="overflow: hidden; overflow-wrap: break-word; height: 30px;" required></textarea>
-							<input type="hidden" name="qnaReplyWriter" value="<%=memberNo %>">
-							<input type="hidden" name="qnaReplyOrigin" value="<%=qnaBoardNo %>" >
-						</div>
-					</div>
-					
-					<div class="row text-right" style="padding:0 10px 5px 0;">
-						<input type="submit" class="form-btn form-btn-normal regit-btn" value="등록">
-					</div>
-				</form>
-		</div>	
 	</div>
 	
 	<div class="notice-bottom">
