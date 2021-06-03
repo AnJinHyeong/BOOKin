@@ -37,8 +37,7 @@
 	int price=bookDto.getBookPrice();
 	int discount=bookDto.getBookDiscount();
 	int priceDif=price-discount;
-	int discountPercent=price/priceDif;
-	
+	int discountPercent=(int)(((double)priceDif/(double)price)*(100.0));
 %>
 <jsp:include page="/template/header.jsp"></jsp:include>
 
@@ -50,6 +49,9 @@
 			<span><%=bookDto.getBookAuthor() %> (지은이)&nbsp;&nbsp;</span>
 			<span><%=bookDto.getBookPublisher()%>&nbsp;&nbsp;</span>
 			<span><%=bookDto.getBookPubDate()%></span>
+			<span class="container-right"><a href="<%= root%>/book/bookEdit.jsp?no=<%=bookDto.getBookNo()%>">수정</a></span>
+      	    <span class="container-right"><a href="bookDelete.kh?bookNo=<%=bookDto.getBookNo()%>">삭제</a></span>
+			
 		</div>
 	</div>
 	<hr>
@@ -118,18 +120,11 @@
 					<div class="payment-text">카드/간편결제 할인 &gt;</div>
 					<div class="payment-text">무이자 할부 &gt;</div>
 					<div class="payment-text">소득공제 690원</div>
-				</div><br><br><br>
-				<div>
-					<span>수량&emsp;&emsp;&emsp;</span>
-					<span>
-						 <span><button type="button" name="button"onclick="minus()"><img src="<%=root %>/image/minus-solid.svg" alt="minus" class="amount-image"/></button></span>
-                <span><input type="text" name="name" value="0" size="10" id="count" class="text-center"></span>
-                <span><button type="button" name="button"onclick="plus()"><img src="<%=root %>/image/plus-solid.svg" alt="plus" class="amount-image"/></button></span>
-					</span>
-				</div>
+				</div><br><br>
+				
 				<div class="payment-button-box">
 					<div class="payment-button"><a href="#" class="payment-button-text">장바구니 담기</a></div>
-					<div class="payment-button"><a href="#" class="payment-button-text">바로구매</a></div>
+					<div class="payment-button"><a href="<%=root %>/purchase/purchase.jsp?no=<%=bookDto.getBookNo()%>" class="payment-button-text">바로구매</a></div>
 					<div class="payment-button"><a href="#" class="payment-button-text-red">보관함+</a></div>
 					<div class="payment-button"><a href="#" class="payment-button-text-red">선물하기</a></div>
 					
@@ -167,14 +162,7 @@
 		<div class="book-detail-semi-subtitle"><%=bookDto.getBookDescription()%></div>
 	</div>
 	<hr>
-	<%-- <div class="row text-left book-detail-semi-box">
-		<div class="book-detail-semi-title"><span>이벤트</span></div>
-		<div class="book-detail-semi-subtitle">
-			<div class="event-image"><img src="<%=root%>/image/event1.PNG"></div>
-			<div class="event-image"><img src="<%=root%>/image/event2.PNG"></div>
-			<div class="event-image"><img src="<%=root%>/image/event3.PNG"></div>
-		</div>
-	</div> --%>
+	
 	<div class="row text-left book-detail-semi-box2">
 		<div class="book-detail-semi-title2">
 		<span ><%=bookDto.getBookAuthor() %></span>
@@ -187,7 +175,7 @@
 					<%if(bookDto.getBookNo()==bookList.get(i).getBookNo()){ continue;}%>
 					
 					 
-				<a href="#">
+				<a href="<%=root %>/book/bookDetail.jsp?no=<%=bookList.get(i).getBookNo()%>">
 				<%if(bookList.get(i).getBookImage().startsWith("https")){ %>
 				<img title="<%=bookList.get(i).getBookTitle() %>" src="<%=bookList.get(i).getBookImage() %>" class="same-author-book-img">
 				<%}else{ %>
@@ -201,7 +189,7 @@
 			<%}else{ %>
 				<%for(int i=0;i<4;i++){ %>
 				<%if(bookDto.getBookNo()==bookList.get(i).getBookNo()){ continue;}%>
-				<a href="#">
+				<a href="<%=root %>/book/bookDetail.jsp?no=<%=bookList.get(i).getBookNo()%>">
 				
 				<%if(bookList.get(i).getBookImage().startsWith("https")){ %>
 				<img title="<%=bookList.get(i).getBookTitle() %>" src="<%=bookList.get(i).getBookImage() %>" class="same-author-book-img">
@@ -230,7 +218,7 @@
 					<%if(bookDto.getBookNo()==bookList2.get(i).getBookNo()){ continue;}%>
 					
 					 
-				<a href="#">
+				<a href="<%=root %>/book/bookDetail.jsp?no=<%=bookList2.get(i).getBookNo()%>">
 				
 				<%if(bookList2.get(i).getBookImage().startsWith("https")){ %>
 				<img title="<%=bookList2.get(i).getBookTitle() %>" src="<%=bookList2.get(i).getBookImage() %>" class="same-author-book-img">
@@ -244,7 +232,7 @@
 			<%}else{ %>
 				<%for(int i=0;i<4;i++){ %>
 				<%if(bookDto.getBookNo()==bookList2.get(i).getBookNo()){ continue;}%>
-				<a href="#">
+				<a href="<%=root %>/book/bookDetail.jsp?no=<%=bookList2.get(i).getBookNo()%>">
 				
 				<%if(bookList2.get(i).getBookImage().startsWith("https")){ %>
 				<img title="<%=bookList2.get(i).getBookTitle() %>" src="<%=bookList2.get(i).getBookImage() %>" class="same-author-book-img">
@@ -270,7 +258,7 @@
 					<%if(bookDto.getBookNo()==bookList3.get(i).getBookNo()){ continue;}%>
 					
 					 
-				<a href="#">
+				<a href="<%=root %>/book/bookDetail.jsp?no=<%=bookList3.get(i).getBookNo()%>">
 				
 				<%if(bookList3.get(i).getBookImage().startsWith("https")){ %>
 				<img title="<%=bookList3.get(i).getBookTitle() %>" src="<%=bookList3.get(i).getBookImage() %>" class="same-author-book-img">
@@ -284,7 +272,7 @@
 			<%}else{ %>
 				<%for(int i=0;i<4;i++){ %>
 				<%if(bookDto.getBookNo()==bookList3.get(i).getBookNo()){ continue;}%>
-				<a href="#">
+				<a href="<%=root %>/book/bookDetail.jsp?no=<%=bookList3.get(i).getBookNo()%>">
 				
 				<%if(bookList3.get(i).getBookImage().startsWith("https")){ %>
 				<img title="<%=bookList3.get(i).getBookTitle() %>" src="<%=bookList3.get(i).getBookImage() %>" class="same-author-book-img">
@@ -302,19 +290,6 @@
 	
 </div>
 
-<script>
-var count = 1;
-var countEl = document.getElementById("count");
-function plus(){
-    count++;
-    countEl.value = count;
-}
-function minus(){
-    if (count > 1) {
-        count--;
-        countEl.value = count;
-    }
-}
-</script>
+
 
 <jsp:include page="/template/footer.jsp"></jsp:include>

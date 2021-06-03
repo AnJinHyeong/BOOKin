@@ -1,6 +1,7 @@
 package semi.servlet.book;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
 
 import javax.servlet.ServletException;
@@ -56,8 +57,11 @@ try {
 			
 			bookDao.edit(bookDto);
 			
+			resp.setContentType("text/html; charset=UTF-8");
+			PrintWriter writer = resp.getWriter();
+			writer.println("<script>alert('수정되었습니다');history.go(-2);</script>"); 
+			writer.close();
 			//출력
-			resp.sendRedirect(req.getContextPath()+"/admin/adminHome.jsp");
 		}
 		catch(Exception e) {
 			e.printStackTrace();
