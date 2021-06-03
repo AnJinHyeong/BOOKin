@@ -1,6 +1,3 @@
-<%@page import="semi.beans.MemberDto"%>
-<%@page import="semi.beans.CartDto"%>
-<%@page import="semi.beans.CartDao"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="semi.beans.GenreDto"%>
 <%@page import="java.util.List"%>
@@ -13,6 +10,7 @@
 <%
 	long no = Long.parseLong(request.getParameter("no"));
 	String root = request.getContextPath();
+
 	BookDao bookDao = new BookDao();
 	BookDto bookDto = bookDao.get(no);
 	if(bookDto.getBookImage()==null){
@@ -32,6 +30,7 @@
 	List<BookDto> bookList2=bookDao.publisherSearch(bookDto.getBookPublisher(),1,10);
 	List<BookDto> bookList3=bookDao.genreSearch(bookDto.getBookGenreNo());
 	List<GenreDto> genreList=genreDao.sameGenreList(bookDto.getBookGenreNo());
+
 %>
 <%
 	int price=bookDto.getBookPrice();
@@ -40,7 +39,7 @@
 	int discountPercent=price/priceDif;
 %>
 <%
-	int bookNo = (int) Long.parseLong(request.getParameter("no"));	
+	int bookNo = (int)Long.parseLong(request.getParameter("no"));
 
 	int member;
 	try{
@@ -49,10 +48,8 @@
 	catch(Exception e){
 		member = 0;
 	}
-
-
+	
 %>
-
 <jsp:include page="/template/header.jsp"></jsp:include>
 
 <div class="container-700">
@@ -123,19 +120,21 @@
 					<div class="payment-text">카드/간편결제 할인 &gt;</div>
 					<div class="payment-text">무이자 할부 &gt;</div>
 					<div class="payment-text">소득공제 690원</div>
-				</div>
+				</div><br><br><br>
+				<div>
+				
 				<div class="payment-button-box">
-					
-				<form action="<%=root %>/member/cartInsert.kh" method="post">
+				
+				<form action="<%=root %>/member/cartInsert.kh" method="post" onsubmit="foo();">
 					<input type="hidden" name="memberNo" value="<%=member %>">
-					<input type="hidden" name="bookNo" value="<%=bookNo%>"><br>
-					
-							수량  <span><button type="button" name="button"onclick="minus()"><img src="<%=root %>/image/minus-solid.svg" alt="minus" class="amount-image"/></button></span>
-	                <span><input type="text" name="cartAmount" value="1" size="10" id="count" class="text-center"></span>
-	                <span><button type="button" name="button"onclick="plus()"><img src="<%=root %>/image/plus-solid.svg" alt="plus" class="amount-image"/></button></span>
-	               <br><br>
-					<input type="submit"value="장바구니 담기" class="payment-button" >
-				</form>	
+					<input type="hidden" name="bookNo" value="<%=bookNo %>"><br>
+						
+						수량<span><button type="button" name="button"onclick="minus()"><img src="<%=root %>/image/minus-solid.svg" alt="minus" class="amount-image"/></button></span>
+                <span><input type="text" name="cartAmount" value="1" size="10" id="count" class="text-center"></span>
+                <span><button type="button" name="button"onclick="plus()"><img src="<%=root %>/image/plus-solid.svg" alt="plus" class="amount-image"/></button></span>
+                	<br><br>
+                	<input type="submit" value="장바구니 담기" class="payment-button">
+					</form>
 					
 					<div class="payment-button"><a href="#" class="payment-button-text">바로구매</a></div>
 					<div class="payment-button"><a href="#" class="payment-button-text-red">보관함+</a></div>
@@ -278,13 +277,9 @@ function minus(){
 </script>
 
 <script>
-function cart_popup(){
-	  if (confirm("정말 삭제하시겠습니까??") == true){    //확인
-	      document.form.submit();
-	  }else{   //취소
-	      return;
-	  }
-	}
+	function foo(){
+		alert("장바구니에 담겼습니다.");
+	};
 </script>
 
 <jsp:include page="/template/footer.jsp"></jsp:include>

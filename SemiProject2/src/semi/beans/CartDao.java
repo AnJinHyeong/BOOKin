@@ -3,6 +3,7 @@ package semi.beans;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CartDao {
@@ -61,6 +62,19 @@ public class CartDao {
 		
 		return count > 0;
 	}
+	
+	public boolean deleteAll(int memberNo) throws Exception{
+		Connection con = JdbcUtils.getConnection();
+		
+		String sql = "delete cart where member_no = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, memberNo);
+		int count = ps.executeUpdate();
+		
+		con.close();
+		
+		return count > 0;
+	}
 	// 장바구니 확인 기능
 	public boolean check(CartDto cartDto)throws Exception {
 		Connection con = JdbcUtils.getConnection();
@@ -74,10 +88,32 @@ public class CartDao {
 		return result;
 		
 	}
-	
-	
-	
-	
-	
-	
-}
+	 // 목록기능
+	   public List<CartDto> list(int startRow, int endRow) throws Exception {
+		   Connection con = JdbcUtils.getConnection();
+		   
+		   String sql = "select * from( " + "	select rownum rn, TMP.* from( "
+					+ "		select * from cart order by cart_no desc " 
+					+ "	)TMP "
+					+ ") where rn between ? and ?";
+		   PreparedStatement ps = con.prepareStatement(sql);
+		   ps.setInt(1, startRow);
+		   ps.setInt(2, endRow);
+		   ResultSet rs = ps.executeQuery();
+		   
+		   // List
+		   List<CartDto> cartList = new ArrayList<>();
+		   while(rs.next()) {
+			   CartDto cartDto = new CartDto();
+			   cartDto.setCartNo(rs.getInt("cart_no"));
+			   cartDto.setMemberNo(rs.getInt("member_no"));
+			   cartDto.setBookNo(rs.getInt("book_no"));
+			   cartDto.setCartAmount(rs.getInt("cart_amount"));
+			   cartDto.setCartTime(rs.getDate("cart_time"));
+			   
+			   cartList.add(cartDto);
+		   }
+		   con.close();
+		   return cartList;
+	   }
+	}

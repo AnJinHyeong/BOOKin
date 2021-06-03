@@ -230,7 +230,7 @@
 		var viewClass = document.querySelectorAll(".re");
 		var editClass = document.querySelectorAll(".up");
 		
-		for(var i=0; i<viewClass.length; i++){
+		for(var i=0; i<viewClass.length; i++)if
 			viewClass[i].style.display = "";
 			editClass[i].style.display = "none";
 		}

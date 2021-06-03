@@ -68,7 +68,7 @@
 			<img class ="icon" src="<%=root%>/image/like.svg">
 			<span>좋아요</span>
 		</a>
-		<a class="icon-item align-column" href="#">
+		<a class="icon-item align-column" href="<%=root%>/member/cart.jsp">
 			<img class ="icon" src="<%=root%>/image/bag.svg">
 			<span>장바구니</span>
 		</a>
