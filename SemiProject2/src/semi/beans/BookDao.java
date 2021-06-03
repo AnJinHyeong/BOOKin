@@ -1,3 +1,4 @@
+
 package semi.beans;
 
 import java.sql.Connection;
@@ -572,3 +573,4 @@ public class BookDao {
 	}
 	
 }
+
