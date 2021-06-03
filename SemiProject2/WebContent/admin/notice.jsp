@@ -223,14 +223,14 @@
 						<table class="table table-border table-hover table-striped" style="text-align: center;">
 							<thead>
 								<tr>
-									<th>번호</th>
-									<th style="width: 6%;">구분</th>
+									<th style="width: 1%;">번호</th>
+									<th style="width: 1%;">구분</th>
 									<th>제목</th>
-									<th style="width: 6%;">작성자</th>
-									<th style="width: 7%;">등록일자</th>
-									<th>조회수</th>
-									<th style="width: 5%;">수정</th>
-									<th style="width: 5%;">삭제</th>
+									<th style="width: 1%;">작성자</th>
+									<th style="width: 2%;">등록일자</th>
+									<th style="width: 1%;">조회수</th>
+									<th style="width: 1%;">수정</th>
+									<th style="width: 1%;">삭제</th>
 								</tr>
 							</thead>
 							<tbody>
