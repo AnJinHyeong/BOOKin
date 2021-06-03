@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import semi.beans.QnaBoardDao;
 import semi.beans.QnaReplyDao;
 import semi.beans.QnaReplyDto;
 
@@ -27,15 +28,18 @@ public class QnaBoardDeleteReplyServlet extends HttpServlet{
 			QnaReplyDao qnaReplyDao = new QnaReplyDao();
 			boolean result = qnaReplyDao.delete(qnaReplyDto);
 			
+			QnaBoardDao qnaBoardDao = new QnaBoardDao();
+			qnaBoardDao.refreshBoardReply(qnaReplyDto.getQnaReplyOrigin());
+			
 			resp.setContentType("text/html; charset=UTF-8");
 			PrintWriter writer = resp.getWriter();
 			
-			if(!result) {				 
-				writer.println("<script>alert('댓글 삭제가 실패했습니다.'); location.href='"+"qnaBoardDetail.jsp?qnaBoardNo="+qnaReplyDto.getQnaReplyOrigin()+"';</script>");				
-			}
-			else {
-				writer.println("<script>alert('댓글이 삭제되었습니다.'); location.href='"+"qnaBoardDetail.jsp?qnaBoardNo="+qnaReplyDto.getQnaReplyOrigin()+"';</script>");
-			}
+//			if(!result) {				 
+//				writer.println("<script>alert('댓글 삭제가 실패했습니다.'); location.href='"+"qnaBoardDetail.jsp?qnaBoardNo="+qnaReplyDto.getQnaReplyOrigin()+"';</script>");				
+//			}
+//			else {
+			writer.println("<script>alert('댓글이 삭제되었습니다.'); location.href='"+req.getContextPath()+"/admin/qnaReply.jsp';</script>");
+//			}
 			writer.close();
 		}
 		catch(Exception e) {
