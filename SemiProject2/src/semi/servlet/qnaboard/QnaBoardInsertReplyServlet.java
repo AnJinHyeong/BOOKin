@@ -33,7 +33,7 @@ public class QnaBoardInsertReplyServlet extends HttpServlet{
 			resp.setContentType("text/html; charset=UTF-8");
 			PrintWriter writer = resp.getWriter();	
 			
-			writer.println("<script>alert('댓글이 등록되었습니다.'); location.href='"+"qnaBoardDetail.jsp?qnaBoardNo="+qnaReplyDto.getQnaReplyOrigin() +"';</script>");					
+			writer.println("<script>alert('답변이 등록되었습니다.'); location.href='"+req.getContextPath()+"/admin/qnaReply.jsp';</script>");					
 			writer.close();
 		}
 		catch(Exception e) {

@@ -38,7 +38,7 @@
 <html>
 <head>
    <meta charset="UTF-8">
-   <title>알라딘</title>
+   <title>BOOKin</title>
     <link rel="stylesheet" type="text/css" href="<%= root%>/css/common.css">
     <link rel="stylesheet" type="text/css" href="<%= root%>/css/template.css">
     <link rel="stylesheet" type="text/css" href="<%= root%>/css/signup.css">

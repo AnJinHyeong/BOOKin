@@ -182,13 +182,6 @@
 			<pre><%=noticeBoardDto.getNoticeBoardContent() %></pre>
 		</div>
 		
-		<%if(member == noticeBoardDto.getNoticeBoardWriter()){ %>
-    	<div class="notice-bottom">
-	        <a class="form-btn form-btn-normal delete-btn" href="qnaNoticeEdit.jsp?noticeBoardNo=<%=noticeBoardNo%>">수정</a>
-	        <a class="form-btn form-btn-normal delete-btn" href="qnaNoticeDelete.kh?noticeBoardNo=<%=noticeBoardNo%>" >삭제</a>
-     	</div>
-     	<%} %>
-		
 		<div class="qna-notice-prev">
 			<a href="#">이전글	|</a> 
 			<%if(nextBoardDto == null){%>

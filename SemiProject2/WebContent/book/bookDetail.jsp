@@ -1,3 +1,5 @@
+<%@page import="semi.beans.BookReviewDto"%>
+<%@page import="semi.beans.BookReviewDao"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="semi.beans.GenreDto"%>
 <%@page import="java.util.List"%>
@@ -32,6 +34,8 @@
 	List<GenreDto> genreList=genreDao.sameGenreList(bookDto.getBookGenreNo());
 	
 	bookDao.bookView((int)no);
+	
+	
 %>
 <%
 	int price=bookDto.getBookPrice();
@@ -39,7 +43,81 @@
 	int priceDif=price-discount;
 	int discountPercent=(int)(((double)priceDif/(double)price)*(100.0));
 %>
+<%
+	//페이지 네이셔 구현 코드
+	int pageNo;//현재 페이지 번호
+	try{
+		pageNo = Integer.parseInt(request.getParameter("pageNo"));
+		if(pageNo < 1) {
+			throw new Exception();
+		}
+	}
+	catch(Exception e){
+		pageNo = 1;//기본값 1페이지
+	}
+	
+	int pageSize;
+	try{
+		pageSize = Integer.parseInt(request.getParameter("pageSize"));
+		if(pageSize < 10){
+			throw new Exception();
+		}
+	}
+	catch(Exception e){
+		pageSize = 5;//기본값 15개
+	}
+	
+	//rownum의 시작번호(startRow)와 종료번호(endRow)를 계산
+	int startRow = pageNo * pageSize - (pageSize-1);
+	int endRow = pageNo * pageSize;
+	
+	//해당 책 리뷰
+	BookReviewDao bookReviewDao = new BookReviewDao();
+	List<BookReviewDto> reviewList = bookReviewDao.list(no, startRow, endRow);
+	
+	//해당 책 리뷰 개수
+	int reviewCount = bookReviewDao.count(no);
+	//해당 책 리뷰 평점
+	int reviewAvg = bookReviewDao.avg(no);
+	
+	int count = bookReviewDao.count(no);
+		
+	int blockSize = 10;
+	int lastBlock = (count + pageSize - 1) / pageSize;
+	//	int lastBlock = (count - 1) / pageSize + 1;
+	int startBlock = (pageNo - 1) / blockSize * blockSize + 1;
+	int endBlock = startBlock + blockSize - 1;
+	
+	if(endBlock > lastBlock){//범위를 벗어나면
+		endBlock = lastBlock;//범위를 수정
+	}
+	
+%>
 <jsp:include page="/template/header.jsp"></jsp:include>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script>
+	//페이지 네이션 
+	$(function(){
+		$(".pagination > a").click(function(){
+			//주인공 == a태그
+			var pageNo = $(this).text();
+			if(pageNo == "이전"){//이전 링크 : 현재 링크 중 첫 번째 항목 값 - 1
+				pageNo = parseInt($(".pagination > a:not(.move-link)").first().text()) - 1;
+				$("input[name=pageNo]").val(pageNo);
+				$(".page-form").submit();//강제 submit 발생
+			}	
+			else if(pageNo == "다음"){//다음 링크 : 현재 링크 중 마지막 항목 값 + 1
+				pageNo = parseInt($(".pagination > a:not(.move-link)").last().text()) + 1;
+				$("input[name=pageNo]").val(pageNo);
+				$(".page-form").submit();//강제 submit 발생
+			}
+			else{//숫자 링크
+				$("input[name=pageNo]").val(pageNo);
+				$(".page-form").submit();//강제 submit 발생
+			}
+		});
+	});	
+</script>
 
 <div class="container-700">
 
@@ -98,12 +176,17 @@
 						<span>&emsp;|&emsp;Sales Point : </span><span class="detail-etc-text-highlight">29,900</span>
 					</div>
 					<span class="star-image-box">
-						<span><img src="<%=root %>/image/star-solid.svg" class="star-image"></span>
-						<span><img src="<%=root %>/image/star-solid.svg" class="star-image"></span>
-						<span><img src="<%=root %>/image/star-solid.svg" class="star-image"></span>
-						<span><img src="<%=root %>/image/star-solid.svg" class="star-image"></span>
-						<span><img src="<%=root %>/image/star-half-solid.svg" class="star-image"></span>
-						<span class="site-color-red detail-etc-text-highlight">8.8</span>
+						<%if(reviewAvg == 0){ %>
+							<span class="site-color-red detail-etc-text-highlight">리뷰가 없습니다.</span>
+						<%} else{%>
+							<%for(int i=0; i<reviewAvg;i++){ %>
+								<span><img src="<%=root %>/image/star_on.png" class="star-image"></span>
+							<%} %>
+							<%for(int i=0; i<5-reviewAvg; i++){ %>
+								<span><img src="<%=root %>/image/star_off.png" class="star-image"></span>
+							<%} %>
+							<span class="site-color-red detail-etc-text-highlight"><%=reviewAvg %></span>
+						<%} %>
 					</span>
 	
 					<span>
@@ -285,6 +368,70 @@
 			<%} %>
 		</div>
 		<hr>
+	</div>
+	<div class="row text-left book-detail-semi-box2">
+		<!-- 리뷰 -->
+		<div class="book-detail-semi-title2">
+			<span>BOOK 리뷰</span> 
+		</div>
+		<%if(reviewCount > 0){ %>
+			<%for(BookReviewDto bookReviewDto : reviewList){ %>
+				<div class="row" style="padding-bottom: 15px;">
+					<div class="row">
+						<span style="display: none;"><%=bookReviewDto.getReviewRate() %></span>
+						<%int reviewRate = bookReviewDto.getReviewRate() ; %>
+						<%for(int i=0; i<reviewRate; i++){ %>
+							<img src="<%=root%>/image/star_on.png">
+						<%} %>
+						<%for(int i=0; i<5-reviewRate; i++){ %>
+							<img src="<%=root%>/image/star_off.png">
+						<%} %>
+					</div>
+					
+					<div class="row text-left">
+						<p style="min-height: 40px;"><%=bookReviewDto.getReviewContent() %></p>
+					</div>
+					
+					<div class="row text-left">
+						<span style="font-size: 12px;"><%=bookReviewDto.getMemberId() %></span>
+						<span style="font-size: 12px;"><%=bookReviewDto.getReviewTime() %></span>
+					</div>
+				</div>
+				
+			<%} %>
+		<%} else{%>
+			<div class="row text-center">
+				<div class="row" style="height: 100px; ">
+					<span style="color: lightgray;">작성된 리뷰가 없습니다.</span>
+				</div>
+			</div>
+		<%} %>
+		
+		<!-- 페이지 네이션 -->
+		<div class="pagination text-center">
+		
+			<%if(startBlock > 1){ %>
+			<a class="move-link">이전</a>
+			<%} %>
+			
+			<%for(int i = startBlock; i <= endBlock; i++){ %>
+				<%if(i == pageNo){ %>
+					<a class="on"><%=i%></a>
+				<%}else{ %>
+					<a><%=i%></a>
+				<%} %>
+			<%} %>
+			
+			<%if(endBlock < lastBlock){ %>
+			<a class="move-link">다음</a>
+			<%} %>
+			
+		</div>
+		
+		<form class="page-form" action="bookDetail.jsp?no=<%=no %>" method="post">
+			<input type="hidden" name="pageNo">
+		</form>
+		
 	</div>
 	
 	

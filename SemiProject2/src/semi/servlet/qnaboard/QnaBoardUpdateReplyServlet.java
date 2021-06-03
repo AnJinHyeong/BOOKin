@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import semi.beans.QnaBoardDao;
 import semi.beans.QnaReplyDao;
 import semi.beans.QnaReplyDto;
 
@@ -27,7 +26,7 @@ public class QnaBoardUpdateReplyServlet extends HttpServlet{
 			QnaReplyDao qnaReplyDao = new QnaReplyDao();
 			qnaReplyDao.edit(qnaReplyDto);		
 			
-			resp.sendRedirect("qnaBoardDetail.jsp?qnaBoardNo="+qnaReplyDto.getQnaReplyOrigin());
+			resp.sendRedirect(req.getContextPath()+"/admin/qnaReply.jsp");
 		}
 		catch(Exception e) {
 			e.printStackTrace();

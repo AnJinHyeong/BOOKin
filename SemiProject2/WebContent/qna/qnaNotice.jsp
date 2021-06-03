@@ -273,13 +273,6 @@
 	<h2 class="subtitle">NOTICE</h2>
 	
 	<div class="qna-list">
-		<!-- 관리자만 보이는 등록 버튼 -->
-		<!-- ex 관리자 번호가 1번일 경우 -->
-<%-- 		<%if(member == 1) {%> --%>
-		<div class="notice-row-link">
-			<a href="qnaNoticeInsert.jsp">NOTICE 등록</a>
-		</div>
-<%-- 		<%} %> --%>
 		<table class="qna-table">
 			<thead>
 				<tr>
@@ -321,6 +314,10 @@
 		<a class="move-link">다음</a>
 		<% } %>
 	</div>
+	
+	<form class="page-form" action="qnaNotice.jsp" method="post">
+		<input type="hidden" name="pageNo">
+	</form>
 </div>
 
 
