@@ -7,7 +7,7 @@
     pageEncoding="UTF-8"%>
 
 <%
-long no = Long.parseLong(request.getParameter("no"));
+	int no = Integer.parseInt(request.getParameter("no"));
 
 	BookDao bookDao = new BookDao();
 	BookDto bookDto = bookDao.get(no);

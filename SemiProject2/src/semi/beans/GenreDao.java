@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class GenreDao {
 	
 	//전체리스트 조회
@@ -156,6 +157,7 @@ public class GenreDao {
 		}
 		con.close();
 		return no;
+	}
 	public GenreDto getTopGenre(Long no) throws Exception{
 		Connection con = JdbcUtils.getConnection();
 		String sql="select * from genre "

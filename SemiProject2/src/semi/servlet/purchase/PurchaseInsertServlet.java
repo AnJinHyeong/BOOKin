@@ -21,21 +21,22 @@ public class PurchaseInsertServlet extends HttpServlet{
 
 			
 			 req.setCharacterEncoding("UTF-8"); 
-			 PurchaseDto purchaseDto= new PurchaseDto();
-			 
 			 PurchaseDao purchaseDao=new PurchaseDao();
-			int no= purchaseDao.getNumber();
-			 purchaseDto.setPurchaseNo(no);
-			 System.out.println(req.getParameter("purchaseMember"));
-			 purchaseDto.setPurchaseMember(Integer.parseInt(req.getParameter("purchaseMember")));
-			 purchaseDto.setPurchaseBook(Integer.parseInt(req.getParameter("purchaseBook")));
-			 purchaseDto.setPurchaseRecipient(req.getParameter("purchaseRecipient"));
-			 purchaseDto.setPurchasePhone(Integer.parseInt(req.getParameter("purchasePhone")));
-			 purchaseDto.setPurchaseAddress(req.getParameter("purchaseAddress"));
-	
-			
-			 purchaseDao.insert(purchaseDto);
-		
+			 int no= purchaseDao.getNumber();
+			 String[] bookNoList = req.getParameterValues("purchaseBook");
+			 String[] amountList = req.getParameterValues("purchaseAmount");
+			 for(int i = 0;i<bookNoList.length;i++) {				 
+				 PurchaseDto purchaseDto= new PurchaseDto();
+				 purchaseDto.setPurchaseNo(no);
+				 purchaseDto.setPurchaseMember(Integer.parseInt(req.getParameter("purchaseMember")));
+				 purchaseDto.setPurchaseBook(Integer.parseInt(bookNoList[i]));
+				 purchaseDto.setPurchaseRecipient(req.getParameter("purchaseRecipient"));
+				 purchaseDto.setPurchasePhone(req.getParameter("purchasePhone"));
+				 purchaseDto.setPurchaseAddress(req.getParameter("purchaseAddress"));
+				 purchaseDto.setPurchaseAmount(Integer.parseInt(amountList[i]));
+				
+				 purchaseDao.insert(purchaseDto);
+			 }
 			 resp.sendRedirect("purchaseSuccess.jsp");
 			
 		}

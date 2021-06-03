@@ -4,14 +4,30 @@ import java.sql.Date;
 
 public class PurchaseDto {
 	
+	private int purchasePk;
 	private int purchaseNo;
 	private String purchaseState;
 	private int purchaseBook;
 	private int purchaseMember;
 	private Date purchaseDate;
 	private String purchaseRecipient;
-	private int purchasePhone;
+	private String purchasePhone;
 	private String purchaseAddress;
+	private int purchaseAmount;
+	
+	
+	public int getPurchasePk() {
+		return purchasePk;
+	}
+	public void setPurchasePk(int purchasePk) {
+		this.purchasePk = purchasePk;
+	}
+	public int getPurchaseAmount() {
+		return purchaseAmount;
+	}
+	public void setPurchaseAmount(int purchaseAmount) {
+		this.purchaseAmount = purchaseAmount;
+	}
 	public int getPurchaseNo() {
 		return purchaseNo;
 	}
@@ -48,10 +64,10 @@ public class PurchaseDto {
 	public void setPurchaseRecipient(String purchaseRecipient) {
 		this.purchaseRecipient = purchaseRecipient;
 	}
-	public int getPurchasePhone() {
+	public String getPurchasePhone() {
 		return purchasePhone;
 	}
-	public void setPurchasePhone(int purchasePhone) {
+	public void setPurchasePhone(String purchasePhone) {
 		this.purchasePhone = purchasePhone;
 	}
 	public String getPurchaseAddress() {

@@ -7,7 +7,7 @@
 <%
 	String root=request.getContextPath();
 	PurchaseDao purchaseDao=new PurchaseDao();
-	//int no=purchaseDao.getNumber();
+	
 	int no=13;
 	PurchaseDto purchaseDto=purchaseDao.get(no);
 	
