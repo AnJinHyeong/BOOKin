@@ -1,3 +1,4 @@
+<%@page import="semi.beans.PurchaseDao"%>
 <%@page import="org.apache.catalina.filters.ExpiresFilter.XServletOutputStream"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="semi.beans.BookDto"%>
@@ -10,63 +11,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%	
-    	int pageNo=0;
-	    int startBlock=0;
-		int endBlock =0;
-		
-		int pageSize=0;
-		int blockSize=0;
-		int startRow=0;
-		int endRow=0;
-		
 		int count=0;
 		
 		String root = request.getContextPath();
-    	GenreDao genreDao = new GenreDao();
-    	List<GenreDto> topGenreList = genreDao.topGenreList();
-    	BookDao bookDao = new BookDao();
-    	BookDto bookDto=null;
-    	List<BookDto> bookList = new ArrayList<>();
-    	if(request.getParameter("bookNo")!=null && !request.getParameter("bookNo").equals("")){
-    		bookDto=bookDao.get(Integer.parseInt(request.getParameter("bookNo")));
-    		bookList.add(bookDto);
-    	}else{
-    		long genreNo=0;
-			if(request.getParameter("bookGenre")!=null){
-				genreNo=genreDao.getGenreNoByName(request.getParameter("bookGenre"));
-			}
-			if(request.getParameter("bookTitle")!=null && request.getParameter("bookAuthor")!=null &&request.getParameter("bookPublisher")!=null){
-				if(request.getParameter("pageNo")!=null){
-					if(request.getParameter("pageNo").equals("")){
-						pageNo = 1;
-					}else{
-						pageNo = Integer.parseInt(request.getParameter("pageNo"));
-					}
-					
-				}else{
-					pageNo = 1;
-				}
-				System.out.println(pageNo);
-				System.out.println(request.getParameter("pageNo"));
-				pageSize=20;
-				blockSize=10;
-				startRow=pageNo*pageSize-19;
-				endRow=pageNo*pageSize;
-				
-    			bookList = bookDao.adminSearch(request.getParameter("bookTitle"),request.getParameter("bookAuthor"),request.getParameter("bookPublisher"),genreNo,startRow,endRow);
-    			count=bookDao.adminSearchCount(request.getParameter("bookTitle"),request.getParameter("bookAuthor"),request.getParameter("bookPublisher"),genreNo);
-    			startBlock = (pageNo-1)/blockSize*blockSize+1;
-    	     	endBlock = startBlock+blockSize-1;
-    	     	
-    	    	int lastBlock = (count + pageSize - 1) / pageSize;
-    	    	
-    	    	if(endBlock > lastBlock){//범위를 벗어나면
-    	    		endBlock = lastBlock;//범위를 수정
-    	    	}
-			}
-    	}
-    	
-    	System.out.println(bookList.size());
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
+		String type = request.getParameter("type");
+		String dType = request.getParameter("dType");
+		String keyword = request.getParameter("keyword");
+		PurchaseDao purchaseDao = new PurchaseDao();
+		List<List<String>> purList = purchaseDao.purchaseSearch(startDate, endDate, type, keyword, dType);
+		
+		if(purList!=null){
+			count=purList.size();
+		}
 	%>
 <link rel="stylesheet" type="text/css" href="<%= root%>/css/common.css">
 <jsp:include page="/template/adminSidebar.jsp"></jsp:include>
@@ -74,7 +32,7 @@
 		<div class="admin-content_area">
 			<div class="admin-content">
 				<div class="admin-content_title">
-					상품 조회/수정
+					주문통합검색
 				</div>
 			</div>
 		</div>
@@ -83,23 +41,17 @@
 		<div class="admin-content_area">
 			<div class="admin-content">
 				<div class="admin-content_title">
-					검색어
+					조회기간
 				</div>
 				<div class="admin-search">
-					<div>책 번호</div>
-					<input type='number' name="bookNo">
+					<div>결제일</div>
+				</div>
+				<div class="admin-search date-search">
+					<a>오늘</a><a>1주일</a><a>1개월</a><a>3개월</a>
 				</div>
 				<div class="admin-search">
-					<div>책 제목</div>
-					<input type='text' name="bookTitle" >
-				</div>
-				<div class="admin-search">
-					<div>저자</div>
-					<input type='text' name="bookAuthor" >
-				</div>
-				<div class="admin-search">
-					<div>출판사</div>
-					<input type='text' name="bookPublisher" >
+					<input type="date" name="startDate" class="date1" <%if(startDate!=null){ %>value="<%=startDate%>"<%} %> > <span> &nbsp;~&nbsp; </span> 
+					<input type='date' name="endDate" class="date2" <%if(endDate!=null){ %>value="<%=endDate%>"<%} %>  >
 				</div>
 			</div>
 		</div>
@@ -107,11 +59,35 @@
 		<div class="admin-content_area">
 			<div class="admin-content">
 				<div class="admin-content_title">
-					카테고리
+					상세조건
 				</div>
-				
+				<div class="admin-search">
+					<select name="type">
+						<option>전체</option>
+						<option <%if(type!=null&&type.equals("purchaseNo")){%>selected<%}%> value="purchaseNo">주문번호</option>
+						<option <%if(type!=null&&type.equals("bookNo")){%>selected<%}%>  value="bookNo">상품번호</option>
+						<option <%if(type!=null&&type.equals("purchaseRecipient")){%>selected<%}%>  value="purchaseRecipient">주문자명</option>
+					</select>
+					<input type="text" name="keyword" <%if(keyword!=null){ %>value="<%=keyword%>"<%} %>/>
+				</div>
 			</div>
-			<input type="hidden" name='bookGenre' class="input_genre"/>
+		</div>
+		
+		<div class="admin-content_area">
+			<div class="admin-content">
+				<div class="admin-content_title">
+					주문상태
+				</div>
+				<div class="admin-search">
+					<select name="dType">
+						<option>전체</option>
+						<option <%if(dType!=null&&dType.equals("결제완료")){%>selected<%}%>>결제완료</option>
+						<option <%if(dType!=null&&dType.equals("주문확인")){%>selected<%}%>>주문확인</option>
+						<option <%if(dType!=null&&dType.equals("배송중")){%>selected<%}%>>배송중</option>
+						<option <%if(dType!=null&&dType.equals("배송완료")){%>selected<%}%>>배송완료</option>
+					</select>
+				</div>
+			</div>
 		</div>
 		<button class="submit-btn">검색</button>
 		</form>
@@ -125,61 +101,48 @@
 				<%if(count==0){ %>
 				<span class="no_Data">데이터가 없습니다</span>
 				<%}else{ %>
-					<table class="table table-border table-hover table-striped">
+				
+				
+				<form method="post" action="<%=root%>/purchase/purchaseUpdate.kh">
+					<table class="table table-border table-hover table-striped purchase-table" >
 						<thead>
 							<tr>
-								<th>번호</th>
-								<th>제목</th>
-								<th>저자</th>
-								<th>출판사</th>
-								<th>정가</th>
-								<th>할인가</th>
-								<th>카테고리</th>
-								<th>출판일</th>
-								<th>수정</th>
-								<th>삭제</th>
+								<th style="width:3%"><input class="all_cb" type="checkbox"></th>
+								<th style="width:5%">주문번호</th>
+								<th style="width:5%">상품번호</th>
+								<th style="width:5%">수량</th>
+								<th style="width:8%">주문상태</th>
+								<th style="width:15%">주문일</th>
+								<th style="width:10%">수령인</th>
+								<th style="width:15%">배송지</th>
+								<th style="width:10%">연락처</th>
+								<th style="width:10%">정가</th>
+								<th style="width:10%">판매가</th>
 							</tr>
 						</thead>
+						
 						<tbody>
-						<%for(BookDto bd : bookList){ %>
-							<tr>
-								<td style="	text-align: center;"><%=bd.getBookNo() %></td>
-								<td><a href="<%=root%>/book/bookDetail.jsp?no=<%=bd.getBookNo()%>"><%=bd.getBookTitle() %></a></td>
-								<td><%=bd.getBookAuthor() %></td>
-								<td><%=bd.getBookPublisher() %></td>
-								<td style="	text-align: center;"><%=bd.getBookPrice() %></td>
-								<td style="	text-align: center;"><%=bd.getBookDiscount() %></td>
-								<td style="	text-align: center;"><%=genreDao.get(bd.getBookGenreNo()).getGenreName() %></td>
-								<td style="	text-align: center;"><%=bd.getBookPubDate() %></td>
-								<td style="	text-align: center;"><a class="update-btn" href="bookEdit.jsp?bookNo=<%=bd.getBookNo()%>">수정</a></td>
-								<td style="	text-align: center;"><a class="update-btn" href="<%=root%>/book/bookDelete.kh?bookNo=<%=bd.getBookNo()%>" style="background-color:#ff6b6b">삭제</a></td>
-							</tr>
+						<%for(List<String> sList : purList){ %>
+						<tr>
+							<%for(int i = 0;i<sList.size();i++){ %>
+							<%if(i==0){ %>
+							<td><input type="checkbox" value="<%=sList.get(i)%>" name="purchaseNo"></td>
+							<%} %>
+							<td <%if(i==0){%>class="tr0<%=sList.get(i)%>" <%} %>>
+							<%if(i==9 && sList.get(9).equals("0")){ %>
+							<%=sList.get(8) %>
+							<%}else{ %>
+							<%=sList.get(i) %>
+							
+							<%}%>
+							</td>
+							<%}%>
+						</tr>
 						<%} %>
 						</tbody>
 					</table>
-				
-				
-				<ol class="pagination-list pagination" style="margin:30px;margin-left: 32%;">
-					<%if(pageNo>10){ %>
-					<li><a>이전</a></li>
-					<%} %>
-					<% for(int i = startBlock;i<=endBlock;i++){ %>
-					<%if(pageNo==i){ %>
-					<li class="on"><a><%=i %></a></li>
-					<%}else{ %>
-					<li><a><%=i %></a></li>
-					<%} %>
-					<%} %>
-					<%if(pageNo-1<endBlock/10*10){ %>
-					<li><a>다음</a></li>
-					<%} %>
-				</ol>
-				<form class="search-page-form" action="" method="get">
-					<input type="hidden" name="bookTitle"  value="<%=request.getParameter("bookTitle")%>">
-					<input type="hidden" name="bookAuthor" value="<%=request.getParameter("bookAuthor")%>">
-					<input type="hidden" name="bookPublisher"  value="<%=request.getParameter("bookPublisher")%>">
-					<input type="hidden" name='bookGenre' value="<%=request.getParameter("bookGenre")%>">
-					<input type="hidden" name="pageNo"/>
+					<button type="submit" class="confirmOrder s-btn" name="confirmOrder" value='true'>주문확인</button> 
+					<button type="submit" class="delivery s-btn" name="delivery" value='true'>출고</button>
 				</form>
 	<%} %>
 				</div>
@@ -198,26 +161,132 @@
 		}
 	}
 	window.addEventListener("load",function(){
-		const searchform=document.querySelector(".search-page-form")
-		const formPageNo=document.querySelector('input[name="pageNo"]')
-		const pageNo=document.querySelectorAll(".pagination > li > a")
-		for(var i=0;i<pageNo.length;i++){
-			if(pageNo[i].textContent=="이전"){
-				pageNo[i].addEventListener("click",function(){
-					formPageNo.value=this.parentElement.nextElementSibling.textContent-1
-					searchform.submit();
-				})
-			}else if(pageNo[i].textContent=="다음"){
-				pageNo[i].addEventListener("click",function(){
-					formPageNo.value=parseInt(this.parentElement.previousElementSibling.textContent)+1
-					searchform.submit();
-				})
-			}else{
-				pageNo[i].addEventListener("click",function(){
-					formPageNo.value=this.textContent		
-					searchform.submit();
-				})
-			}
+		var today = new Date();
+
+		const date2=document.querySelector(".date2")
+		const date1=document.querySelector(".date1")
+		
+		if(date1.value=="" && date2.value==""){
+			date2.value = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+			date2.valueAsNumber= date2.valueAsNumber+24*60*60*1*1000;
+			date1.valueAsNumber = date2.valueAsNumber-24*60*60*1*1000;
+			
+		}
+		
+		
+		const date_range_btn = document.querySelectorAll(".admin-search.date-search>a")
+		for(var i = 0 ; i<date_range_btn.length;i++){
+			date_range_btn[i].addEventListener("click",function(){
+				if(this.textContent=='오늘'){
+					date2.value = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+					date2.valueAsNumber= date2.valueAsNumber+24*60*60*1*1000;
+					date1.valueAsNumber = date2.valueAsNumber-24*60*60*1*1000;
+					for(var j = 0 ; j<date_range_btn.length;j++){
+						date_range_btn[j].classList.remove('on')
+					}
+					this.classList.add('on');
+				}else if(this.textContent=='1주일'){
+					date1.valueAsNumber = date2.valueAsNumber-24*60*60*7*1000;
+					for(var j = 0 ; j<date_range_btn.length;j++){
+						date_range_btn[j].classList.remove('on')
+					}
+					this.classList.add('on');
+				}else if(this.textContent=='1개월'){
+					date1.valueAsNumber = date2.valueAsNumber-24*60*60*31*1000;
+					for(var j = 0 ; j<date_range_btn.length;j++){
+						date_range_btn[j].classList.remove('on')
+					}
+					this.classList.add('on');
+				}else if(this.textContent=='3개월'){
+					date1.valueAsNumber = date2.valueAsNumber-24*60*60*92*1000;
+					for(var j = 0 ; j<date_range_btn.length;j++){
+						date_range_btn[j].classList.remove('on')
+					}
+					this.classList.add('on');
+				}
+			});
+		}
+		var mySet = new Set();
+		const confirmOrder = document.querySelector('.confirmOrder');
+		const delivery = document.querySelector('.delivery');
+		const tr = document.querySelectorAll("tbody>tr");
+		for(var i = 0  ; i<tr.length;i++){
+			tr[i].addEventListener("mouseover",function(){
+				const sel_tr=document.querySelectorAll("."+this.children[1].className);
+				for(var j = 0  ; j<tr.length;j++){
+					tr[j].style.backgroundColor="white";
+				}
+				for(var j =0 ;j<sel_tr.length;j++){
+					sel_tr[j].parentElement.style.backgroundColor="rgb(231, 241, 253,0.5)";
+				}
+			})
+			
+			tr[i].addEventListener("mouseout",function(){
+				for(var j = 0  ; j<tr.length;j++){
+					tr[j].style.backgroundColor="white";
+				}
+				
+			})
+			
+			tr[i].children[0].children[0].addEventListener("input",function(){
+				var cls_name=this.parentElement.nextElementSibling.className;
+				const sel_tr=document.querySelectorAll("."+cls_name);
+				
+				if(this.checked){
+					for(var j =0 ;j<sel_tr.length;j++){
+						sel_tr[j].previousElementSibling.children[0].checked=true;
+						sel_tr[j].previousElementSibling.children[0].classList.remove("ckfalse");
+						sel_tr[j].previousElementSibling.children[0].classList.add("cktrue");
+					}
+				}else{
+					for(var j =0 ;j<sel_tr.length;j++){
+						sel_tr[j].previousElementSibling.children[0].checked=false;
+						sel_tr[j].previousElementSibling.children[0].classList.remove("cktrue");
+						sel_tr[j].previousElementSibling.children[0].classList.add("ckfalse");
+					}
+				}
+				
+				const ck = document.querySelectorAll(".cktrue");
+				for(var j=0;j<ck.length;j++){
+					console.log(this.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent)
+					mySet.add(ck[j].parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent)
+					
+					if(mySet.size==1){
+						console.dir(mySet)
+						if(mySet.has('\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t주문확인\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t')){
+							delivery.style.display = 'block'
+							confirmOrder.style.display="none"
+						}else{
+							delivery.style.display = 'none'
+							confirmOrder.style.display="block"
+						}	
+					}else{
+						delivery.style.display = 'none'
+						confirmOrder.style.display="none"
+					}
+					
+				}
+					mySet.clear();
+			})
+		}
+		
+		const all_cb = document.querySelector(".all_cb");
+		if(all_cb){
+			all_cb.addEventListener("input",function(){
+				if(this.checked){
+					for(var i = 0  ; i<tr.length;i++){
+						tr[i].children[0].children[0].checked=true;
+						tr[i].children[0].children[0].classList.remove("ckfalse");
+						tr[i].children[0].children[0].classList.add("cktrue");
+					}
+				}else{
+					for(var i = 0  ; i<tr.length;i++){
+						tr[i].children[0].children[0].checked=false;
+						tr[i].children[0].children[0].classList.remove("cktrue");
+						tr[i].children[0].children[0].classList.add("ckfalse");
+					}
+				}
+			})
 		}
 		
 	})
