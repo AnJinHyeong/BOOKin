@@ -2,4 +2,5 @@
     pageEncoding="UTF-8"%>
 <jsp:include page="/template/homeHeader.jsp"></jsp:include>
 <jsp:include page="/template/homelist.jsp"></jsp:include>
+
 <jsp:include page="/template/footer.jsp"></jsp:include>
