@@ -46,7 +46,8 @@ public class BookImageDownloadServlet extends HttpServlet{
 			resp.setHeader("Content-Disposition", "attachment; filename=\""+fileName+"\"");
 			
 //			4. 파일 정보를 불러와서 사용자에게 전송(File 입력 후 네트워크 출력)
-			File dir = new File("D:/upload");
+//			File dir = new File("D:/upload");
+			File dir = new File("/Users/anjinhyeong/git/upload");
 			File target = new File(dir, bookDto.getBookImage());
 			
 			byte[] buffer = new byte[1024];

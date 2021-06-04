@@ -310,3 +310,14 @@
 	.event-area{
 		position: relative;
 	}
+	.purchase-next-btn{
+		font-size: 11px;
+		border-style: none;
+		background-color: white;
+	}
+	.purchase-link-btn{
+		border: 1px solid #dcdcdc; 
+		padding: 4px 2px; 
+		background-color: #F7F7F7;
+		border-radius: 3px;
+	}
