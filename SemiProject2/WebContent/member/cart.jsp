@@ -16,7 +16,7 @@
    String root = request.getContextPath();
    
 %>
-<%   
+<%
 
    int member;
    try{
@@ -108,6 +108,19 @@
 			cartTotalPrice = totalPrice + a;
 		
 %>
+
+<%
+	int no;
+	try{
+		no = Integer.parseInt(request.getParameter("no"));
+	}
+	catch(Exception e){
+		no = 0;
+	}
+	
+	
+%>
+
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -424,11 +437,11 @@
          <ul class="menu" >
             <li><a href="myInfo_check.jsp" id="edit-info">회원정보 수정 / 탈퇴</a></li>
             <li><a href="#">주문목록 / 배송조회</a></li>
-            <li><a href="#">리뷰관리</a></li>            
+            <li><a href="review.jsp">리뷰관리</a></li>            
             <li><a href="#">배송지 / 환불계좌 관리</a></li>
-            <li><a href="#">고객센터</a></li>
-            <li class="on"><a href="#">장바구니</a></li>
-            <li><a href="#">좋아요</a></li>
+            <li><a href="<%=root%>/qna/qnaNotice.jsp">고객센터</a></li>
+            <li class="on"><a href="cart.jsp">장바구니</a></li>
+            <li><a href="bookLike.jsp">좋아요</a></li>
          </ul>
       </aside>
       <!-- 장바구니 -->
@@ -470,12 +483,16 @@
                              </td>                                    
                               <td class="tleft">      
                                    <div>
-                                       <a href="/bookDetail.jsp?" >
+                                   		
+                                       <a href="<%=root %>/book/bookDetail.jsp?no=<%=cartListDto.getBookNo() %>" >
                                            <img src="<%=cartListDto.getBookImage() %>">
                                        </a>
                                            <div class="tit">
-                                             <%=cartListDto.getBookTitle() %>  
-                                          </div>                                   
+                                           		<a href="<%=root %>/book/bookDetail.jsp?no=<%=cartListDto.getBookNo() %>" >
+                                           		   <%=cartListDto.getBookTitle() %>  
+                                           		</a>   
+                                          </div>     
+                                                                        
                                     </div>                                   
                              </td>
                                  
