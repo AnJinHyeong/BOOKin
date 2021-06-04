@@ -236,14 +236,14 @@
 						<table class="table table-border table-hover table-striped" style="text-align: center;">
 							<thead>
 								<tr>
-									<th>번호</th>
-									<th style="width: 6%;">구분</th>
+									<th style="width: 1%;">번호</th>
+									<th style="width: 2%;">구분</th>
 									<th>제목</th>
-									<th style="width: 6%;">작성자</th>
-									<th style="width: 7%;">등록일자</th>
-									<th>답변여부</th>
-									<th style="width: 5%;">답변</th>
-									<th style="width: 5%;">삭제</th>
+									<th style="width: 3%;">작성자</th>
+									<th style="width: 3%;">등록일자</th>
+									<th style="width: 2%;">답변여부</th>
+									<th style="width: 2%;">답변</th>
+									<th style="width: 2%;">삭제</th>
 								</tr>
 							</thead>
 							<tbody>
