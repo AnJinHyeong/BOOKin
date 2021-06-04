@@ -11,9 +11,8 @@
     pageEncoding="UTF-8"%>
 <%
 	int no=(Integer)session.getAttribute("member");
-	int amount=1;
+	int amount=0;
 	String[] amounts=request.getParameterValues("amount"); 
-	
 	
 	String root=request.getContextPath();
 	MemberDao memberDao=new MemberDao();
@@ -31,7 +30,13 @@
 
 	int sum_price=2500;
 	
-	
+if(amounts==null){
+		String[] bookAmount=new String[bookList.size()];
+		for(int i=0;i<bookAmount.length;i++){
+			
+			bookAmount[i]="1";
+		}amounts=bookAmount;
+	}
 %>
 
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
@@ -76,7 +81,7 @@
           		  </a>
           		  <input type="hidden" value="<%=bookList.get(i).getBookNo()%>" name="purchaseBook" style="margin-left:15px;"></td>
 	      			<td><%=bookList.get(i).getBookTitle() %></td>
-	      			<td style="text-align:right;"><input class="purchaseAmount" name="purchaseAmount" type="number" min="0" value=<%=amounts[i] %> style="width:40px; margin-left:60px;"/></td>
+	      			<td style="text-align:right;"><input class="purchaseAmount" name="purchaseAmount" type="number" min="1" value=<%=amounts[i] %> style="width:40px; margin-left:60px;"/></td>    			
 	      			<td style="text-align:center"><%=bookList.get(i).getBookDiscount() %></td>
 	      			<td><button class="btn-del " type="button" id="<%=bookList.get(i).getBookNo()%>" >X</button></td>
 	      			
@@ -86,8 +91,8 @@
 	      		<tr>
 	      			<td >
 	      				<div style="visibility:hidden;">
-	      					<%for(BookDto bookDto: bookList){ %>
-	      					<%=sum_price+=bookDto.getBookDiscount()*amount %>
+	      					<%for(int i=0;i<bookList.size();i++){ %>
+	      					<%=sum_price+=bookList.get(i).getBookDiscount()*Integer.parseInt(amounts[i]) %>
 	      				<%} %>
 	      				</div>
 	      			</td>
@@ -112,7 +117,7 @@
             <br>
             <div>
                <span><%=memberDto.getMemberEmail() %></span>&ensp;
-               <a href="<%=root %>/member/myinfo.jsp?memberNo=<%=memberDto.getMemberNo()%>" class="button-style">수정</a>
+               <a href="<%=root %>/member/myInfo_check.jsp" class="button-style">수정</a>
             </div>
             
             
@@ -128,9 +133,9 @@
                   <input type="radio" name="address" value="1" checked="checked" onclick="newRecipientInfo(this.value);">&nbsp;&nbsp;기본배송지&nbsp;&nbsp;
                   <input type="radio" name="address" value="2" onclick="newRecipientInfo(this.value);">&nbsp;&nbsp;신규배송지&nbsp;&nbsp;
                   <div style="margin-top:10px;">
-                     <div><span class="recipient-span">수령인&ensp;</span><input type="text" name="purchaseRecipient" placeholder=" 50자 이내로 입력하세요" value="<%=memberDto.getMemberName()%>" id="member-name"></div>
-                     <div><span class="recipient-span">연락처&ensp;</span><input type="text" name="purchasePhone" placeholder="-를 제외하고 입력하세요" value="<%=memberDto.getMemberPhone()%>" id="member-phone"></div>
-                     <div><span class="recipient-span">주소&ensp;&ensp;</span><input type="text" name="purchaseAddress" value="<%=memberDto.getMemberAddress()%>" id="member-address">&ensp;<a  href="#" onclick="showDiv2()" class="button-style">수정</a> </div>
+                     <div><span class="recipient-span">수령인&ensp;</span><input type="text" name="purchaseRecipient" placeholder=" 50자 이내로 입력하세요" value="<%=memberDto.getMemberName()%>" id="member-name" class="recipient-input-style"></div>
+                     <div><span class="recipient-span">연락처&ensp;</span><input type="text" name="purchasePhone" placeholder="-를 제외하고 입력하세요" value="<%=memberDto.getMemberPhone()%>" id="member-phone" class="recipient-input-style"></div>
+                     <div><span class="recipient-span">주소&ensp;&ensp;</span><input type="text" name="purchaseAddress" value="<%=memberDto.getMemberAddress()%>" id="member-address" class="recipient-input-style">&ensp;<a  href="#" onclick="showDiv2()" class="button-style">수정</a> </div>
                      
                         <div id="show-div2" style="display:none">   
                            <div class="show-div">
