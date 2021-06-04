@@ -18,6 +18,7 @@
 	MemberDto memberDto = memberDao.getMember(memberNo);
 %>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script>
 	window.addEventListener("load",function(){
 		//회원가입 취소 버튼 : 클릭 뒤로가기
@@ -140,8 +141,23 @@
 							<span class="hidden">.</span>
 							<div><span>이메일</span><input type="email" name="memberEmail" value="<%=memberDto.getMemberEmail() %>" required></div>
 							<span class="hidden">.</span>
-							<div><span>주소</span><input type="text" name="memberAddress" value="<%=memberDto.getMemberAddress() %>" required></div>
-							<span class="hidden">.</span>						
+							<div><span>주소</span><input type="text" name="memberAddress" value="<%=memberDto.getMemberAddress() %>" id="member-address" required style="width:65%;margin-left:180px;"><a href="#" onclick="showDiv2()" class="button-style">수정</a></div>
+							<!-- <span class="hidden">.</span>	 -->	
+							 <div id="show-div2" style="display:none">   
+                           <div class="show-div container-center">
+                              <div>
+                                 <input type="text" name="zipcode" size="7" id="sample6_postcode" placeholder="우편번호">
+                                  <input type="button" class="btn-style" value="우편번호찾기" onclick="sample6_execDaumPostcode()">      
+                              </div>
+                              <div class="address-div"><input type="text" name="address1" size="40" id="sample6_address" placeholder="주소" class="input-style"></div>
+                              <div class="address-div"><input type="text" name="address2" size="40" id="sample6_address2" placeholder="상세주소" class="input-style"></div>
+                              <div style="margin-top:10px;">
+                                 <input type="button" value="확인" class="button-style" onclick="changeAddress()">
+                                 <input type="reset" value="초기화" class="button-style">
+                                 <input type="button" value="취소" class="button-style" onclick="hideDiv2()">
+                              </div>
+            </div>
+         </div>   				
 							<div style="width: 100% ;border-bottom:1px solid rgba(0,0,0,0.4);margin-bottom:40px"></div>
 							
 							<div class="signup-button-area">
@@ -155,4 +171,52 @@
 			</article>
 		</section>		
 	</main>
+	<script>
+	//주소 변경 버튼 누를시 div 출력 
+	function showDiv2(){
+		document.getElementById("show-div2").style.display="";
+	}
+	//취소 누를시 div 숨기기
+	function hideDiv2(){
+		document.getElementById("show-div2").style.display="none";
+	}
+	//확인 누를시 주소변경
+	function changeAddress(){
+		var newAddress=document.getElementById("sample6_address").value+" "+document.getElementById("sample6_address2").value;
+		console.log(newAddress);
+		document.getElementById("member-address").value=newAddress;
+	}
+
+	//우편번호 찾기
+	function sample6_execDaumPostcode() {
+	    new daum.Postcode({
+			oncomplete : function(data) {
+	           var fullAddr = ''; // 최종 주소 변수
+	           var extraAddr = ''; // 조합형 주소 변수
+
+	           if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+	               fullAddr = data.roadAddress;
+	            } else { // 사용자가 지번 주소를 선택했을 경우(J)
+	                fullAddr = data.jibunAddress;
+	            }
+	            if (data.userSelectedType === 'R') {
+	            
+	                if (data.bname !== '') {
+	                     extraAddr += data.bname;
+	                }
+	                if (data.buildingName !== '') {
+	                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	                }
+	                fullAddr += (extraAddr !== '' ? ' (' + extraAddr + ')' : '');
+	            }
+	            document.getElementById('sample6_postcode').value = data.zonecode; //5자리 새우편번호 사용
+	            document.getElementById('sample6_address').value = fullAddr;
+	            document.getElementById('sample6_address2').focus();
+	        }
+	    }).open();
+	} 
+
+	
+
+	</script>
 <jsp:include page="/template/footer.jsp"></jsp:include>

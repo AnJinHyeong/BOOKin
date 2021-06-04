@@ -124,8 +124,8 @@
 			<%}; %>
 			</div>
 			<div class="search-book-review search-button">
-				<a>바로구매</a>
-				<a>장바구니</a>
+				<a href="<%=root %>/purchase/purchase.jsp?no=<%=bookDto.getBookNo()%>">바로구매</a>
+				<a href="">장바구니</a>
 			</div>
 		</div>
 	<%} %>
