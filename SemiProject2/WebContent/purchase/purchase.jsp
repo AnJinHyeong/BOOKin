@@ -79,7 +79,7 @@
          </div>
       </div>
       <%} %>
-     
+     <div> 총 <span class="sum_price"></span> 원 </div>
       
       
 
