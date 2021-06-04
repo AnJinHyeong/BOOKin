@@ -14,7 +14,7 @@
 </head>
 <body>
 	<aside>
-		<div class="admin-logo"><a href="<%=root%>">BOOKin</a></div>
+		<div class="admin-logo"><a href="<%=root%>/admin/adminHome.jsp">BOOKin</a></div>
 		<ul>
 			<li class="admin-aside-top_menu"><span class="admin-aside-top_text">상품</span>
 				<ul class="admin-aside-side_menus">
@@ -24,8 +24,7 @@
 			</li>
 			<li class="admin-aside-top_menu"><span class="admin-aside-top_text">판매</span>
 				<ul class="admin-aside-side_menus">
-					<li><a href="<%=root%>/admin/purchaseSearch.jsp">주문통합검색</a></li>
-					<li><a>주문확인/발송관리</a></li>
+					<li><a href="<%=root%>/admin/purchaseSearch.jsp">주문확인/발송관리</a></li>
 					<li><a>취소 관리</a></li>
 				</ul>
 			</li>
@@ -44,6 +43,11 @@
 			<li class="admin-aside-top_menu"><span class="admin-aside-top_text">정산</span>
 				<ul class="admin-aside-side_menus">
 					<li><a>정산 내역</a></li>
+				</ul>
+			</li>
+			<li class="admin-aside-top_menu" style="padding-top: 250px;"><span class="admin-aside-top_text"></span>
+				<ul class="admin-aside-side_menus">
+					<li><a href="<%=root%>">메인 페이지</a></li>
 				</ul>
 			</li>
 		</ul>

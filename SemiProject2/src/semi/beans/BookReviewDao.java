@@ -20,7 +20,7 @@ public class BookReviewDao {
 				+ "	from\n"
 				+ "	    purchase P \n"
 				+ "	        inner join review R on P.purchase_pk = R.review_purchase\n"
-				+ "	        inner join member M on p.purchase_member = M.member_no WHERE purchase_book = ?\n"
+				+ "	        inner join member M on p.purchase_member = M.member_no WHERE purchase_book = ? ORDER BY review_no desc\n"
 				+ "	)TMP\n"
 				+ ") where rn between ? and ?";
 		PreparedStatement ps = con.prepareStatement(sql);
@@ -92,5 +92,6 @@ public class BookReviewDao {
 		con.close();
 		return avg;
 	}
+	
 	
 }
