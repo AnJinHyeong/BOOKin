@@ -224,6 +224,7 @@
 					<form action="<%=root %>/member/cartInsert.kh" method="post" onsubmit="foo();">
 						<input type="hidden" name="memberNo" value="<%=member %>">
 						<input type="hidden" name="bookNo" value="<%=bookNo %>"><br>
+						
 						<span class="payment-button" style="background-color:rgb(223,48,127);"><a href="<%=root %>/purchase/purchase.jsp?no=<%=bookDto.getBookNo()%>" class="payment-button-text">바로구매</a></span> 
                 		<span class="payment-button" style="background-color:rgb(226,68,87);"><input type="submit" value="장바구니 담기" class="cart-btn"></span>
 						<span class="payment-button"><a href="#" class="payment-button-text-red">보관함+</a></span>
