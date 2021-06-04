@@ -1,3 +1,7 @@
+<%@page import="java.util.Map"%>
+<%@page import="semi.beans.PurchaseDao"%>
+<%@page import="semi.beans.MemberDto"%>
+<%@page import="semi.beans.MemberDao"%>
 <%@page import="semi.beans.BookDao"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="semi.beans.BookDto"%>
@@ -69,6 +73,37 @@
 
 	DecimalFormat format = new DecimalFormat("###,###");
 	BookDao bookDao = new BookDao();
+	
+	MemberDao memberDao = new MemberDao();
+	MemberDto memberDto = memberDao.getMember(memberNo);
+	PurchaseDao purchaseDao = new PurchaseDao();
+	Map<String,List<Integer>> map = purchaseDao.getMemberPurchaseStateCount(memberNo);
+	
+	int orderConfirm=0;
+	int delieverying=0;
+	int delieverySucces=0;
+	int pay=0;
+	
+	if(map.containsKey("주문확인")){
+		
+		orderConfirm=map.get("주문확인").size();
+		
+	}
+	if(map.containsKey("결제완료")){
+		
+		pay=map.get("결제완료").size();
+		
+	}
+	if(map.containsKey("배송중")){
+		
+		delieverying=map.get("배송중").size();
+		
+	}
+	if(map.containsKey("배송완료")){
+		
+		delieverySucces=map.get("배송완료").size();
+		
+	}
 %>
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -174,28 +209,28 @@
 		<dl class="bottom" style="padding-bottom:55px;">
 		<dt>주문현황</dt>
 		<dd>
-			<div class="tit">0</div>
-			<div class="txt">주문접수</div>
+			<div class="tit"><a><%=pay %></a></div>
+			<div class="txt">결제완료</div>
 		</dd>
 		<dd class="bottom-next">
 			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
 		</dd>
 		<dd>
-			<div class="tit">0</div>
-			<div class="txt">상품준비중</div>
+			<div class="tit"><a><%=orderConfirm %></a></div>
+			<div class="txt">주문확인</div>
 		</dd>
 		<dd class="bottom-next">
 			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
 		</dd>
 		<dd>
-			<div class="tit">0</div>
+			<div class="tit"><a><%=delieverying %></a></div>
 			<div class="txt">배송중</div>
 		</dd>
 		<dd class="bottom-next">
 			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
 		</dd>
 		<dd>
-			<div class="tit">0</div>
+			<div class="tit"><a><%=delieverySucces %></a></div>
 			<div class="txt">거래완료</div>
 		</dd>
 	</dl>

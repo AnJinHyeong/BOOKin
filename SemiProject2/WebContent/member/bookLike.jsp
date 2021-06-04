@@ -1,3 +1,7 @@
+<%@page import="semi.beans.MemberDto"%>
+<%@page import="semi.beans.MemberDao"%>
+<%@page import="java.util.Map"%>
+<%@page import="semi.beans.PurchaseDao"%>
 <%@page import="semi.beans.BookDao"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="semi.beans.BookDto"%>
@@ -69,8 +73,39 @@
 
 	DecimalFormat format = new DecimalFormat("###,###");
 	BookDao bookDao = new BookDao();
+	
+	
+	MemberDao memberDao = new MemberDao();
+	MemberDto memberDto = memberDao.getMember(memberNo);
+	PurchaseDao purchaseDao = new PurchaseDao();
+	Map<String,List<Integer>> map = purchaseDao.getMemberPurchaseStateCount(memberNo);
+	
+	int orderConfirm=0;
+	int delieverying=0;
+	int delieverySucces=0;
+	int pay=0;
+	
+	if(map.containsKey("주문확인")){
+		
+		orderConfirm=map.get("주문확인").size();
+		
+	}
+	if(map.containsKey("결제완료")){
+		
+		pay=map.get("결제완료").size();
+		
+	}
+	if(map.containsKey("배송중")){
+		
+		delieverying=map.get("배송중").size();
+		
+	}
+	if(map.containsKey("배송완료")){
+		
+		delieverySucces=map.get("배송완료").size();
+		
+	}
 %>
-
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
 	$(function(){		
@@ -174,28 +209,28 @@
 		<dl class="bottom" style="padding-bottom:55px;">
 		<dt>주문현황</dt>
 		<dd>
-			<div class="tit">0</div>
-			<div class="txt">주문접수</div>
+			<div class="tit"><a><%=pay %></a></div>
+			<div class="txt">결제완료</div>
 		</dd>
 		<dd class="bottom-next">
 			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
 		</dd>
 		<dd>
-			<div class="tit">0</div>
-			<div class="txt">상품준비중</div>
+			<div class="tit"><a><%=orderConfirm %></a></div>
+			<div class="txt">주문확인</div>
 		</dd>
 		<dd class="bottom-next">
 			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
 		</dd>
 		<dd>
-			<div class="tit">0</div>
+			<div class="tit"><a><%=delieverying %></a></div>
 			<div class="txt">배송중</div>
 		</dd>
 		<dd class="bottom-next">
 			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
 		</dd>
 		<dd>
-			<div class="tit">0</div>
+			<div class="tit"><a><%=delieverySucces %></a></div>
 			<div class="txt">거래완료</div>
 		</dd>
 	</dl>
@@ -221,7 +256,7 @@
 					<h3 style=" margin-bottom: 40px;font-size:40px;" class="site-color">좋아요</h3>
 				</div>
 				<form action="<%=root%>/purchase/purchase.jsp">
-				<div class="book-list inf-list" style="min-height: 200px;">					
+				<div class="book-list inf-list book-like-div" style="min-height: 200px;">					
 					<%for(BookLikeDto bookLikeDto : bookLikeList){ %>
 						<%BookDto bookDto = bookDao.get(bookLikeDto.getBookOrigin()); %>
 						<div class="book-item">	
@@ -257,7 +292,7 @@
 				
 				<div class="row text-center" style="margin-bottom: 30px; margin-top: 30px;">
 					<input type="button" id="allSelect-btn" class="book-like-btn" value="전체선택">
-					<input type="submit" class="book-like-btn" value="선택상품 장바구니에 담기">
+					<input type="submit" class="book-like-btn" value="선택상품 구매">
 					<input type="button" class="book-like-btn book-like-delete-btn" value="선택상품 삭제">
 				</div>
 				</form>

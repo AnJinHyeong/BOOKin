@@ -1,22 +1,17 @@
+<%@page import="semi.beans.PurchaseBookMemberDto"%>
+<%@page import="semi.beans.PurchaseBookMemberDao"%>
+<%@page import="semi.beans.PurchaseDto"%>
+<%@page import="java.util.Map"%>
+<%@page import="semi.beans.PurchaseDao"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="semi.beans.CartListDto"%>
-<%@page import="semi.beans.CartListDao"%>
-<%@page import="semi.beans.GenreDto"%>
-<%@page import="semi.beans.GenreDao"%>
-<%@page import="semi.beans.CartDto"%>
-<%@page import="semi.beans.BookDto"%>
 <%@page import="java.util.List"%>
-<%@page import="semi.beans.BookDao"%>
 <%@page import="semi.beans.MemberDto"%>
 <%@page import="semi.beans.MemberDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%
-   String root = request.getContextPath();
-   
-%>
 <%   
+	String root = request.getContextPath();
 
    int member;
    try{
@@ -26,16 +21,45 @@
       member = 0;
    }
 
-   CartDto cartDto = new CartDto();
-   
 %>
+<%	
 
+	PurchaseDao purchaseDao = new PurchaseDao();
+	MemberDao memberDao = new MemberDao();
+	MemberDto memberDto = memberDao.getMember(member);
+	Map<String,List<Integer>> map = purchaseDao.getMemberPurchaseStateCount(member);
+	
+	int orderConfirm=0;
+	int delieverying=0;
+	int delieverySucces=0;
+	int pay=0;
+	
+	if(map.containsKey("주문확인")){
+		
+		orderConfirm=map.get("주문확인").size();
+		
+	}
+	if(map.containsKey("결제완료")){
+		
+		pay=map.get("결제완료").size();
+		
+	}
+	if(map.containsKey("배송중")){
+		
+		delieverying=map.get("배송중").size();
+		
+	}
+	if(map.containsKey("배송완료")){
+		
+		delieverySucces=map.get("배송완료").size();
+		
+	}
+%>
 <%
-	String bookTitle = request.getParameter("bookTitle");
+	
+	
 
-	boolean isTitle = bookTitle!= null;
-
-	int pageNo; //현재 페이지 번호
+	int pageNo;//현재 페이지 번호
 	try{
 		pageNo = Integer.parseInt(request.getParameter("pageNo"));
 		if(pageNo < 1) {
@@ -49,66 +73,41 @@
 	int pageSize;
 	try{
 		pageSize = Integer.parseInt(request.getParameter("pageSize"));
-		if(pageSize < 4){
+		if(pageSize < 8){
 			throw new Exception();
 		}
 	}
 	catch(Exception e){
-		pageSize = 4;//기본값 10개
+		pageSize = 8;//기본값 10개
 	}
 	
-	// rownum의 시작번호(startRow)와 종료번호(endRow)를 계산
+	//rownum의 시작번호(startRow)와 종료번호(endRow)를 계산
 	int startRow = pageNo * pageSize - (pageSize-1);
 	int endRow = pageNo * pageSize;
 	
-	CartListDao cartListDao = new CartListDao();
-	List<CartListDto> cartList;
-		if(isTitle){
-			cartList = cartListDao.titleList(bookTitle, startRow, endRow);	
+	PurchaseBookMemberDao purchaseBookMemberDao = new PurchaseBookMemberDao();
+	List<PurchaseBookMemberDto> purchaseList = purchaseBookMemberDao.myList(member, startRow, endRow);
+	
+	if(purchaseList.size() == 0){
+		if(pageNo != 1){
+			pageNo = 1;
+			response.sendRedirect("bookLike.jsp?pageNo=" + pageNo);
+			return;
 		}
-		else{
-			cartList = cartListDao.list(startRow, endRow);
-		}
-
-		int count;
-		if(isTitle){
-			count = cartListDao.getCountTitle(bookTitle);
-		}
-		else{
-			count = cartListDao.getCount();
-		}
-		
-		int blockSize = 10;
-		int lastBlock = (count + pageSize - 1) / pageSize;
-		int startBlock = (pageNo - 1) / blockSize * blockSize + 1;
-		int endBlock = startBlock + blockSize - 1;
-		
-		if(endBlock > lastBlock){//범위를 벗어나면
-			endBlock = lastBlock;//범위를 수정
-		}
-		
-		
-		int totalPrice = 0;		
-		List<CartListDto> priceList = cartListDao.priceList(member);
-		int a = 2500; //배송비
-		
-		for(CartListDto cartListDto : priceList){
-			if(cartListDto.getBookDiscount() > 0){
-				totalPrice += cartListDto.getBookDiscount() * cartListDto.getCartAmount() ;
-			} 
-			else{
-				totalPrice += cartListDto.getBookPrice() * cartListDto.getCartAmount() ;
-			}			
-		}
-		
-		int cartTotalPrice = 0;
-		if(priceList.size() == 0)
-			cartTotalPrice = totalPrice;
-		else
-			cartTotalPrice = totalPrice + a;
-		
+	}
+	
+	int count = purchaseBookMemberDao.getCoun(member);
+	
+	int blockSize = 10;
+	int lastBlock = (count + pageSize - 1) / pageSize;
+	//	int lastBlock = (count - 1) / pageSize + 1;
+	int startBlock = (pageNo - 1) / blockSize * blockSize + 1;
+	int endBlock = startBlock + blockSize - 1;
+	
+	if(endBlock > lastBlock){//범위를 벗어나면
+		endBlock = lastBlock;//범위를 수정
+	}
 %>
-
 
 <jsp:include page="/template/header.jsp"></jsp:include>
 
@@ -122,7 +121,6 @@
 		console.log("scroll moved");
 	});
 </script>
-
 <script>
 	//페이지 네이션 
 	$(function(){
@@ -148,39 +146,79 @@
 </script>
 
 <script>
-
+	window.onload = function(){
+		var state = document.querySelectorAll('#state');
+		var state1 = document.querySelectorAll(".state1");
+		var state2 = document.querySelectorAll(".state2");
+		var state3 = document.querySelectorAll(".state3");
+		
+		for(var i=0; i<state.length; i++){
+			
+			var stateType = state[i].innerHTML == "배송중";
+			var stateTypeCan = state[i].innerHTML == "결제완료";
+			if(stateType){
+				state1[i].style.display = "none";
+				state2[i].style.display = "";
+				state3[i].style.display = "none";
+			}
+			else if(stateTypeCan){
+				state1[i].style.display = "none";
+				state2[i].style.display = "none";
+				state3[i].style.display = "";
+			}
+			else{
+				state1[i].style.display = "";
+				state2[i].style.display = "none";
+				state3[i].style.display = "none";
+			}
+		}
+	}
 </script>
-   <!-- 주문 현황 영역 -->
+<script>
+	
+	$(function(){
+		 $(".purchase-cancel").click(function(){     
+	    	  if(confirm("구매를 취소 하시겠습니까?") == true){
+	         	$(location).attr("href", "<%=root%>/purchase/delete.kh?member=<%=member%>&purchaseNo=" + $(this).attr('id'));
+	         }
+	    	  else{
+	    		  return;
+	    	  }
+	      });
+	});
+	
+</script>
+
    <div class="container-1200 myInfo-header">
-      <dl class="bottom" style="padding-bottom:55px;">
-      <dt>주문현황</dt>
-      <dd>
-         <div class="tit">0</div>
-         <div class="txt">주문접수</div>
-      </dd>
-      <dd class="bottom-next">
-         <img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
-      </dd>
-      <dd>
-         <div class="tit">0</div>
-         <div class="txt">상품준비중</div>
-      </dd>
-      <dd class="bottom-next">
-         <img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
-      </dd>
-      <dd> 
-         <div class="tit">0</div>
-         <div class="txt">배송중</div>
-      </dd>
-      <dd class="bottom-next">
-         <img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
-      </dd>
-      <dd>
-         <div class="tit">0</div>
-         <div class="txt">거래완료</div>
-      </dd>
-   </dl>
-   </div>
+		<dl class="bottom" style="padding-bottom:55px;">
+		<dt>주문현황</dt>
+		<dd>
+			<div class="tit"><a><%=pay %></a></div>
+			<div class="txt">결제완료</div>
+		</dd>
+		<dd class="bottom-next">
+			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
+		</dd>
+		<dd>
+			<div class="tit"><a><%=orderConfirm %></a></div>
+			<div class="txt">주문확인</div>
+		</dd>
+		<dd class="bottom-next">
+			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
+		</dd>
+		<dd>
+			<div class="tit"><a><%=delieverying %></a></div>
+			<div class="txt">배송중</div>
+		</dd>
+		<dd class="bottom-next">
+			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
+		</dd>
+		<dd>
+			<div class="tit"><a><%=delieverySucces %></a></div>
+			<div class="txt">거래완료</div>
+		</dd>
+	</dl>
+	</div>
    <main class="myInfo-main">      
       <!-- 사이드영역 -->
       <aside class="myInfo-aside">
@@ -202,17 +240,73 @@
 				<h3 style=" margin-bottom: 40px;font-size:40px;" class="site-color">주문목록 / 배송조회</h3>
 			</div>
 			
-			<div class="row">
-				<table class="">
-					<tr>
-						<th>번호</th>
-						<th>상품</th>
-						<th>수량</th>
-						<th>가격</th>
-						<th>상태</th>
-					</tr>
+			<form action="<%=root %>/purchase/purchaseState.kh" method="post">
+			<div style="width: 90%; margin: 0 auto; min-height: 450px;">
+				<table class="table table-border" style="font-size: 12px;">
+					<thead style="border-bottom: 1px solid black; background-color: #FAEBCD">
+						<tr>
+							<th style="width:7%;">주문번호</th>
+							<th style="width:35%;">상품이름</th>
+							<th style="width:6%;">수령인</th>
+							<th style="width:15%;">배송지</th>
+							<th style="width:4%;">수량</th>
+							<th style="width:5%;">금액</th>
+							<th style="width:8%;">주문일</th>
+							<th style="width:6%;">상태</th>
+							<th style="width:6%;">-</th>
+						</tr>
+					</thead>
+					
+					<%for(PurchaseBookMemberDto purchaseBookMemberDto : purchaseList){ %>
+					<tbody style="border-bottom: 1px solid #bebebe; font-size: 10px; ">
+						<tr style="margin: 10px 0; height: 50px; ">
+							<th style="width:7%;"><%=purchaseBookMemberDto.getPurchaseNo() %></th>
+							<th style="width:35%; text-align: left;"><a href="<%=root%>/book/bookDetail.jsp?no=<%=purchaseBookMemberDto.getPurchaseBook()%>"><%=purchaseBookMemberDto.getBookTitle() %></a></th>
+							<th style="width:6%;"><%=purchaseBookMemberDto.getPurchaseRecipient() %></th>
+							<th style="width:15%;"><%=purchaseBookMemberDto.getPurchaseAddress() %></th>
+							<th style="width:4%;"><%=purchaseBookMemberDto.getPurchaseAmount() %></th>
+							<%if(purchaseBookMemberDto.getBookDiscount() == 0){ %>
+								<th style="width:5%;"><%=purchaseBookMemberDto.getBookPrice() %></th>
+							<%} else{%>
+								<th style="width:5%;"><%=purchaseBookMemberDto.getBookDiscount() %></th>
+							<%} %>
+							<th style="width:8%;"><%=purchaseBookMemberDto.getPurchaseDate() %></th>
+							<th style="width:6%;" id="state"><%=purchaseBookMemberDto.getPurchaseState() %></th>
+							<th style="width:6%; display: none;" class="state1">-</th>
+							<th style="width:6%; display: none;" class="state2">
+								<input type="hidden" value="<%=purchaseBookMemberDto.getPurchaseNo()%>" name="purchaseNo">
+								<input type="hidden" value="배송완료" name="purchaseState">
+								<input type="submit" value="상품수령">
+							</th>
+							<th style="width:6%; display: none;" class="state3"><a style="" class="purchase-cancel" id="<%=purchaseBookMemberDto.getPurchaseNo()%>">구매취소</a></th>
+						</tr>
+					</tbody>
+					<%} %>
 				</table>
 			</div>
+			</form>
+			
+			<div class="pagination">	
+					<%if(startBlock > 1){ %>
+					<a class="move-link">이전</a>
+					<%} %>
+					
+					<%for(int i = startBlock; i <= endBlock; i++){ %>
+						<%if(i == pageNo){ %>
+							<a class="on"><%=i%></a>
+						<%}else{ %>
+							<a><%=i%></a>
+						<%} %>
+					<%} %>
+					
+					<%if(endBlock < lastBlock){ %>
+					<a class="move-link">다음</a>
+					<%} %>					
+				</div>
+				
+				<form class="page-form" action="deliveryList.jsp" method="post">
+					<input type="hidden" name="pageNo">
+				</form>
 			
    			
 			</article>

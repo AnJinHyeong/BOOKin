@@ -1,3 +1,5 @@
+<%@page import="java.util.Map"%>
+<%@page import="semi.beans.PurchaseDao"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="semi.beans.CartListDto"%>
 <%@page import="semi.beans.CartListDao"%>
@@ -106,6 +108,38 @@
 			cartTotalPrice = totalPrice;
 		else
 			cartTotalPrice = totalPrice + a;
+		
+		
+		MemberDao memberDao = new MemberDao();
+		MemberDto memberDto = memberDao.getMember(member);
+		PurchaseDao purchaseDao = new PurchaseDao();
+		Map<String,List<Integer>> map = purchaseDao.getMemberPurchaseStateCount(member);
+		
+		int orderConfirm=0;
+		int delieverying=0;
+		int delieverySucces=0;
+		int pay=0;
+		
+		if(map.containsKey("주문확인")){
+			
+			orderConfirm=map.get("주문확인").size();
+			
+		}
+		if(map.containsKey("결제완료")){
+			
+			pay=map.get("결제완료").size();
+			
+		}
+		if(map.containsKey("배송중")){
+			
+			delieverying=map.get("배송중").size();
+			
+		}
+		if(map.containsKey("배송완료")){
+			
+			delieverySucces=map.get("배송완료").size();
+			
+		}
 		
 %>
 
@@ -374,35 +408,35 @@
 </script>
    <!-- 주문 현황 영역 -->
    <div class="container-1200 myInfo-header">
-      <dl class="bottom" style="padding-bottom:55px;">
-      <dt>주문현황</dt>
-      <dd>
-         <div class="tit">0</div>
-         <div class="txt">주문접수</div>
-      </dd>
-      <dd class="bottom-next">
-         <img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
-      </dd>
-      <dd>
-         <div class="tit">0</div>
-         <div class="txt">상품준비중</div>
-      </dd>
-      <dd class="bottom-next">
-         <img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
-      </dd>
-      <dd> 
-         <div class="tit">0</div>
-         <div class="txt">배송중</div>
-      </dd>
-      <dd class="bottom-next">
-         <img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
-      </dd>
-      <dd>
-         <div class="tit">0</div>
-         <div class="txt">거래완료</div>
-      </dd>
-   </dl>
-   </div>
+		<dl class="bottom" style="padding-bottom:55px;">
+		<dt>주문현황</dt>
+		<dd>
+			<div class="tit"><a><%=pay %></a></div>
+			<div class="txt">결제완료</div>
+		</dd>
+		<dd class="bottom-next">
+			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
+		</dd>
+		<dd>
+			<div class="tit"><a><%=orderConfirm %></a></div>
+			<div class="txt">주문확인</div>
+		</dd>
+		<dd class="bottom-next">
+			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
+		</dd>
+		<dd>
+			<div class="tit"><a><%=delieverying %></a></div>
+			<div class="txt">배송중</div>
+		</dd>
+		<dd class="bottom-next">
+			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
+		</dd>
+		<dd>
+			<div class="tit"><a><%=delieverySucces %></a></div>
+			<div class="txt">거래완료</div>
+		</dd>
+	</dl>
+	</div>
    <main class="myInfo-main">      
       <!-- 사이드영역 -->
       <aside class="myInfo-aside">

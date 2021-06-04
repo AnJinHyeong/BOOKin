@@ -163,7 +163,7 @@ public class QnaBoardDao {
 		return boardList;
 	}
 
-// 	title 조회 목록 기능
+// 	header 조회 목록 기능
 	public List<QnaBoardDto> titleList(String qnaBoardHeader, int startRow, int endRow) throws Exception {
 		Connection con = JdbcUtils.getConnection();
 	
