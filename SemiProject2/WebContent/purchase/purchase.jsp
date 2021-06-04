@@ -98,6 +98,7 @@
 	      </table>
       </div>
 
+
 		<div class="row text-left book-detail-semi-box"> 
 
          <div class="book-detail-semi-title">주문자 정보</div>
