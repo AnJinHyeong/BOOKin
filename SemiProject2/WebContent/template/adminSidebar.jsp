@@ -46,7 +46,7 @@
 					<li><a>정산 내역</a></li>
 				</ul>
 			</li>
-			<li class="admin-aside-top_menu" style="padding-top: 250px;"><span class="admin-aside-top_text"></span>
+			<li class="admin-aside-top_menu" style="padding-top: 100px;"><span class="admin-aside-top_text"></span>
 				<ul class="admin-aside-side_menus">
 					<li><a href="<%=root%>">메인 페이지</a></li>
 				</ul>

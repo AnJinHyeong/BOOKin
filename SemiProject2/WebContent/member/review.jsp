@@ -206,7 +206,7 @@
 			<h2 class="tit">MYPAGE</h2>
 			<ul class="menu" >
 				<li ><a href="myInfo_check.jsp" id="edit-info">회원정보 수정 / 탈퇴</a></li>
-				<li><a href="#">주문목록 / 배송조회</a></li>
+				<li><a href="deliveryList.jsp">주문목록 / 배송조회</a></li>
 				<li class="on"><a href="review.jsp">리뷰관리</a></li>				
 				<li><a href="<%=root%>/qna/qnaNotice.jsp">고객센터</a></li>
 				<li><a href="cart.jsp">장바구니</a></li>
