@@ -12,9 +12,8 @@
 <%
 	int no=(Integer)session.getAttribute("member");
 	int amount=1;
-	if(request.getParameter("amount")!=null){
-		amount=Integer.parseInt(request.getParameter("amount"));
-	}
+	String[] amounts=request.getParameterValues("amount"); 
+	
 	
 	String root=request.getContextPath();
 	MemberDao memberDao=new MemberDao();
@@ -65,21 +64,21 @@
 	      		</tr>
 	      	</thead>
 	      	<tbody>
-	      		<%for(BookDto bookDto:bookList){ %>
+	      		<%for(int i=0;i<bookList.size();i++){ %>
 	      			
 	      		<tr>	
-	      			<td><a href="<%=root%>/book/bookDetail.jsp?no=<%=bookDto.getBookNo()%>">
-			            <%if(bookDto.getBookImage().startsWith("https")){ %>
-			            <img src="<%=bookDto.getBookImage() %>" style="margin-right:20px;">
+	      			<td><a href="<%=root%>/book/bookDetail.jsp?no=<%=bookList.get(i).getBookNo()%>">
+			            <%if(bookList.get(i).getBookImage().startsWith("https")){ %>
+			            <img src="<%=bookList.get(i).getBookImage() %>" style="margin-right:20px;">
 						<%}else{ %>
-						<img src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>" style="margin-right:20px;">
+						<img src="<%=root%>/book/bookImage.kh?bookNo=<%=bookList.get(i).getBookNo()%>" style="margin-right:20px;">
 						<%} %>
           		  </a>
-          		  <input type="hidden" value="<%=bookDto.getBookNo()%>" name="purchaseBook" style="margin-left:15px;"></td>
-	      			<td><%=bookDto.getBookTitle() %></td>
-	      			<td style="text-align:right;"><input class="purchaseAmount" name="purchaseAmount" type="number" min="0" value=<%=amount %> style="width:40px; margin-left:60px;"/></td>
-	      			<td style="text-align:center"><%=bookDto.getBookDiscount() %></td>
-	      			<td><button class="btn-del " type="button" id="<%=bookDto.getBookNo()%>" >X</button></td>
+          		  <input type="hidden" value="<%=bookList.get(i).getBookNo()%>" name="purchaseBook" style="margin-left:15px;"></td>
+	      			<td><%=bookList.get(i).getBookTitle() %></td>
+	      			<td style="text-align:right;"><input class="purchaseAmount" name="purchaseAmount" type="number" min="0" value=<%=amounts[i] %> style="width:40px; margin-left:60px;"/></td>
+	      			<td style="text-align:center"><%=bookList.get(i).getBookDiscount() %></td>
+	      			<td><button class="btn-del " type="button" id="<%=bookList.get(i).getBookNo()%>" >X</button></td>
 	      			
 	      		</tr>
 	      		<%} %>

@@ -383,7 +383,11 @@
 </script>
 
 <script>
-
+	window.addEventListener("load",function(){
+		document.querySelector(".purchase-form-submit").addEventListener("click",function(){
+			document.querySelector(".purchase-form").submit();
+		});
+	});
 </script>
    <!-- 주문 현황 영역 -->
    <div class="container-1200 myInfo-header">
@@ -446,7 +450,9 @@
       <!-- 장바구니 -->
       <section class="cart-section">
       	<h2 class="cart-t">장바구니</h2>
+     
    		<div class="cart-table">
+   			<form action="<%=root%>/purchase/purchase.jsp" method="get" class="purchase-form">
                         <table>
                            <caption></caption>
                            <colgroup style="width: 700px;">
@@ -477,7 +483,7 @@
                            <tr>
                               <td>
                                	<span class="cs-form">
-                                 	<input type="checkbox" class="check-item"  id="checked<%=cartListDto.getBookNo() %>" data-bookno="<%=cartListDto.getBookNo()%>" data-cartno="<%=cartListDto.getCartNo() %>" name="list_cart"> 
+                                 	<input type="checkbox" class="check-item"  id="checked<%=cartListDto.getBookNo() %>" data-bookno="<%=cartListDto.getBookNo()%>" data-cartno="<%=cartListDto.getCartNo() %>" name="no" value="<%=cartListDto.getBookNo() %>"> 
                                 </span>
                              </td>                                    
                               <td class="tleft">      
@@ -499,7 +505,7 @@
                               <td>
                                   <div class="cart-count">
                                      <button type="button" name="button" class="mi" data-bookno="<%=cartListDto.getBookNo()%>"><img src="<%=root %>/image/minus-solid.svg" alt="minus" class="amount-image"></button>
-                                     <input type="text" onkeyPress="javascript:checkInputNum();"value="<%=cartListDto.getCartAmount()%>" id="<%=cartListDto.getCartNo()%>">   
+                                     <input type="text" onkeyPress="javascript:checkInputNum();"value="<%=cartListDto.getCartAmount()%>" id="<%=cartListDto.getCartNo()%>" name="amount">   
                                      <button type="button" name="button" class="pl"  data-bookno="<%=cartListDto.getBookNo()%>"><img src="<%=root %>/image/plus-solid.svg" alt="plus" class="amount-image"></button>                                 
                                   </div>
                               </td>
@@ -543,6 +549,7 @@
                            </tbody>
                         </table>
                         
+                   </form>
                      <div class="btnbox right"> 
                         <input type="button" class="allCheck" value="전체상품 선택" id="btn-s-black">
                         <input type="button" class="btn-s-black " id="del" value="선택상품 삭제" >
@@ -574,7 +581,7 @@
                </div>
     
     
-    
+    			
      		
               	 <div id="paybox" class="paybox" >
                    <div class="cart-top">
@@ -605,12 +612,14 @@
                    </div>
                         
                    <div class="btnbox">                         
-                         <button class="btn-m-red" type="button" style="margin-bottom : 2px;">
-                             전체상품 주문하기
-                         </button>
-                         <button class="btn-m-line" type="button" >
-                             선택상품 주문하기
-                         </button>                          
+                         <button class="btn-m-red purchase-form-submit" type="button" >
+                            주문하기
+                         </button> 
+                      
+                         
+    						
+    						
+    				
                    </div>
                                                
                </div>
