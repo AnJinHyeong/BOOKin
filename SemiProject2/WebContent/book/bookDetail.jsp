@@ -139,8 +139,6 @@
 			<span><%=bookDto.getBookAuthor() %> (지은이)&nbsp;&nbsp;</span>
 			<span><%=bookDto.getBookPublisher()%>&nbsp;&nbsp;</span>
 			<span><%=bookDto.getBookPubDate()%></span>
-			<span class="container-right"><a href="<%= root%>/book/bookEdit.jsp?no=<%=bookDto.getBookNo()%>">수정</a></span>
-      	    <span class="container-right"><a href="bookDelete.kh?bookNo=<%=bookDto.getBookNo()%>">삭제</a></span>
 			
 		</div>
 	</div>
@@ -181,10 +179,7 @@
 				</div>
 			</div><br><br>
 			<div class="detail-etc-text-box">
-					<div>
-						<span>인문학 주간 2위, 종합 top100</span><span class="detail-etc-text-highlight">  2주</span>
-						<span>&emsp;|&emsp;Sales Point : </span><span class="detail-etc-text-highlight">29,900</span>
-					</div>
+
 					<span class="star-image-box">
 						<%if(reviewAvg == 0){ %>
 							<span class="site-color-red detail-etc-text-highlight">리뷰가 없습니다.</span>
@@ -205,13 +200,8 @@
 					<span class="blue-box">
 						이 책 어때요?
 					</span>
-				</div>
-				<div class="payment-text-box">
-					<div class="payment-text">카드/간편결제 할인 &gt;</div>
-					<div class="payment-text">무이자 할부 &gt;</div>
-					<div class="payment-text">소득공제 690원</div>
-
-				</div><br><br>
+				</div><br>
+				
 				
 				<div class="payment-button-box">
 					
@@ -219,26 +209,26 @@
 					<form action="<%=root %>/member/cartInsert.kh" method="post" onsubmit="foo();">
 						<div class="row">
 							<span style="width: 50px; text-align: left;">수량</span>
-							<input type="number" name="cartAmount" value="1" min="1" style="margin: 0 0 0 40px; height: 30px; width: 150px;">
+							<input type="number" name="cartAmount" value="1" min="1" style="margin: 0 0 0 40px; height: 30px; width: 150px;" id="cartAmount">
 							<span class="book-price"></span>							
-						</div>
+						</div><br>
 						<input type="hidden" name="memberNo" value="<%=member %>">
-						<input type="hidden" name="bookNo" value="<%=no %>"><br>
-						<div style="float: left; padding-left: 15px; ">
-							<span class="payment-button" style="background-color:rgb(223,48,127); padding: 1rem 4rem;"><a href="<%=root %>/purchase/purchase.jsp?no=<%=bookDto.getBookNo()%>" class="payment-button-text">바로구매</a></span> 
-						</div>
-						<div style="float: right; padding-right: 15px;">
-	                		<span class="payment-button" style="background-color:rgb(226,68,87); padding: 1rem 4rem;"><input type="submit" value="장바구니 담기" class="cart-btn"></span>
+						<input type="hidden" name="bookNo" value="<%=no %>">
+						<div style="display:flex; margin-top:30px;">
+							<div style="float: left; padding-left: 15px; ">
+								<span class="payment-button" style="background-color:rgb(223,48,127); padding: 1rem 3rem;">
+								<a href="<%=root %>/purchase/purchase.jsp?no=<%=bookDto.getBookNo()%>" class="payment-button-text js_purchase_btn">바로구매</a>
+								</span> 
+							</div>
+							<div style="float: right; padding-right: 15px;">
+		                		<span class="payment-button" style="background-color:rgb(226,68,87); padding: 1rem 3rem;"><input type="submit" value="장바구니 담기" class="cart-btn"></span>
+							</div>
 						</div>
 
 					</form>
 				
 				</div><br><br>
-				<div class="secondHand-text-box">
-					<div class="secondHand-text">전자책 출간알림 신청 &gt;</div>
-					<div class="secondHand-text">중고 등록알림 신청 &gt;</div>
-					<div class="secondHand-text">중고로 팔기 &gt;</div>
-				</div><br><br><br>
+				
 		</div>
 		
 	</div>
@@ -465,6 +455,16 @@
 	function foo(){
 		alert("장바구니에 담겼습니다.");
 	};
+	
+	window.addEventListener("load",function(){
+		js_purchase_btn = document.querySelector(".js_purchase_btn")
+		
+		js_purchase_btn.addEventListener("click",function(e){
+			console.dir(this)
+			this.href+="&amount="+document.getElementById("cartAmount").value;
+			
+		})
+	})
 </script>
 
 <jsp:include page="/template/footer.jsp"></jsp:include>

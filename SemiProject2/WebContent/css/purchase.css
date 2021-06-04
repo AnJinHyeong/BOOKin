@@ -50,6 +50,7 @@
    float:left;
    width:50%;
    box-sizing:border-box;
+   margin-left:20px;
 }
 .book-price-semi-price{
    border-left:1px solid lightgray;
@@ -123,6 +124,12 @@
    font-weight:900;
 
 }
-.purchaseAmount{
-	width:50px;
+.table-result{
+	border-top:1px solid gray;
+	text-align:right;
+}
+.table-total-price{
+	font-size:25px;
+	font-weight:900;
+	color:#ff6b6b;
 }

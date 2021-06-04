@@ -1,4 +1,6 @@
 
+<%@page import="semi.beans.CartListDto"%>
+<%@page import="semi.beans.CartListDao"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="semi.beans.BookDto"%>
@@ -9,12 +11,17 @@
     pageEncoding="UTF-8"%>
 <%
 	int no=(Integer)session.getAttribute("member");
+	int amount=1;
+	if(request.getParameter("amount")!=null){
+		amount=Integer.parseInt(request.getParameter("amount"));
+	}
 	
 	String root=request.getContextPath();
 	MemberDao memberDao=new MemberDao();
 	MemberDto memberDto=memberDao.getMember(no);
 	BookDao bookDao=new BookDao();
-
+	CartListDao cartListDao = new CartListDao();
+	List<CartListDto> cartList;
 	String[] bookNos = request.getParameterValues("no");
 	List<BookDto> bookList = new ArrayList<>();
 	for(String bookNo : bookNos){
@@ -22,66 +29,74 @@
 		BookDto bookDto=bookDao.get(bookNotoInt);
 		bookList.add(bookDto);
 	}
-	int sum=0;
 
+	int sum_price=2500;
+	
+	
 %>
 
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <jsp:include page="/template/header.jsp"></jsp:include>
 
 <div class="container-700">
-	<div class="row">
+	<div class="row" style="margin-bottom:40px;">
 		<h1>주문/결제</h1>
 	</div>
 	
  	<form action="purchaseInsert.kh"  method="post">
 
- 	
- 		<%for(BookDto bookDto : bookList){
- 			if(bookDto.getBookDiscount()==0)bookDto.setBookDiscount(bookDto.getBookPrice());
- 			sum+=bookDto.getBookDiscount();
- 		%>
-
-		<div class="book-detail-semi-box" style="border:1px solid lightgray; padding:0px;">
- 		<input type="hidden" value="<%=bookDto.getBookNo()%>" name="purchaseBook" >
-         <div class="book-price-semi-image">
-         
-            <a href="">
-            
-            <%if(bookDto.getBookImage().startsWith("https")){ %>
-            <img src="<%=bookDto.getBookImage() %>" style="width:100%;">
-			<%}else{ %>
-			<img src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>" style="width:100%;">
-			<%} %>
-            
-            </a>
-            
-         </div>
-         <div class="book-price-semi-info">
-            <div class="book-price-semi-title"><%=bookDto.getBookTitle() %></div><br>
-            <div><%=bookDto.getBookAuthor() %></div><br>
-            <div><%=bookDto.getBookPublisher() %></div><br>
-         </div>
-       
-         <div class="book-price-semi-price">
-
-            <div class="price-top-box">
-
-	            <div>가격: <span><%=bookDto.getBookDiscount() %></span> 원</div>
-	            <div>수량: <input class="purchaseAmount" name="purchaseAmount" type="number" min="1" value="1" /></div>
-	            <div>+</div>
-	            <div>배송료: 0원</div>
-	            
-	            
-            </div>
-            <hr>
-            <div class="price-bottom-box"><span style="font-size:20px;" class="final_price"><%=bookDto.getBookDiscount()%></span><span>원</span></div>
-         </div>
+     <div class="cart-table">
+	      <table>
+	      	 <colgroup style="width: 700px;">
+                              <col style="width: 5%">
+                              <col style="width: 45%">
+                              <col style="width: 6%">
+                              <col style="width: 35%">
+                              <col style="width: 6%">   
+                           </colgroup>
+	      	<thead>
+	      		<tr>
+	      			<th colspan='2'>주문상품정보</th>
+	      			<th style="text-align:right;">수량</th>
+	      			<th>가격</th>
+	      			<th>&nbsp;</th>
+	      			
+	      		</tr>
+	      	</thead>
+	      	<tbody>
+	      		<%for(BookDto bookDto:bookList){ %>
+	      			
+	      		<tr>	
+	      			<td><a href="<%=root%>/book/bookDetail.jsp?no=<%=bookDto.getBookNo()%>">
+			            <%if(bookDto.getBookImage().startsWith("https")){ %>
+			            <img src="<%=bookDto.getBookImage() %>" style="margin-right:20px;">
+						<%}else{ %>
+						<img src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>" style="margin-right:20px;">
+						<%} %>
+          		  </a>
+          		  <input type="hidden" value="<%=bookDto.getBookNo()%>" name="purchaseBook" style="margin-left:15px;"></td>
+	      			<td><%=bookDto.getBookTitle() %></td>
+	      			<td style="text-align:right;"><input class="purchaseAmount" name="purchaseAmount" type="number" min="0" value=<%=amount %> style="width:40px; margin-left:60px;"/></td>
+	      			<td style="text-align:center"><%=bookDto.getBookDiscount() %></td>
+	      			<td><button class="btn-del " type="button" id="<%=bookDto.getBookNo()%>" >X</button></td>
+	      			
+	      		</tr>
+	      		<%} %>
+	      		
+	      		<tr>
+	      			<td >
+	      				<div style="visibility:hidden;">
+	      					<%for(BookDto bookDto: bookList){ %>
+	      					<%=sum_price+=bookDto.getBookDiscount()*amount %>
+	      				<%} %>
+	      				</div>
+	      			</td>
+	      			<td colspan='5' class="table-result"><span>총상품가격 : </span><span class="sum_price"><%=sum_price-2500 %></span><span>원 + 배송비 : 2500 = 합계 : </span><span class="table-total-price sum_price"><%=sum_price %></span><span style="color:#ff6b6b;"> 원</span> </td>
+	      		</tr>
+	      	</tbody>
+	      </table>
       </div>
-      <%} %>
-     
-      
-      
 
 		<div class="row text-left book-detail-semi-box"> 
 
@@ -139,9 +154,9 @@
       
       <div class="row text-left book-detail-semi-box">
          <div  class="book-detail-semi-title">결제수단</div>
-         <input type="radio"  value="계좌 간편결제" checked="checked">&nbsp;&nbsp;계좌 간편결제&nbsp;&nbsp;
-         <input type="radio" value="카드 간편결제">&nbsp;&nbsp;카드 간편결제&nbsp;&nbsp;
-         <input type="radio" value="일반결제">&nbsp;&nbsp;일반결제
+         <input type="radio" name="payment" value="계좌 간편결제" checked="checked">&nbsp;&nbsp;계좌 간편결제&nbsp;&nbsp;
+         <input type="radio" name="payment" value="카드 간편결제">&nbsp;&nbsp;카드 간편결제&nbsp;&nbsp;
+         <input type="radio" name="payment"value="일반결제">&nbsp;&nbsp;일반결제
       </div>
 
 		<hr>
@@ -218,25 +233,75 @@ function sample6_execDaumPostcode() {
     }).open();
 } 
 
+function deleteRow(ths){
+var val = document.querySelectorAll(".purchaseAmount");
+	
+	for(var i=0; i<val.length; i++){
+		val[i].value = "0";
+		
+	} 
+	var ths=$(ths);
+	var thsParents=ths.parents("tr");
+	
+	//thsParents.remove();
+	
+	
+}
+
+
 
 window.addEventListener("load",function(){
+	
 	const purchaseAmount = document.querySelectorAll('.purchaseAmount');
 	for(var i =0 ; i< purchaseAmount.length;i++){
 		purchaseAmount[i].addEventListener("input",function(){
-			var amo = this.value;
-			this.parentNode.parentNode.nextElementSibling.nextElementSibling.children[0].textContent=amo*this.parentNode.previousElementSibling.children[0].textContent;
-			var sum_price = document.querySelector(".sum_price");
-			var final_prices = document.querySelectorAll(".final_price");
-			var sum=0;
-			for(var j =0 ; j< final_prices.length;j++){
-				console.dir(final_prices[j].textContent)
-				sum+=final_prices[j].textContent*1;
-				console.dir(sum)
+			var sum=2500;
+			var sum_price = document.querySelectorAll(".sum_price");
+			for(var j =0 ; j< purchaseAmount.length;j++){
+				var amo = purchaseAmount[j].value;
+				sum+=amo*purchaseAmount[j].parentElement.nextElementSibling.textContent;
 			}
-			sum_price.textContent = sum;
+			for(var j=0;j<sum_price.length;j++){
+				
+				sum_price[j].textContent = sum;
+				if(j==0){
+					sum_price[j].textContent-=2500;
+				}
+			}
+			
 		})
 	}
+	
+	const btn_del = document.querySelectorAll(".btn-del");
+	var count = btn_del.length
+	for(var i = 0 ;i<btn_del.length;i++){
+		btn_del[i].addEventListener("click",function(){
+			if(count>1){
+			this.parentElement.previousElementSibling.previousElementSibling.children[0].value=0;
+			for(var i =0 ; i< purchaseAmount.length;i++){
+					var sum=2500;
+					var sum_price = document.querySelectorAll(".sum_price");
+					for(var j =0 ; j< purchaseAmount.length;j++){
+						var amo = purchaseAmount[j].value;
+						sum+=amo*purchaseAmount[j].parentElement.nextElementSibling.textContent;
+					}
+					for(var j=0;j<sum_price.length;j++){
+						
+						sum_price[j].textContent = sum;
+						if(j==0){
+							sum_price[j].textContent-=2500;
+						}
+					}
+			}
+			
+				this.parentElement.parentElement.style.display="none"
+				count--;
+			}
+		});
+	}
 });
+
+
 
 
 </script>
