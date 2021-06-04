@@ -2,7 +2,7 @@
 
 .main-detail{
 	padding-top:30px;
-	height:800px;
+	height:680px;
 }
 .book-image-box{
 	
@@ -103,37 +103,28 @@
 	height:10px;
 }
 .payment-button-box{
-	margin-top:50px;
-	
+	margin-top:20px;
+	display:inline-box;
 }
 .payment-button{
 	text-align:center;
 	font-weight:bold;
 	box-sizing:border-box;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 2px 5px;
+	margin:0 5px;
+	padding: 1rem;
 }
-.payment-button:first-child,.payment-button:nth-child(2){
-	float:left;
-	width:27%;
-	padding:15px 0;
-}
-.payment-button:first-child{
-	background-color:rgb(223,48,127);
-	margin-right:7px;
-	border: 1px solid rgb(223,48,127); 
-}
-.payment-button:nth-child(2){
+.cart-btn{
+	border:none;
+	font-weight:bold;
+	text-align:center;
+	color:white;
 	background-color:rgb(226,68,87);
-	border: 1px solid rgb(226,68,87); 
 }
- .payment-button:nth-child(3),.payment-button:last-child{
-	float:right;
-	width:20%;
-	border:1px solid rgb(223,48,127);
-	padding:15px 5px;
-} 
-.payment-button:last-child{
-	margin-right:10px;
+ .payment-button:first-child,.payment-button:nth-child(2){
+	padding:3rem 5rem;
 }
+
 .payment-button-text{
 	color:white;
 }

@@ -148,8 +148,6 @@
 	
 	<div class="main-detail">
 		<div class="book-image-box">
-		
-		
 			<%if(bookDto.getBookImage().startsWith("https")){ %>
 			<img title="<%=bookDto.getBookTitle()%>" src="<%=bookDto.getBookImage()%>" class="book-image">
 			<%}else{ %>
@@ -202,10 +200,7 @@
 					</span>
 	
 					<span>
-						&emsp;100자평(5)
-					</span>
-					<span>
-						&emsp;리뷰(0)&emsp;
+						&emsp;리뷰(<%=reviewCount %>)&emsp;
 					</span>
 					<span class="blue-box">
 						이 책 어때요?
@@ -219,24 +214,25 @@
 				</div><br><br>
 				
 				<div class="payment-button-box">
-
-				
-				<form action="<%=root %>/member/cartInsert.kh" method="post" onsubmit="foo();">
-					<input type="hidden" name="memberNo" value="<%=member %>">
-					<input type="hidden" name="bookNo" value="<%=bookNo %>"><br>
-						
-						수량<span><button type="button" name="button"onclick="minus()"><img src="<%=root %>/image/minus-solid.svg" alt="minus" class="amount-image"/></button></span>
-                <span><input type="text" name="cartAmount" value="1" size="10" id="count" class="text-center"></span>
-                <span><button type="button" name="button"onclick="plus()"><img src="<%=root %>/image/plus-solid.svg" alt="plus" class="amount-image"/></button></span>
-                	<br><br>
-                	<input type="submit" value="장바구니 담기" class="payment-button">
+					
+					
+					<form action="<%=root %>/member/cartInsert.kh" method="post" onsubmit="foo();">
+						<div class="row">
+							<span style="width: 50px; text-align: left;">수량</span>
+							<input type="number" name="cartAmount" value="1" min="1" style="margin: 0 0 0 40px; height: 30px; width: 150px;">
+							<span class="book-price"></span>							
+						</div>
+						<input type="hidden" name="memberNo" value="<%=member %>">
+						<input type="hidden" name="bookNo" value="<%=no %>"><br>
+						<div style="float: left; padding-left: 15px; ">
+							<span class="payment-button" style="background-color:rgb(223,48,127); padding: 1rem 4rem;"><a href="<%=root %>/purchase/purchase.jsp?no=<%=bookDto.getBookNo()%>" class="payment-button-text">바로구매</a></span> 
+						</div>
+						<div style="float: right; padding-right: 15px;">
+	                		<span class="payment-button" style="background-color:rgb(226,68,87); padding: 1rem 4rem;"><input type="submit" value="장바구니 담기" class="cart-btn"></span>
+						</div>
 					</form>
-					
-					<div class="payment-button"><a href="#" class="payment-button-text">바로구매</a></div>
-					<div class="payment-button"><a href="#" class="payment-button-text-red">보관함+</a></div>
-					<div class="payment-button"><a href="#" class="payment-button-text-red">선물하기</a></div>
-					
-				</div><br><br><br>
+				
+				</div><br><br>
 				<div class="secondHand-text-box">
 					<div class="secondHand-text">전자책 출간알림 신청 &gt;</div>
 					<div class="secondHand-text">중고 등록알림 신청 &gt;</div>

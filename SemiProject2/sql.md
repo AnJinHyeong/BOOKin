@@ -124,6 +124,8 @@ purchase_address varchar2(400) not null
 
 create sequence purchase_pk_seq;
 
+CREATE SEQUENCE purchase_seq;
+
 #review 책 상품 리뷰 테이블,sequence
 create table review(
 review_no number(18) primary key,

@@ -424,11 +424,10 @@
          <ul class="menu" >
             <li><a href="myInfo_check.jsp" id="edit-info">회원정보 수정 / 탈퇴</a></li>
             <li><a href="#">주문목록 / 배송조회</a></li>
-            <li><a href="#">리뷰관리</a></li>            
-            <li><a href="#">배송지 / 환불계좌 관리</a></li>
-            <li><a href="#">고객센터</a></li>
-            <li class="on"><a href="#">장바구니</a></li>
-            <li><a href="#">좋아요</a></li>
+            <li><a href="review.jsp">리뷰관리</a></li>            
+            <li><a href="<%=root%>/qna/qnaList.jsp">고객센터</a></li>
+            <li class="on"><a href="cart.jsp">장바구니</a></li>
+            <li><a href="bookLike.jsp">좋아요</a></li>
          </ul>
       </aside>
       <!-- 장바구니 -->
