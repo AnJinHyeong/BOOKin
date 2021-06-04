@@ -187,6 +187,17 @@
 	      });
 	});
 	
+	$(function(){
+		 $(".purchase-ok").click(function(){     
+	    	  if(confirm("상품수령을 확인 하시겠습니까?") == true){
+	         	$(location).attr("href", "<%=root%>/purchase/delete.kh?member=<%=member%>&purchaseNo=" + $(this).attr('id'));
+	         }
+	    	  else{
+	    		  return;
+	    	  }
+	      });
+	});
+	
 </script>
 
    <div class="container-1200 myInfo-header">
@@ -243,7 +254,7 @@
 			<form action="<%=root %>/purchase/purchaseState.kh" method="post">
 			<div style="width: 90%; margin: 0 auto; min-height: 450px;">
 				<table class="table table-border" style="font-size: 12px;">
-					<thead style="border-bottom: 1px solid black; background-color: #FAEBCD">
+					<thead style="border-bottom: 1px solid black; border-top: 1px solid black; background-color: #FAEBCD">
 						<tr>
 							<th style="width:7%;">주문번호</th>
 							<th style="width:35%;">상품이름</th>
@@ -253,7 +264,7 @@
 							<th style="width:5%;">금액</th>
 							<th style="width:8%;">주문일</th>
 							<th style="width:6%;">상태</th>
-							<th style="width:6%;">-</th>
+							<th style="width:7%;">-</th>
 						</tr>
 					</thead>
 					
@@ -266,19 +277,19 @@
 							<th style="width:15%;"><%=purchaseBookMemberDto.getPurchaseAddress() %></th>
 							<th style="width:4%;"><%=purchaseBookMemberDto.getPurchaseAmount() %></th>
 							<%if(purchaseBookMemberDto.getBookDiscount() == 0){ %>
-								<th style="width:5%;"><%=purchaseBookMemberDto.getBookPrice() %></th>
+								<th style="width:5%;"><%=purchaseBookMemberDto.getBookPrice() * purchaseBookMemberDto.getPurchaseAmount()%></th>
 							<%} else{%>
-								<th style="width:5%;"><%=purchaseBookMemberDto.getBookDiscount() %></th>
+								<th style="width:5%;"><%=purchaseBookMemberDto.getBookDiscount() * purchaseBookMemberDto.getPurchaseAmount()%></th>
 							<%} %>
 							<th style="width:8%;"><%=purchaseBookMemberDto.getPurchaseDate() %></th>
 							<th style="width:6%;" id="state"><%=purchaseBookMemberDto.getPurchaseState() %></th>
-							<th style="width:6%; display: none;" class="state1">-</th>
-							<th style="width:6%; display: none;" class="state2">
-								<input type="hidden" value="<%=purchaseBookMemberDto.getPurchaseNo()%>" name="purchaseNo">
-								<input type="hidden" value="배송완료" name="purchaseState">
-								<input type="submit" value="상품수령">
+							<th style="width:7%; display: none;" class="state1">-</th>
+							<th style="width:7%; display: none;" class="state2">
+								<a style="color:#FF9B00;" class="purchase-ok purchase-link-btn" id="<%=purchaseBookMemberDto.getPurchaseNo()%>">상품수령</a>
 							</th>
-							<th style="width:6%; display: none;" class="state3"><a style="" class="purchase-cancel" id="<%=purchaseBookMemberDto.getPurchaseNo()%>">구매취소</a></th>
+							<th style="width:7%; display: none;" class="state3">
+								<a style="color: #FF3232;" class="purchase-cancel purchase-link-btn" id="<%=purchaseBookMemberDto.getPurchaseNo()%>">구매취소</a>
+							</th>
 						</tr>
 					</tbody>
 					<%} %>

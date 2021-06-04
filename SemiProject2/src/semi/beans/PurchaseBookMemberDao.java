@@ -77,14 +77,13 @@ public class PurchaseBookMemberDao {
 	
 	
 //	구매기록 상태 업데이트
-	public boolean stateUpdate(int purchaseNo, String purchaseState, int memberNo) throws Exception{
+	public boolean stateUpdate(int purchaseNo,int memberNo) throws Exception{
 		Connection con = JdbcUtils.getConnection();
 		
-		String sql = "UPDATE purchase SET purchase_state = ? WHERE purchase_no = ? AND purchase_member = ?";
+		String sql = "UPDATE purchase SET purchase_state = '배송완료' WHERE purchase_no = ? AND purchase_member = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setString(1, purchaseState);
-		ps.setInt(2, purchaseNo);
-		ps.setInt(3, memberNo);
+		ps.setInt(1, purchaseNo);
+		ps.setInt(2, memberNo);
 		
 		int count = ps.executeUpdate();
 		

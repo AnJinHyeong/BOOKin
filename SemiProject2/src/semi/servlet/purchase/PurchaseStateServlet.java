@@ -14,18 +14,15 @@ import semi.beans.PurchaseBookMemberDao;
 public class PurchaseStateServlet extends HttpServlet{
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
-			
 			req.setCharacterEncoding("UTF-8");
 
-			int member = (int)req.getSession().getAttribute("member");
 			int purchaseNo = Integer.parseInt(req.getParameter("purchaseNo"));
-			String purchaseState = req.getParameter("purchaseState");
+			int member = (int)req.getSession().getAttribute("member");
 			
 			PurchaseBookMemberDao purchaseBookMemberDao = new PurchaseBookMemberDao();
-			purchaseBookMemberDao.stateUpdate(purchaseNo, purchaseState, member);
+			purchaseBookMemberDao.stateUpdate(purchaseNo,member);
 			
 			resp.sendRedirect(req.getContextPath() + "/member/deliveryList.jsp");
 		}
@@ -33,7 +30,5 @@ public class PurchaseStateServlet extends HttpServlet{
 			e.printStackTrace();
 			resp.sendError(500);
 		}
-		
-		
 	}
 }
