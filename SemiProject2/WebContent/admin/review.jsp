@@ -47,7 +47,7 @@
 		}
 	}
 	catch(Exception e){
-		pageSize = 20;//기본값 15개
+		pageSize = 15;
 	}
 	
 	//rownum의 시작번호(startRow)와 종료번호(endRow)를 계산
@@ -169,35 +169,35 @@
 		</div>
 	</div>
 	
-	<form action="#" method="post">
-		<div class="admin-content_area">
-			<div class="admin-content">
-				<div class="admin-content_title">
-					검색
-				</div>
-				<div class="admin-search">
-					<div>책 번호</div>
-					<input type='number' name="bookNo">
-				</div>
-				<div class="admin-search">
-					<div>책 제목</div>
-					<input type='text' name="bookTitle" >
-				</div>
-				<div class="admin-search">
-					<div>작성자</div>
-					<input type='text' name="bookAuthor" >
-				</div>
-			</div>
-		</div>
-		<button class="submit-btn">검색</button>
-	</form>
+<!-- 	<form action="#" method="post"> -->
+<!-- 		<div class="admin-content_area"> -->
+<!-- 			<div class="admin-content"> -->
+<!-- 				<div class="admin-content_title"> -->
+<!-- 					검색 -->
+<!-- 				</div> -->
+<!-- 				<div class="admin-search"> -->
+<!-- 					<div>책 번호</div> -->
+<!-- 					<input type='number' name="bookNo"> -->
+<!-- 				</div> -->
+<!-- 				<div class="admin-search"> -->
+<!-- 					<div>책 제목</div> -->
+<!-- 					<input type='text' name="bookTitle" > -->
+<!-- 				</div> -->
+<!-- 				<div class="admin-search"> -->
+<!-- 					<div>작성자</div> -->
+<!-- 					<input type='text' name="bookAuthor" > -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 		<button class="submit-btn">검색</button> -->
+<!-- 	</form> -->
 	
 	
-	<div class="admin-content_area" style="margin-top: 45px;">
+	<div class="admin-content_area" >
 		<div class="admin-content">
 			<div class="admin-content_title">리뷰 목록</div>
 			<div class="align-row choice-genre-area">
-				<div class="search-table" style="min-height: 820px;">
+				<div class="search-table" style="min-height: 630px;">
 					<table class="table table-border table-hover table-striped" style="text-align: center;">
 						<thead>
 							<tr>
