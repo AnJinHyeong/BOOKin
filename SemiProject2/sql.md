@@ -111,15 +111,16 @@ constraint book_like_pk primary key(member_no, book_origin)
 
 #purchase 구매기록 테이블 ,sequence 
 create table purchase(
-purchase_pk NUMBER(10) primary key,
+purchase_pk number(10) primary key,
 purchase_no number(38),
 purchase_state varchar2(50) default '결제완료' not null check(purchase_state in ('결제완료','주문확인','배송중','배송완료')) ,
 purchase_book references book(book_no) not null,
 purchase_member references member(member_no) not null,
 purchase_date date default sysdate not null,
 purchase_recipient varchar2(100) not null,
-purchase_phone number(38) not null,
-purchase_address varchar2(400) not null
+purchase_phone varchar2(11) not null,
+purchase_address varchar2(400) not null,
+purchase_amount number(10) default 1 not null
 );
 
 create sequence purchase_pk_seq;

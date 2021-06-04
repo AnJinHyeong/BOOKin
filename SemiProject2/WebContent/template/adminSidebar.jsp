@@ -31,7 +31,7 @@
 			<li class="admin-aside-top_menu"><span class="admin-aside-top_text">문의/리뷰</span>
 				<ul class="admin-aside-side_menus">
 					<li><a href="<%=root%>/admin/qnaReply.jsp">문의 관리</a></li>
-					<li><a>리뷰 관리</a></li>
+					<li><a href="<%=root%>/admin/review.jsp">리뷰 관리</a></li>
 				</ul>
 			</li>
 			<li class="admin-aside-top_menu"><span class="admin-aside-top_text">공지/이벤트</span>
@@ -45,7 +45,7 @@
 					<li><a>정산 내역</a></li>
 				</ul>
 			</li>
-			<li class="admin-aside-top_menu" style="padding-top: 250px;"><span class="admin-aside-top_text"></span>
+			<li class="admin-aside-top_menu"><span class="admin-aside-top_text"></span>
 				<ul class="admin-aside-side_menus">
 					<li><a href="<%=root%>">메인 페이지</a></li>
 				</ul>

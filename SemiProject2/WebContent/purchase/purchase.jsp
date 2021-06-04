@@ -128,8 +128,8 @@
                   <input type="radio" name="address" value="1" checked="checked" onclick="newRecipientInfo(this.value);">&nbsp;&nbsp;기본배송지&nbsp;&nbsp;
                   <input type="radio" name="address" value="2" onclick="newRecipientInfo(this.value);">&nbsp;&nbsp;신규배송지&nbsp;&nbsp;
                   <div style="margin-top:10px;">
-                     <div><span class="recipient-span">수령인&ensp;</span><input type="text" name="purchaseRecipient" placeholder=" 50자 이내로 입력하세요" value="<%=memberDto.getMemberName()%>" id="member-name"></div>
-                     <div><span class="recipient-span">연락처&ensp;</span><input type="text" name="purchasePhone" placeholder="-를 제외하고 입력하세요" value="<%=memberDto.getMemberPhone()%>" id="member-phone"></div>
+                     <div><span class="recipient-span">수령인&ensp;</span><input type="text" name="purchaseRecipient" placeholder=" 50자 이내로 입력하세요" value="<%=memberDto.getMemberName()%>" id="member-name" style="width:70%"></div>
+                     <div><span class="recipient-span">연락처&ensp;</span><input type="text" name="purchasePhone" placeholder="-를 제외하고 입력하세요" value="<%=memberDto.getMemberPhone()%>" id="member-phone" style="width:70%"></div>
                      <div><span class="recipient-span">주소&ensp;&ensp;</span><input type="text" name="purchaseAddress" value="<%=memberDto.getMemberAddress()%>" id="member-address">&ensp;<a  href="#" onclick="showDiv2()" class="button-style">수정</a> </div>
                      
                         <div id="show-div2" style="display:none">   
