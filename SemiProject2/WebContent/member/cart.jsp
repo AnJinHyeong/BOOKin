@@ -173,7 +173,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
    var checktest = false;
-   var priceReset = false;
+   //var priceReset = false;
+   var resetPrice=false;
+   
    
    $(function(){
       $(".btn-del").click(function(){     
@@ -185,7 +187,7 @@
     	  }
       });
       
-      $.fn.calPrice = function(){
+       $.fn.calPrice = function(){
     	  $(".check-item").each(function(index, item){
          	 if($(item).is(":checked")){
          		var cartno = "#" + $(item).attr("data-cartno");
@@ -197,7 +199,8 @@
 				$("#totalprice").text(o);
          	 }
           });
-      };
+      }; 
+  
       
       $(".pl").click(function(){
          var a = $(this).prev();
@@ -419,7 +422,21 @@
 <script>
 	window.addEventListener("load",function(){
 		document.querySelector(".purchase-form-submit").addEventListener("click",function(){
-			document.querySelector(".purchase-form").submit();
+			var checkbox=document.querySelectorAll(".book-cart-check");
+			var purchaseForm=document.querySelector(".purchase-form");
+			for(var i=0;i<checkbox.length;i++){
+				console.dir(checkbox[i].checked);
+				if(checkbox[i].checked){
+					console.dir(checkbox[i].parentElement.parentElement.nextElementSibling.nextElementSibling.children[0].children[1].value);
+					var value=checkbox[i].parentElement.parentElement.nextElementSibling.nextElementSibling.children[0].children[1].value;
+					var inputAmount=document.createElement("input");
+					inputAmount.setAttribute("type","hidden");
+					inputAmount.setAttribute("name","amount");
+					inputAmount.setAttribute("value",value);
+					purchaseForm.appendChild(inputAmount);
+				}
+			}
+			purchaseForm.submit();
 		});
 	});
 </script>
@@ -503,7 +520,8 @@
                            <tr>
                               <td>
                                	<span class="cs-form">
-                                 	<input type="checkbox" class="check-item"  id="checked<%=cartListDto.getBookNo() %>" data-bookno="<%=cartListDto.getBookNo()%>" data-cartno="<%=cartListDto.getCartNo() %>" name="no" value="<%=cartListDto.getBookNo() %>"> 
+                                 	<input type="checkbox" class="check-item book-cart-check"  id="checked<%=cartListDto.getBookNo() %>" data-bookno="<%=cartListDto.getBookNo()%>" data-cartno="<%=cartListDto.getCartNo() %>" name="no" value="<%=cartListDto.getBookNo() %>"> 
+                                	
                                 </span>
                              </td>                                    
                               <td class="tleft">      
@@ -525,7 +543,8 @@
                               <td>
                                   <div class="cart-count">
                                      <button type="button" name="button" class="mi" data-bookno="<%=cartListDto.getBookNo()%>"><img src="<%=root %>/image/minus-solid.svg" alt="minus" class="amount-image"></button>
-                                     <input type="text" onkeyPress="javascript:checkInputNum();"value="<%=cartListDto.getCartAmount()%>" id="<%=cartListDto.getCartNo()%>" name="amount">   
+                                    <%--  <input type="text" onkeyPress="javascript:checkInputNum();"value="<%=cartListDto.getCartAmount()%>" id="<%=cartListDto.getCartNo()%>" name="amount" >  --%>  
+                                      <input type="text" onkeyPress="javascript:checkInputNum();"value="<%=cartListDto.getCartAmount()%>" id="<%=cartListDto.getCartNo()%>"> 
                                      <button type="button" name="button" class="pl"  data-bookno="<%=cartListDto.getBookNo()%>"><img src="<%=root %>/image/plus-solid.svg" alt="plus" class="amount-image"></button>                                 
                                   </div>
                               </td>
