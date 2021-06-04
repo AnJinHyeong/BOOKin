@@ -1,3 +1,4 @@
+
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="semi.beans.BookDto"%>
@@ -13,6 +14,7 @@
 	MemberDao memberDao=new MemberDao();
 	MemberDto memberDto=memberDao.getMember(no);
 	BookDao bookDao=new BookDao();
+
 	String[] bookNos = request.getParameterValues("no");
 	List<BookDto> bookList = new ArrayList<>();
 	for(String bookNo : bookNos){
@@ -21,6 +23,7 @@
 		bookList.add(bookDto);
 	}
 	int sum=0;
+
 %>
 
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
@@ -32,11 +35,13 @@
 	</div>
 	
  	<form action="purchaseInsert.kh"  method="post">
+
  	
  		<%for(BookDto bookDto : bookList){
  			if(bookDto.getBookDiscount()==0)bookDto.setBookDiscount(bookDto.getBookPrice());
  			sum+=bookDto.getBookDiscount();
  		%>
+
 		<div class="book-detail-semi-box" style="border:1px solid lightgray; padding:0px;">
  		<input type="hidden" value="<%=bookDto.getBookNo()%>" name="purchaseBook" >
          <div class="book-price-semi-image">
@@ -44,9 +49,9 @@
             <a href="">
             
             <%if(bookDto.getBookImage().startsWith("https")){ %>
-            <img src="<%=bookDto.getBookImage() %>" style="width:80%;">
+            <img src="<%=bookDto.getBookImage() %>" style="width:100%;">
 			<%}else{ %>
-			<img src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>" style="width:80%;">
+			<img src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>" style="width:100%;">
 			<%} %>
             
             </a>
@@ -57,25 +62,29 @@
             <div><%=bookDto.getBookAuthor() %></div><br>
             <div><%=bookDto.getBookPublisher() %></div><br>
          </div>
-         
-         
+       
          <div class="book-price-semi-price">
+
             <div class="price-top-box">
+
 	            <div>가격: <span><%=bookDto.getBookDiscount() %></span> 원</div>
-	            <div>수량: <input class="purchaseAmount" name="purchaseAmount" type="number" min="1" value="1"/></div>
+	            <div>수량: <input class="purchaseAmount" name="purchaseAmount" type="number" min="1" value="1" /></div>
 	            <div>+</div>
 	            <div>배송료: 0원</div>
+	            
+	            
             </div>
             <hr>
             <div class="price-bottom-box"><span style="font-size:20px;" class="final_price"><%=bookDto.getBookDiscount()%></span><span>원</span></div>
-      
          </div>
       </div>
       <%} %>
-      <div >총 <span class="sum_price"><%=sum%></span>원</div>
+     
       
       
+
 		<div class="row text-left book-detail-semi-box"> 
+
          <div class="book-detail-semi-title">주문자 정보</div>
          <div>
             <input type="hidden" name="purchaseMember" value="<%=memberDto.getMemberNo()%>">
@@ -134,9 +143,12 @@
          <input type="radio" value="카드 간편결제">&nbsp;&nbsp;카드 간편결제&nbsp;&nbsp;
          <input type="radio" value="일반결제">&nbsp;&nbsp;일반결제
       </div>
+
 		<hr>
 		
+
 		
+
 		<input type="submit" value="결제하기" class="pay-button">
 	</form> 
 </div>
@@ -206,6 +218,7 @@ function sample6_execDaumPostcode() {
     }).open();
 } 
 
+
 window.addEventListener("load",function(){
 	const purchaseAmount = document.querySelectorAll('.purchaseAmount');
 	for(var i =0 ; i< purchaseAmount.length;i++){
@@ -224,6 +237,7 @@ window.addEventListener("load",function(){
 		})
 	}
 });
+
 
 </script>
 <jsp:include page="/template/footer.jsp"></jsp:include>

@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class PurchaseDto {
 	
+
 	private int purchasePk;
 	private int purchaseNo;
 	private String purchaseState;
@@ -27,6 +28,7 @@ public class PurchaseDto {
 	}
 	public void setPurchaseAmount(int purchaseAmount) {
 		this.purchaseAmount = purchaseAmount;
+
 	}
 	public int getPurchaseNo() {
 		return purchaseNo;
@@ -92,3 +94,4 @@ public class PurchaseDto {
 	
 	
 }
+

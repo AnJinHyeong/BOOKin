@@ -23,6 +23,7 @@ public class PurchaseInsertServlet extends HttpServlet{
 			 req.setCharacterEncoding("UTF-8"); 
 			 PurchaseDao purchaseDao=new PurchaseDao();
 			 int no= purchaseDao.getNumber();
+
 			 String[] bookNoList = req.getParameterValues("purchaseBook");
 			 String[] amountList = req.getParameterValues("purchaseAmount");
 			 int count= -1;
@@ -41,6 +42,7 @@ public class PurchaseInsertServlet extends HttpServlet{
 				 bookNo=purchaseDto.getPurchaseBook();
 			 }
 			 resp.sendRedirect("purchaseSuccess.jsp?purchaseNo="+no+"&no="+bookNo+"&amount="+count);
+
 			
 		}
 		catch(Exception e) {

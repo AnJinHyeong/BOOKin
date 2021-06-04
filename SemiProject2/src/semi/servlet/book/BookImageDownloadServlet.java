@@ -57,7 +57,7 @@ public class BookImageDownloadServlet extends HttpServlet{
 				if(size == -1) break;
 				resp.getOutputStream().write(buffer, 0, size);
 			}
-
+			
 			in.close();
 		}
 		catch(Exception e) {

@@ -70,6 +70,7 @@
    
 }
 .purchase-success-box{
+
    margin-top:100px;
    padding-top:20px;
    padding-bottom:20px;
@@ -120,4 +121,8 @@
    margin-left:275px;
    margin-top:20px;
    font-weight:900;
+
+}
+.purchaseAmount{
+	width:50px;
 }

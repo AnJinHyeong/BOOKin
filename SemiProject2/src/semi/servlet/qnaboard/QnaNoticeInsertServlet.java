@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import semi.beans.NoticeBoardDao;
 import semi.beans.NoticeBoardDto;
 
-@WebServlet(urlPatterns = "/qna/qnaNoticeInsert.kh")
+@WebServlet(urlPatterns = "/admin/qnaNoticeInsert.kh")
 public class QnaNoticeInsertServlet extends HttpServlet {
    @Override
    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -31,7 +31,7 @@ public class QnaNoticeInsertServlet extends HttpServlet {
          
          noticeBoardDao.insert(noticeBoardDto);
          
-         resp.sendRedirect("qnaNoticeDetail.jsp?noticeBoardNo=" + noticeBoardNo);
+         resp.sendRedirect(req.getContextPath()+"/admin/notice.jsp");
       } 
       catch (Exception e) {
          e.printStackTrace();

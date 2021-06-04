@@ -38,7 +38,7 @@
 <html>
 <head>
    <meta charset="UTF-8">
-   <title>알라딘</title>
+   <title>BOOKin</title>
     <link rel="stylesheet" type="text/css" href="<%= root%>/css/common.css">
     <link rel="stylesheet" type="text/css" href="<%= root%>/css/template.css">
     <link rel="stylesheet" type="text/css" href="<%= root%>/css/signup.css">
@@ -123,11 +123,11 @@
 			<img class ="icon" src="<%=root%>/image/like.svg">
 			<span>좋아요</span>
 		</a>
-		<a class="icon-item align-column" href="#">
+		<a class="icon-item align-column" href="<%=root%>/member/cart.jsp">
 			<img class ="icon" src="<%=root%>/image/bag.svg">
 			<span>장바구니</span>
 		</a>
-		<a class="icon-item align-column" href="#">
+		<a class="icon-item align-column" href="<%=root%>/member/review.jsp">
 			<img class ="icon" src="<%=root%>/image/writing.svg">
 			<span>리뷰</span>
 		</a>
