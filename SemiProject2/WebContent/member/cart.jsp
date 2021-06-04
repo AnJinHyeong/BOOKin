@@ -18,7 +18,7 @@
    String root = request.getContextPath();
    
 %>
-<%   
+<%
 
    int member;
    try{
@@ -142,6 +142,19 @@
 		}
 		
 %>
+
+<%
+	int no;
+	try{
+		no = Integer.parseInt(request.getParameter("no"));
+	}
+	catch(Exception e){
+		no = 0;
+	}
+	
+	
+%>
+
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -489,12 +502,16 @@
                              </td>                                    
                               <td class="tleft">      
                                    <div>
-                                       <a href="/bookDetail.jsp?" >
+                                   		
+                                       <a href="<%=root %>/book/bookDetail.jsp?no=<%=cartListDto.getBookNo() %>" >
                                            <img src="<%=cartListDto.getBookImage() %>">
                                        </a>
                                            <div class="tit">
-                                             <%=cartListDto.getBookTitle() %>  
-                                          </div>                                   
+                                           		<a href="<%=root %>/book/bookDetail.jsp?no=<%=cartListDto.getBookNo() %>" >
+                                           		   <%=cartListDto.getBookTitle() %>  
+                                           		</a>   
+                                          </div>     
+                                                                        
                                     </div>                                   
                              </td>
                                  
