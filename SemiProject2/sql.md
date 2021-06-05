@@ -91,14 +91,12 @@ ALTER TABLE book ADD book_view number(19) DEFAULT 0 NOT NULL CHECK (book_view >=
 
 create sequence book_seq;
 
-
 #genre 장르 테이블 
 create table genre(
 genre_no number(38) primary key,
 genre_name varchar2(30) not null,
 genre_parents references genre(genre_no)
 );
-
 
 #book_like 좋아요 테이블 
 create table book_like( 
@@ -133,7 +131,8 @@ review_no number(18) primary key,
 review_content varchar2(4000) not null,
 review_rate number(5) , 
 review_time date default sysdate,
-review_purchase REFERENCES purchase(purchase_pk)
+review_book number(18) not null,
+review_member number(18) not null
 );
 
 CREATE SEQUENCE review_seq;

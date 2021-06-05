@@ -14,7 +14,7 @@ public class BookReviewDao {
 		
 		String sql = "select * from(\n"
 				+ "select rownum rn, TMP.* from(\n"
-				+ "		select * from review where review_book = ?"
+				+ "		select * from review where review_book = ? order by review_time desc"
 				+ "	)TMP\n"
 				+ ") where rn between ? and ?";
 		PreparedStatement ps = con.prepareStatement(sql);

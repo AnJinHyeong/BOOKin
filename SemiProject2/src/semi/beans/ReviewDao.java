@@ -32,7 +32,7 @@ public class ReviewDao {
 		Connection con = JdbcUtils.getConnection();
 
 
-		String sql = "update review set review_content=?,review_rate=? where review_member=? and review_book=? ";
+		String sql = "update review set review_content=?,review_rate=?,review_time=sysdate where review_member=? and review_book=? ";
 
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, reviewDto.getReviewContent());
@@ -203,6 +203,44 @@ public class ReviewDao {
 
 		return reviewList;
 	}
+	
+//	특정 회원 리뷰 리스트 조회
+	public List<BookReviewDto> memberNoList(int memberNo, int startRow, int endRow) throws Exception {
+		Connection con = JdbcUtils.getConnection();
+
+		String sql = "select * from(\r\n"
+				+ "select rownum rn, TMP.* from(\r\n"
+				+ "	SELECT R.*, b.book_image, b.book_title FROM review R"
+				+ " inner join book B on R.review_book = B.book_no where review_member=? ORDER BY review_time desc \r\n"
+				+ "	)TMP\r\n"
+				+ ") where rn between ? and ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, memberNo);
+		ps.setInt(2, startRow);
+		ps.setInt(3, endRow);
+		ResultSet rs = ps.executeQuery();
+
+		// List로 변환
+		List<BookReviewDto> reviewList = new ArrayList<>();
+		while (rs.next()) {
+			BookReviewDto reviewDto = new BookReviewDto();
+			reviewDto.setReviewNo(rs.getInt("review_no"));
+			reviewDto.setReviewContent(rs.getString("review_content"));
+			reviewDto.setReviewRate(rs.getInt("review_rate"));
+
+			reviewDto.setReviewTime(rs.getDate("review_time"));
+			reviewDto.setReviewBook(rs.getInt("review_book"));
+			reviewDto.setReviewMember(rs.getInt("review_member"));
+			reviewDto.setReviewBookUrl(rs.getString("book_image"));
+			reviewDto.setReviewBookTitle(rs.getString("book_title"));
+
+			reviewList.add(reviewDto);
+		}
+
+		con.close();
+
+		return reviewList;
+	}
 
 
 
@@ -221,13 +259,13 @@ public class ReviewDao {
 			return count;
 		}
 	
-	//  페이지블럭 계산을 위한 카운트 기능(1:1문의 확인)
-	public int getCountMyList(int qnaBoardWriter) throws Exception {
+	//  페이지블럭 계산을 위한 카운트 기능
+	public int getCountMyList(int memberNo) throws Exception {
 		Connection con = JdbcUtils.getConnection();
 
-		String sql = "select count(*) from qna_board where qna_board_writer=?";
+		String sql = "select count(*) from review where review_member=?";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setInt(1, qnaBoardWriter);
+		ps.setInt(1, memberNo);
 
 		ResultSet rs = ps.executeQuery();
 		rs.next();
@@ -254,6 +292,7 @@ public class ReviewDao {
 		
 		return count;
 	}
+	
 	public boolean isPurchase(int purchaseBook, int purchaseMember) throws Exception {
 		Connection con = JdbcUtils.getConnection();
 
@@ -269,10 +308,44 @@ public class ReviewDao {
 		return count;
 	}
 
+	
+	public List<BookDto> isPurchaseNoReviewList(int memberNo) throws Exception{
+		Connection con = JdbcUtils.getConnection();
+		String sql = "select p.purchase_book, r.review_no, B.*"
+				+ "    from purchase P"
+				+ "    left outer join review R"
+				+ "        on p.purchase_book = r.review_book"
+				+ "    left outer join book B"
+				+ "        on p.purchase_book = b.book_no"
+				+ "        where p.purchase_member = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, memberNo);
+		ResultSet rs = ps.executeQuery();
+		
+		List<BookDto> list = new ArrayList<BookDto>();
+		
+		while(rs.next()) {
+			if(rs.getInt("review_no") == 0) {
+				BookDto bookDto = new BookDto();
+
+				bookDto.setBookNo(rs.getInt("book_no"));
+				bookDto.setBookTitle(rs.getString("book_title"));
+				bookDto.setBookImage(rs.getString("book_image"));
+				bookDto.setBookAuthor(rs.getString("book_author"));
+				bookDto.setBookPrice(rs.getInt("book_price"));
+				bookDto.setBookDiscount(rs.getInt("book_discount"));
+				bookDto.setBookPublisher(rs.getString("book_publisher"));
+				bookDto.setBookDescription(rs.getString("book_description"));
+				bookDto.setBookPubDate(rs.getDate("book_pubdate"));
+				bookDto.setBookGenreNo(rs.getLong("book_genre"));
+				bookDto.setBookView(rs.getInt("book_view"));
+				
+				list.add(bookDto);				
+			}
+		}
+		
+		con.close();
+		
+		return list;
+	}
 }
-	
-
-	
-	
-
-

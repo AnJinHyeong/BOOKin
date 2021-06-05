@@ -14,33 +14,11 @@ public class BookDto {
 	private Date bookPubDate;
 	private long bookGenreNo;
 
-	private String imagefileUploadName;	
-	private String imagefileSaveName;
-	
-
-
 	private int bookView;
 	
 
 	public BookDto() {
 		super();
-	}
-	
-	
-	public String getImagefileUploadName() {
-		return imagefileUploadName;
-	}
-
-	public void setImagefileUploadName(String imagefileUploadName) {
-		this.imagefileUploadName = imagefileUploadName;
-	}
-
-	public String getImagefileSaveName() {
-		return imagefileSaveName;
-	}
-
-	public void setImagefileSaveName(String imagefileSaveName) {
-		this.imagefileSaveName = imagefileSaveName;
 	}
 
 	public int getBookNo() {
