@@ -127,21 +127,12 @@ CREATE SEQUENCE purchase_seq;
 
 #review 책 상품 리뷰 테이블,sequence
 create table review(
-<<<<<<< HEAD
-REVIEW_NO NUMBER(18) PRIMARY KEY, 
-REVIEW_CONTENT VARCHAR2(4000) NOT NULL,
-REVIEW_RATE NUMBER(5),      
-REVIEW_TIME DATE,           
-REVIEW_BOOK NUMBER(18) NOT NULL,     
-REVIEW_MEMBER NUMBER(18) NOT NULL 
-=======
 review_no number(18) primary key,
 review_content varchar2(4000) not null,
 review_rate number(5) , 
 review_time date default sysdate,
 review_book number(18) not null,
 review_member number(18) not null
->>>>>>> refs/remotes/origin/main
 );
 
 CREATE SEQUENCE review_seq;
