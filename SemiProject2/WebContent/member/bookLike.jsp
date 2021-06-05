@@ -285,46 +285,51 @@
 					<h3 style=" margin-bottom: 40px;font-size:40px;" class="site-color">좋아요</h3>
 				</div>
 				<form action="<%=root%>/purchase/purchase.jsp">
-				<div class="book-list inf-list book-like-div" style="min-height: 200px;">					
-					<%for(BookLikeDto bookLikeDto : bookLikeList){ %>
-						<%BookDto bookDto = bookDao.get(bookLikeDto.getBookOrigin()); %>
-						<div class="book-item">	
-							<a href="<%=root%>/book/bookDetail.jsp?no=<%=bookDto.getBookNo()%>" class="book-img-a" >
-								<%if(bookDto.getBookImage()==null){
-									bookDto.setBookImage(root+"/image/nullbook.png");
-								} %>
-								<img title="<%=bookDto.getBookTitle() %>" class="book-img" src="<%=bookDto.getBookImage()%>" >
-							</a>
-							
-							<input type="checkbox" class="book-like-checkbox" name="no" value="<%=bookDto.getBookNo()%>">	
-							<a href="javascript:void(0);" class="book-like book-good-on" id="like<%=bookDto.getBookNo()%>" style="visibility: hidden;"></a>	
-							<a class="book-publisher"><span><%=bookDto.getBookPublisher() %></span></a>
-							<a href="<%=root%>/book/bookDetail.jsp?no=<%=bookDto.getBookNo()%>" class="book-title overflow"  title="<%=bookDto.getBookTitle() %>"><%=bookDto.getBookTitle() %></a>
-								<%if(bookDto.getBookAuthor()==null){
-									bookDto.setBookAuthor("편집부");
-								} %>
-							<a class="book-author overflow" title="<%=bookDto.getBookAuthor() %>"><%=bookDto.getBookAuthor() %></a>
-					
-							<%if(bookDto.getBookDiscount()!=0 && bookDto.getBookDiscount()!=bookDto.getBookPrice()){ %>
-								<div style="width: 100%;text-align: right;">
-									<a class="book-discount"><%=bookDto.getBookPrice()/(bookDto.getBookPrice()-bookDto.getBookDiscount())%>%</a>
-									<a class="book-price"><%=format.format(bookDto.getBookDiscount()) %></a><a style="font-weight: 900;color:rgba(0,0,0,0.5);"> 원</a>
-								</div>
-							<%}else{ %>
-								<div style="width: 100%;text-align: right;">								
-									<a class="book-price"><%=format.format(bookDto.getBookPrice()) %></a><a style="font-weight: 900;color:rgba(0,0,0,0.5);"> 원</a>
-								</div>
-							<%} %>
-						</div> 
-					<%} %> 
-				</div>
-				
-				<div class="row text-center" style="margin-bottom: 30px; margin-top: 30px;">
-					<input type="button" id="allSelect-btn" class="book-like-btn" value="전체선택">
-					<input type="submit" class="book-like-btn" value="선택상품 구매">
-					<input type="button" class="book-like-btn book-like-delete-btn" value="선택상품 삭제">
-				</div>
+					<div class="book-list inf-list book-like-div" style="min-height: 200px;">					
+						<%for(BookLikeDto bookLikeDto : bookLikeList){ %>
+							<%BookDto bookDto = bookDao.get(bookLikeDto.getBookOrigin()); %>
+							<div class="book-item">	
+								<a href="<%=root%>/book/bookDetail.jsp?no=<%=bookDto.getBookNo()%>" class="book-img-a" >
+									<%if(bookDto.getBookImage().startsWith("https")){ %>
+						            	<img title="<%=bookDto.getBookTitle() %>" class="book-img" src="<%=bookDto.getBookImage()%>">
+						            <%}else{ %>
+						            	<img title="<%=bookDto.getBookTitle() %>" class="book-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">
+						            <%} %>
+									<%if(bookDto.getBookImage()==null){
+										bookDto.setBookImage(root+"/image/nullbook.png");
+									} %>									
+								</a>
 								
+								<input type="checkbox" class="book-like-checkbox" name="no" value="<%=bookDto.getBookNo()%>">	
+								<a href="javascript:void(0);" class="book-like book-good-on" id="like<%=bookDto.getBookNo()%>" style="visibility: hidden;"></a>	
+								<a class="book-publisher"><span><%=bookDto.getBookPublisher() %></span></a>
+								<a href="<%=root%>/book/bookDetail.jsp?no=<%=bookDto.getBookNo()%>" class="book-title overflow"  title="<%=bookDto.getBookTitle() %>"><%=bookDto.getBookTitle() %></a>
+									<%if(bookDto.getBookAuthor()==null){
+										bookDto.setBookAuthor("편집부");
+									} %>
+								<a class="book-author overflow" title="<%=bookDto.getBookAuthor() %>"><%=bookDto.getBookAuthor() %></a>
+						
+								<%if(bookDto.getBookDiscount()!=0 && bookDto.getBookDiscount()!=bookDto.getBookPrice()){ %>
+									<div style="width: 100%;text-align: right;">
+										<a class="book-discount"><%=bookDto.getBookPrice()/(bookDto.getBookPrice()-bookDto.getBookDiscount())%>%</a>
+										<a class="book-price"><%=format.format(bookDto.getBookDiscount()) %></a><a style="font-weight: 900;color:rgba(0,0,0,0.5);"> 원</a>
+									</div>
+								<%}else{ %>
+									<div style="width: 100%;text-align: right;">								
+										<a class="book-price"><%=format.format(bookDto.getBookPrice()) %></a><a style="font-weight: 900;color:rgba(0,0,0,0.5);"> 원</a>
+									</div>
+								<%} %>
+							</div> 
+						<%} %> 
+					</div>
+					
+					<div class="row text-center" style="margin-bottom: 30px; margin-top: 30px;">
+						<input type="button" id="allSelect-btn" class="book-like-btn" value="전체선택">
+						<input type="submit" class="book-like-btn" value="선택상품 구매">
+						<input type="button" class="book-like-btn book-like-delete-btn" value="선택상품 삭제">
+					</div>				
+				</form>		
+						
 				<div class="pagination">	
 					<%if(startBlock > 1){ %>
 					<a class="move-link">이전</a>
