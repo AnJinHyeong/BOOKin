@@ -334,7 +334,7 @@
 															<strong>BOOKin 관리자</strong>
 														</div>
 														<div class="admin-qna-row">							
-															<textarea name="qnaReplyContent" placeholder="댓글을 남겨보세요" rows="1" class="comment_inbox_text" style="overflow: hidden; overflow-wrap: break-word; height: 20px;" required></textarea>
+															<textarea name="qnaReplyContent" placeholder="답변을 남겨주세요." rows="1" class="comment_inbox_text" style="overflow: hidden; overflow-wrap: break-word; height: 20px;" required></textarea>
 															<input type="hidden" name="qnaReplyWriter" value="<%=member %>">
 															<input type="hidden" name="qnaReplyOrigin" value="<%=qnaBoardDto.getQnaBoardNo() %>" >
 														</div>

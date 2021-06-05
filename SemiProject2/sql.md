@@ -102,8 +102,8 @@ genre_parents references genre(genre_no)
 
 #book_like 좋아요 테이블 
 create table book_like( 
-member_no references member(member_no), 
-book_origin references book(book_no), 
+member_no references member(member_no) ON DELETE CASCADE, 
+book_origin references book(book_no) ON DELETE CASCADE, 
 like_time date default sysdate not null, 
 constraint book_like_pk primary key(member_no, book_origin) 
 );
@@ -129,11 +129,12 @@ CREATE SEQUENCE purchase_seq;
 
 #review 책 상품 리뷰 테이블,sequence
 create table review(
-review_no number(18) primary key,
-review_content varchar2(4000) not null,
-review_rate number(5) , 
-review_time date default sysdate,
-review_purchase REFERENCES purchase(purchase_pk)
+REVIEW_NO NUMBER(18) PRIMARY KEY, 
+REVIEW_CONTENT VARCHAR2(4000) NOT NULL,
+REVIEW_RATE NUMBER(5),      
+REVIEW_TIME DATE,           
+REVIEW_BOOK NUMBER(18) NOT NULL,     
+REVIEW_MEMBER NUMBER(18) NOT NULL 
 );
 
 CREATE SEQUENCE review_seq;
@@ -142,13 +143,11 @@ CREATE SEQUENCE review_seq;
 #cart 장바구니 테이블 ,sequence
 create table cart(
 cart_no number primary key,
-member_no number not null,
-book_no number(10) not null,
+member_no number not NULL REFERENCES member(member_no) on delete cascade,
+book_no number(10) not NULL REFERENCES book(book_no) on delete cascade,
 cart_amount number(10) not null,
 cart_time date default sysdate
 );
-alter table cart add CONSTRAINT cart_member_no_fk FOREIGN key(member_no) REFERENCES member(member_no);
-alter table cart add CONSTRAINT cart_book_bo_fk FOREIGN key(book_no) REFERENCES book(book_no);
 
 create SEQUENCE cart_seq NOCACHE;
 

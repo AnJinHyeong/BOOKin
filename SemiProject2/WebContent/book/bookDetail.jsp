@@ -203,7 +203,7 @@
          <%if(bookDto.getBookImage().startsWith("https")){ %>
          <img title="<%=bookDto.getBookTitle()%>" src="<%=bookDto.getBookImage()%>" class="book-image" style="height: 50%;">
          <%}else{ %>
-         <img title="<%=bookDto.getBookTitle() %>" class="book-image" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">
+         <img title="<%=bookDto.getBookTitle() %>" class="book-image" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>" style="height: 50%;">
          <%} %>
       </div>
       <div class="book-table-box">

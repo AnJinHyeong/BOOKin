@@ -34,10 +34,10 @@
 					<li><a href="<%=root%>/admin/review.jsp">리뷰 관리</a></li>
 				</ul>
 			</li>
-			<li class="admin-aside-top_menu"><span class="admin-aside-top_text">공지/이벤트</span>
+			<li class="admin-aside-top_menu"><span class="admin-aside-top_text">NOTICE</span>
 				<ul class="admin-aside-side_menus">
-					<li><a href="<%=root%>/admin/noticeInsert.jsp">공지/이벤트 등록</a></li>
-					<li><a href="<%=root%>/admin/notice.jsp">공지/이벤트 관리</a></li>
+					<li><a href="<%=root%>/admin/noticeInsert.jsp">NOTICE 등록</a></li>
+					<li><a href="<%=root%>/admin/notice.jsp">NOTICE 조회/관리</a></li>
 				</ul>
 			</li>
 			<li class="admin-aside-top_menu"><span class="admin-aside-top_text">정산</span>
