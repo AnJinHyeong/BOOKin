@@ -164,6 +164,7 @@
 		
 		function madeBox(){
 			page+=1;
+			if(page<10){
 			const URLSearch = new URLSearchParams(location.search);
 			URLSearch.set('page', String(page));
 			const newParam = URLSearch.toString();
@@ -188,6 +189,7 @@
 			xhr.responseType = "document";		
 
 			$.fn.initBookLike();
+			}
 		};
 	});
 </script>
