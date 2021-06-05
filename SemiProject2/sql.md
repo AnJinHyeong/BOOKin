@@ -131,7 +131,8 @@ review_no number(18) primary key,
 review_content varchar2(4000) not null,
 review_rate number(5) , 
 review_time date default sysdate,
-review_purchase REFERENCES purchase(purchase_pk)
+review_book number(18) not null,
+review_member number(18) not null
 );
 
 CREATE SEQUENCE review_seq;

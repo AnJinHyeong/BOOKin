@@ -210,14 +210,14 @@
 </script>
 <div><img class="left-img" src="<%=root%>/image/left-arrow.png"></div>
 <div class="event-tab">
-<div class="align-row event-container">
-	<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(0).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/243/700/600"></a><span class="event_title"><%=eventList.get(0).getNoticeBoardTitle() %></span></div>
-	<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(1).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/184/700/600"></a><span class="event_title"><%=eventList.get(1).getNoticeBoardTitle() %></span></div>
-	<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(2).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/24/700/600"></a><span class="event_title"><%=eventList.get(2).getNoticeBoardTitle() %></span></div>
-	<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(3).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/12/700/600"></a><span class="event_title"><%=eventList.get(3).getNoticeBoardTitle() %></span></div>
-	<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(4).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/39/700/600"></a><span class="event_title"><%=eventList.get(4).getNoticeBoardTitle() %></span></div>
-	<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(5).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/287/700/600"></a><span class="event_title"><%=eventList.get(5).getNoticeBoardTitle() %></span></div>
-</div>
+	<div class="align-row event-container">
+		<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(0).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/243/700/600"></a><span class="event_title"><%=eventList.get(0).getNoticeBoardTitle() %></span></div>
+		<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(1).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/184/700/600"></a><span class="event_title"><%=eventList.get(1).getNoticeBoardTitle() %></span></div>
+		<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(2).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/24/700/600"></a><span class="event_title"><%=eventList.get(2).getNoticeBoardTitle() %></span></div>
+		<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(3).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/12/700/600"></a><span class="event_title"><%=eventList.get(3).getNoticeBoardTitle() %></span></div>
+		<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(4).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/39/700/600"></a><span class="event_title"><%=eventList.get(4).getNoticeBoardTitle() %></span></div>
+		<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(5).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/287/700/600"></a><span class="event_title"><%=eventList.get(5).getNoticeBoardTitle() %></span></div>
+	</div>
 </div>
 <div><img class="right-img" src="<%=root%>/image/right-arrow.png"></div>
 <section style="min-height: 800px" class="container-1200">

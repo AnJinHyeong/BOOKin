@@ -1,3 +1,4 @@
+<%@page import="semi.beans.ReviewDao"%>
 <%@page import="java.util.Map"%>
 <%@page import="semi.beans.PurchaseDao"%>
 <%@page import="semi.beans.MemberDto"%>
@@ -22,60 +23,6 @@
 		
 	int memberNo = (int)session.getAttribute("member");
 	
-	int pageNo;//현재 페이지 번호
-	try{
-		pageNo = Integer.parseInt(request.getParameter("pageNo"));
-		if(pageNo < 1) {
-			throw new Exception();
-		}
-	}
-	catch(Exception e){
-		pageNo = 1;//기본값 1페이지
-	}
-	
-	int pageSize;
-	try{
-		pageSize = Integer.parseInt(request.getParameter("pageSize"));
-		if(pageSize < 8){
-			throw new Exception();
-		}
-	}
-	catch(Exception e){
-		pageSize = 8;//기본값 10개
-	}
-	
-	//rownum의 시작번호(startRow)와 종료번호(endRow)를 계산
-	int startRow = pageNo * pageSize - (pageSize-1);
-	int endRow = pageNo * pageSize;
-		
-	List<BookLikeDto> bookLikeList;	
-	BookLikeDao bookLikeDao = new BookLikeDao();
-	bookLikeList = bookLikeDao.list(memberNo, startRow, endRow);
-	if(bookLikeList.size() == 0){
-		if(pageNo != 1){
-			pageNo = 1;
-			response.sendRedirect("bookLike.jsp?pageNo=" + pageNo);
-			return;
-		}
-	}
-
-	int count = bookLikeDao.getCount(memberNo);
-	
-	int blockSize = 10;
-	int lastBlock = (count + pageSize - 1) / pageSize;
-	//	int lastBlock = (count - 1) / pageSize + 1;
-	int startBlock = (pageNo - 1) / blockSize * blockSize + 1;
-	int endBlock = startBlock + blockSize - 1;
-	
-	if(endBlock > lastBlock){//범위를 벗어나면
-		endBlock = lastBlock;//범위를 수정
-	}
-
-	DecimalFormat format = new DecimalFormat("###,###");
-	BookDao bookDao = new BookDao();
-	
-	MemberDao memberDao = new MemberDao();
-	MemberDto memberDto = memberDao.getMember(memberNo);
 	PurchaseDao purchaseDao = new PurchaseDao();
 	Map<String,List<Integer>> map = purchaseDao.getMemberPurchaseStateCount(memberNo);
 	
@@ -99,104 +46,57 @@
 		delieverying=map.get("배송중").size();
 		
 	}
-	if(map.containsKey("배송완료")){
-		
-		delieverySucces=map.get("배송완료").size();
-		
+	if(map.containsKey("배송완료")){		
+		delieverySucces=map.get("배송완료").size();		
 	}
+	
+	ReviewDao reviewDao = new ReviewDao();
+	List<BookDto> noReviewBookList = reviewDao.isPurchaseNoReviewList(memberNo);
 %>
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
-	$(function(){		
-		$(".book-like").click(function(){
-			if(<%=memberNo %> == 0){
-				alert("로그인이 필요한 기능입니다.");
+	var banner_left =0;
+	var img_cnt = 0;
+	var first = 1;
+	var last;
+	var interval;
+	
+	$(function(){
+		$(".review-rolling-content .review-book-img").each(function(){
+			$(this).css("left", banner_left);
+			banner_left += $(this).width() + 8;
+			$(this).attr("id", "content"+(++img_cnt));
+		});
+		
+		last = img_cnt;
+		
+		$(".review-right-img").click(function(){
+			var last_content = $("#content"+last);
+			var pos = last_content.position().left + last_content.width() + 8;
+			if(pos < $(".review-rolling-content").width())
 				return;
-			}
-			var type;
 			
-			if($(this).hasClass("book-good")){
-				$(this).removeClass("book-good");
-				$(this).addClass("book-good-on");
-				type = "insert";
-			}
-			else{
-				$(this).removeClass("book-good-on");
-				$(this).addClass("book-good");
-				type = "delete";
-			}			
-			
-			var url = "<%=root%>/book/bookLike.kh";
-			$.ajax({
-				type:"GET",
-				url:url,
-				dataType:"html",
-				data:{
-					type : type,
-					memberNo : <%=memberNo%>,
-					bookOrigin : $(this).attr("id")
-				},
-				error : function(request,status,error){
-					alert('code:'+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error); //에러 상태에 대한 세부사항 출력
-					alert(e);
-				}
-			});
-		});			
-	});
-	
-	//페이지 네이션 
-	$(function(){
-		$(".pagination > a").click(function(){
-			//주인공 == a태그
-			var pageNo = $(this).text();
-			if(pageNo == "이전"){//이전 링크 : 현재 링크 중 첫 번째 항목 값 - 1
-				pageNo = parseInt($(".pagination > a:not(.move-link)").first().text()) - 1;
-				$("input[name=pageNo]").val(pageNo);
-				$(".page-form").submit();//강제 submit 발생
-			}	
-			else if(pageNo == "다음"){//다음 링크 : 현재 링크 중 마지막 항목 값 + 1
-				pageNo = parseInt($(".pagination > a:not(.move-link)").last().text()) + 1;
-				$("input[name=pageNo]").val(pageNo);
-				$(".page-form").submit();//강제 submit 발생
-			}
-			else{//숫자 링크
-				$("input[name=pageNo]").val(pageNo);
-				$(".page-form").submit();//강제 submit 발생
-			}
-		});
-	});
-	
-	var allSelected = false;
-	
-	$(function(){
-		$("#allSelect-btn").click(function(){	
-			if(!allSelected){
-				$(".book-like-checkbox").prop("checked", true);
-				$(this).val("전체선택 해제");
-			}
-			else{
-				$(".book-like-checkbox").prop("checked", false);
-				$(this).val("전체선택");
-			}
-			allSelected = !allSelected;
+			$(".review-rolling-content .review-book-img").each(function(){
+				$(this).animate({
+					left: $(this).position().left - ($(this).width() * 2)
+				}, 500); 			
+			})
 		});
 		
-		$(".book-like-delete-btn").click(function(){
-			$(".book-like-checkbox").each(function(index){
-				if($(this).is(":checked")){
-					$(this).next().click();
-				}				
-			});
-			location.reload();
-		});		
-		
-		$(window).bind("pageshow", function(event){
-			if(event.originalEvent.persisted){
-				console.log("back");
-			}
+		$(".review-left-img").click(function(){	
+			var first_content = $("#content"+first);
+			var pos = first_content.position().left;
+			if(pos > -5)
+				return;
+			
+			$(".review-rolling-content .review-book-img").each(function(){
+				 $(this).animate({
+					 left: $(this).position().left + ($(this).width() * 2)
+				}, 500);	
+			})
 		});
-	});	
+	});
 	
 </script>
 
@@ -204,6 +104,7 @@
 <link rel="stylesheet" type="text/css" href="<%=root%>/css/myInfoLayout.css">
 <link rel="stylesheet" type="text/css" href="<%=root%>/css/template.css">
 <link rel="stylesheet" type="text/css" href="<%= root%>/css/list.css">
+<link rel="stylesheet" type="text/css" href="<%= root%>/css/reviewPage.css">
 	<!-- 주문 현황 영역 -->
 	<div class="container-1200 myInfo-header">
 		<dl class="bottom" style="padding-bottom:55px;">
@@ -251,10 +152,23 @@
 		
 		<!-- 컨텐츠영역 -->
 		<section class="myInfo-section">
+			<header class="text-center"> <h3 style=" margin-bottom: 40px;font-size:40px;" class="site-color">리뷰를 남겨주세요</h3> </header>
 			<article class="myInfo-article text-center">
-				<div class="row ">
-					<h3 style=" margin-bottom: 40px;font-size:40px;" class="site-color">리뷰</h3>
-				</div>
+				<div class="review-rolling-div">
+					<div class="review-left-arrow-div"><img class="review-left-img" src="<%=root%>/image/left-arrow.png"></div>
+					<div class="review-rolling-content">	
+						<%for(BookDto bookDto : noReviewBookList){ %>	
+							<a href="<%=root%>/book/bookDetail.jsp?no=<%=bookDto.getBookNo() %>" class="review-book-img">	
+								<%if(bookDto.getBookImage().startsWith("https")){ %>
+					            	<img title="<%=bookDto.getBookTitle() %>" src="<%=bookDto.getBookImage()%>">
+					            <%}else{ %>
+					            	<img title="<%=bookDto.getBookTitle() %>" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">
+					            <%} %>
+							</a>										
+						<%} %>
+					</div>
+					<div class="review-right-arrow-div"><img class="review-right-img" src="<%=root%>/image/right-arrow.png"></div>
+				</div>				
 			</article>
 		</section>
 		

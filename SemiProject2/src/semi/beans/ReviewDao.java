@@ -149,5 +149,43 @@ public class ReviewDao {
 		return count;
 	}
 	
+	public List<BookDto> isPurchaseNoReviewList(int memberNo) throws Exception{
+		Connection con = JdbcUtils.getConnection();
+		String sql = "select p.purchase_book, r.review_no, B.*"
+				+ "    from purchase P"
+				+ "    left outer join review R"
+				+ "        on p.purchase_book = r.review_book"
+				+ "    left outer join book B"
+				+ "        on p.purchase_book = b.book_no"
+				+ "        where p.purchase_member = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, memberNo);
+		ResultSet rs = ps.executeQuery();
+		
+		List<BookDto> list = new ArrayList<BookDto>();
+		
+		while(rs.next()) {
+			if(rs.getInt("review_no") == 0) {
+				BookDto bookDto = new BookDto();
 
+				bookDto.setBookNo(rs.getInt("book_no"));
+				bookDto.setBookTitle(rs.getString("book_title"));
+				bookDto.setBookImage(rs.getString("book_image"));
+				bookDto.setBookAuthor(rs.getString("book_author"));
+				bookDto.setBookPrice(rs.getInt("book_price"));
+				bookDto.setBookDiscount(rs.getInt("book_discount"));
+				bookDto.setBookPublisher(rs.getString("book_publisher"));
+				bookDto.setBookDescription(rs.getString("book_description"));
+				bookDto.setBookPubDate(rs.getDate("book_pubdate"));
+				bookDto.setBookGenreNo(rs.getLong("book_genre"));
+				bookDto.setBookView(rs.getInt("book_view"));
+				
+				list.add(bookDto);				
+			}
+		}
+		
+		con.close();
+		
+		return list;
+	}
 }
