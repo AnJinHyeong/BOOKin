@@ -180,10 +180,9 @@
 
 	<h2 class="subtitle">문의 수정</h2>
 	
-	<hr style="width: 1000px; margin: 0px auto;">
 
 	<!-- 보내야 할 항목 4개, 사용자가 고칠 수 있는 항목 3개, 히든 1개 -->
-	<div class="qna-insert">
+	<div class="qna-insert" style="border-top: 1px solid #3c3c3c;">
 		<form action="qnaboardEdit.kh" method="post">
 			<input type="hidden" name="qnaBoardNo" value="<%=qnaboardDto.getQnaBoardNo()%>">  
 			
