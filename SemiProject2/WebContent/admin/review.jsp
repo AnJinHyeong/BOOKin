@@ -205,9 +205,9 @@
 								<th style="width: 1%;">상품번호</th>
 								<th style="width: 15%;">리뷰내용</th>
 								<th style="width: 2%;">작성자</th>
-								<th style="width: 3%;">별점</th>
-								<th style="width: 3%;">등록일자</th>
-								<th style="width: 3%;">상품정보</th>
+								<th style="width: 4%;">별점</th>
+								<th style="width: 4%;">등록일자</th>
+								<th style="width: 4%;">상품정보</th>
 							</tr>
 						</thead>
 						<tbody>

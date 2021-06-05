@@ -34,12 +34,8 @@ public class QnaBoardDeleteReplyServlet extends HttpServlet{
 			resp.setContentType("text/html; charset=UTF-8");
 			PrintWriter writer = resp.getWriter();
 			
-//			if(!result) {				 
-//				writer.println("<script>alert('댓글 삭제가 실패했습니다.'); location.href='"+"qnaBoardDetail.jsp?qnaBoardNo="+qnaReplyDto.getQnaReplyOrigin()+"';</script>");				
-//			}
-//			else {
-			writer.println("<script>alert('댓글이 삭제되었습니다.'); location.href='"+req.getContextPath()+"/admin/qnaReply.jsp';</script>");
-//			}
+			writer.println("<script>alert('답변이 삭제되었습니다.'); location.href='"+req.getContextPath()+"/admin/qnaReply.jsp';</script>");
+
 			writer.close();
 		}
 		catch(Exception e) {
