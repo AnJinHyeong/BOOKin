@@ -170,8 +170,6 @@
 </div>
 <div class="container-1200 align-row space-between" style="z-index: 1;">
 	<ul class="font-weight-900 ul-row main-menu">
-		<li><a class="site-color change-a" href="#">베스트</a></li>
-		<li><a class="site-color-red change-a"  href="#" >NEW</a></li>
 	<% for(int i=0;i<genreList.size();i++){ %>
 		<li>
 			<a class="change-a" href="<%=root%>?genre=<%=genreList.get(i).getGenreNo()%>"> <%=genreList.get(i).getGenreName() %></a>

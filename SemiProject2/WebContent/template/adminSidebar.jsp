@@ -25,7 +25,6 @@
 			<li class="admin-aside-top_menu"><span class="admin-aside-top_text">판매</span>
 				<ul class="admin-aside-side_menus">
 					<li><a href="<%=root%>/admin/purchaseSearch.jsp">주문확인/발송관리</a></li>
-					<li><a>취소 관리</a></li>
 				</ul>
 			</li>
 			<li class="admin-aside-top_menu"><span class="admin-aside-top_text">문의/리뷰</span>
@@ -40,11 +39,11 @@
 					<li><a href="<%=root%>/admin/notice.jsp">NOTICE 조회/관리</a></li>
 				</ul>
 			</li>
-			<li class="admin-aside-top_menu"><span class="admin-aside-top_text">정산</span>
-				<ul class="admin-aside-side_menus">
-					<li><a>정산 내역</a></li>
-				</ul>
-			</li>
+<!-- 			<li class="admin-aside-top_menu"><span class="admin-aside-top_text">정산</span> -->
+<!-- 				<ul class="admin-aside-side_menus"> -->
+<!-- 					<li><a>정산 내역</a></li> -->
+<!-- 				</ul> -->
+<!-- 			</li> -->
 			<li class="admin-aside-top_menu"><span class="admin-aside-top_text"></span>
 				<ul class="admin-aside-side_menus">
 					<li><a href="<%=root%>">메인 페이지</a></li>

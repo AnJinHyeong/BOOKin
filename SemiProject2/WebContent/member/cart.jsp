@@ -528,7 +528,11 @@
                                    <div>
                                    		
                                        <a href="<%=root %>/book/bookDetail.jsp?no=<%=cartListDto.getBookNo() %>" >
-                                           <img src="<%=cartListDto.getBookImage() %>">
+                                           	<%if(cartListDto.getBookImage().startsWith("https")){ %>
+								            	<img title="<%=cartListDto.getBookTitle() %>"  src="<%=cartListDto.getBookImage()%>">
+								            <%}else{ %>
+								           		<img title="<%=cartListDto.getBookTitle() %>"  src="<%=root%>/book/bookImage.kh?bookNo=<%=cartListDto.getBookNo()%>" style="width: 82px; height: 114px;">
+								            <%} %>
                                        </a>
                                            <div class="tit">
                                            		<a href="<%=root %>/book/bookDetail.jsp?no=<%=cartListDto.getBookNo() %>" >
