@@ -13,7 +13,6 @@
 	pageEncoding="UTF-8"%>
 
 <%
-
 	int no = Integer.parseInt(request.getParameter("no"));
 	String root = request.getContextPath();
 	
@@ -106,7 +105,6 @@
 	boolean isPurchase = reviewDao.isPurchase(bookNo, member);
 	
 	boolean isReview = reviewDao.isReview(bookNo, member);
-
 %>
 
 <link rel="stylesheet" type="text/css" href="<%=root%>/css/review.css">
@@ -138,7 +136,6 @@
 						$("input[name=pageNo]").val(pageNo);
 						$(".page-form").submit();//강제 submit 발생
 					} else if (pageNo == "다음") {//다음 링크 : 현재 링크 중 마지막 항목 값 + 1
-
 						pageNo = parseInt($(".pagination > a:not(.move-link)").last().text()) + 1;
 						$("input[name=pageNo]").val(pageNo);
 						$(".page-form").submit();//강제 submit 발생
@@ -149,7 +146,6 @@
 				});
 	});
 </script>
-
 <script>
 	$(function() {
 		$(".edit_button").click(function() {
@@ -186,16 +182,11 @@
 			$(afterEditId).addClass("hidden");
 
 		});
-
-
-		//별점 인풋 스크립트
 		
-		
+		//별점 인풋 스크립트				
 		$(".star").click(function(){
 			var id = $(this).attr("id");
 			var starNumber=id.substring(4,5);
-			
-			
 			
 			for(var i=1;i<=5;i++){ 
 				var temp = "#star" + i;
@@ -205,9 +196,7 @@
 				var temp = "#star" + i;
 				$(temp).attr("src","<%=root%>/image/star_on.png");
 			}
-				$(".rate_star").val(starNumber);
-				
-			
+				$("#review_rate").val(starNumber);
 		});
 		
 		
@@ -215,25 +204,15 @@
 			$(".review_input_form").submit()
 		});
 	
-		$("#review-edit-button").click(function(){
+		$("#review_edit_button").click(function(){
 			$(".review_edit_form").submit()
 		});
-	
 	});
-
-	
-
-	
-
 </script>
 
-<%
-
-%>
 <div class="container-700">
 
 	<div class="row text-left">
-
       <h1><%=bookDto.getBookTitle() %></h1><br>
       <div>
          <span><%=bookDto.getBookAuthor() %> (지은이)&nbsp;&nbsp;</span>
@@ -249,7 +228,7 @@
          <%if(bookDto.getBookImage().startsWith("https")){ %>
          <img title="<%=bookDto.getBookTitle()%>" src="<%=bookDto.getBookImage()%>" class="book-image" style="height: 50%;">
          <%}else{ %>
-         <img title="<%=bookDto.getBookTitle() %>" class="book-image" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">
+         <img title="<%=bookDto.getBookTitle() %>" class="book-image" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>" style="height: 50%;">
          <%} %>
       </div>
       <div class="book-table-box">
@@ -279,8 +258,6 @@
             </div>
          </div><br><br>
          <div class="detail-etc-text-box">
-
-
 
                <span class="star-image-box">
                   <%if(reviewAvg == 0){ %>
@@ -325,27 +302,6 @@
                      </div>
                   </div>
 
-
-<div class="payment-button-box">
-               <form action="<%=root %>/member/cartInsert.kh" method="post" onsubmit="foo();">
-                  <div class="row">
-                     <span style="width: 50px; text-align: left;">수량</span>
-                     <input type="number" name="cartAmount" value="1" min="1" style="margin: 0 0 0 40px; height: 30px; width: 150px;" id="cartAmount">
-                     <span class="book-price"></span>                     
-                  </div><br>
-                  <input type="hidden" name="memberNo" value="<%=member %>">
-                  <input type="hidden" name="bookNo" value="<%=no %>">
-                  <div style="display:flex; margin-top:30px;">
-                     <div style="float: left; padding-left: 15px; ">
-                        <span class="payment-button" style="background-color:rgb(223,48,127); padding: 1rem 3rem;">
-                        <a href="<%=root %>/purchase/purchase.jsp?no=<%=bookDto.getBookNo()%>" class="payment-button-text js_purchase_btn">바로구매</a>
-                        </span> 
-                     </div>
-                     <div style="float: right; padding-right: 15px;">
-                            <span class="payment-button" style="background-color:rgb(226,68,87); padding: 1rem 3rem;"><input type="submit" value="장바구니 담기" class="cart-btn"></span>
-                     </div>
-                  </div>
-
                </form>
             
             </div><br><br>
@@ -363,7 +319,6 @@
 			<div class="book-detail-semi-subtitle-text">주제분류</div>
 			<br>
 			<div>
-
 				<%if (genreDto2 == null) {%>
 				<%=genreDto1.getGenreName()%>
 				&gt;<%=genreDto.getGenreName()%>
@@ -374,11 +329,10 @@
 				&gt;
 				<%=genreDto.getGenreName()%>
 				<% } %>
-
 			</div>
 		</div>
 	</div>
-
+	
 	<hr>
 
 	<div class="row text-left book-detail-semi-box">
@@ -441,16 +395,13 @@
 	</div>
 	
 	<hr>
-
+	
 	<div class="row text-left book-detail-semi-box2">
 		<div class="book-detail-semi-title2">
-
 			<span><%=bookDto.getBookPublisher()%></span> <span
 				class="book-detail-semi-title2-highlight"> 출판사의 다른 책</span>
-
 		</div>
 		<div class="book-detail-semi-image-box">
-
 
 			<%if (bookList2.size() < 5) {%>
 				<%for (int i = 0; i < bookList2.size(); i++) {%>
@@ -491,7 +442,6 @@
 				</a>
 				<% } %>
 			<% } %>
-
 		</div>
 	</div>
 	
@@ -499,13 +449,10 @@
 	
 	<div class="row text-left book-detail-semi-box2">
 		<div class="book-detail-semi-title2">
-
 			<span><%=genreDto.getGenreName()%></span> <span
 				class="book-detail-semi-title2-highlight"> 장르의 다른 책</span>
-
 		</div>
 		<div class="book-detail-semi-image-box">
-
 			<%if (bookList3.size() < 5) {%>
 				<%for (int i = 0; i < bookList3.size(); i++) {%>
 					<%
@@ -543,52 +490,50 @@
 					</a>
 				<% } %>
 			<% } %>
-
 		</div>
 		<hr>
 	</div>
 	
 	<div class="row text-left book-detail-semi-box2">
-		<!-- 리뷰 -->
-		<!-- 		어떤책에 누가 리뷰번호,리뷰내용,평점,작성시간 넣을 수 있음 -->
-<<<<<<< HEAD
-		<%if (isPurchase && (isReview == false)) {%>
-		<div class="review-regit-reply">
-			<!-- 			보내야할 정보 책,작성자번호,리뷰내용,평점 -->
-				<div style="display:inline-block" class="review-row">
-				<form action="<%=root%>/review/reviewInsert.kh" class="review_input_form" method="post">
-
-					
-
-					<div class="row">
-
-						<img id="star1" class="star" src="<%=root%>/image/star_on.png">
-						<img id="star2" class="star" src="<%=root%>/image/star_off.png">
-						<img id="star3" class="star" src="<%=root%>/image/star_off.png">
-						<img id="star4" class="star" src="<%=root%>/image/star_off.png">
-						<img id="star5" class="star" src="<%=root%>/image/star_off.png">
-					</div>
-					<!--  <label>평점</label> <input type="text" name="review_rate">  -->
-					<input type="hidden" name="review_book" value="<%=no%>"> <input
-						type="hidden" name="review_member" value="<%=member%>"> <input
-						type="submit" value="입력">
-				</form>
-			</div>
-		</div>
-		<% } %>
-
 		<div class="book-detail-semi-title2">
 			<span>BOOK 리뷰</span>
 		</div>
+		<!-- 리뷰 -->
+		<!-- 		어떤책에 누가 리뷰번호,리뷰내용,평점,작성시간 넣을 수 있음 -->
+		<%if (isPurchase && (isReview == false)) {%>
+		<div class="review-regit-reply" >
+			<!-- 			보내야할 정보 책,작성자번호,리뷰내용,평점 -->
+			<div class="review-row">
+				<div style="display:inline-block; width:75%;">
+					<form action="<%=root%>/review/reviewInsert.kh" class="review_input_form" method="post">
+						<div class="row">
+							<img id="star1" class="star" src="<%=root%>/image/star_on.png">
+							<img id="star2" class="star" src="<%=root%>/image/star_off.png">
+							<img id="star3" class="star" src="<%=root%>/image/star_off.png">
+							<img id="star4" class="star" src="<%=root%>/image/star_off.png">
+							<img id="star5" class="star" src="<%=root%>/image/star_off.png">
+						</div>
+						<textarea name="review_content" placeholder="리뷰를 남겨보세요" rows="3" class="review_inbox_text" style="overflow: hidden; overflow-wrap: break-word; height: 20px;" required></textarea>
+						<!--  <label>평점</label>   -->
+						<input type="hidden" name="review_rate" value="1" id="review_rate">
+						<input type="hidden" name="review_book" value="<%=no%>"> 
+						<input type="hidden" name="review_member" value="<%=member%>"> 
+						
+					</form>
+				</div>
+				<div class="text-center" style="display:inline-block; width:20%; vertical-align: top; margin-top: 54px;">
+					<input id="review_insert_button" class="form-btn form-btn-positive btn" style="width:56%; height:50px; font-size:16px;" type="button" value="등록">
+				</div>				
+			</div>
+		</div>
+		<% } %>
+		
 		<%MemberDao memberDao = new MemberDao();%>
 		<%if (reviewCount > 0) {%>
 			<%for (BookReviewDto bookReviewDto : reviewList) {%>
 				<!-- 처음에 보여줘야 할 부분  -->
-				<div class="row" class="non-hidden"
-					id="beforeEdit<%=bookReviewDto.getReviewNo()%>"
-					style="padding-bottom: 15px;">
-					<div class="row">
-						<span style="display: none;"><%=bookReviewDto.getReviewRate()%></span>
+				<div class="row" class="non-hidden"	id="beforeEdit<%=bookReviewDto.getReviewNo()%>"	style="padding-bottom: 15px;">
+					<div style="display: inline-block; width:20%; vertical-align: top; margin-top: 3px; margin-right: 15px;">
 						<%int reviewRate = bookReviewDto.getReviewRate();%>
 						<%for (int i = 0; i < reviewRate; i++) {%>
 							<img src="<%=root%>/image/star_on.png">
@@ -596,59 +541,61 @@
 						<%for (int i = 0; i < 5 - reviewRate; i++) {%>
 							<img src="<%=root%>/image/star_off.png">
 						<%}%>
-
 					</div>
-
-		
-					<div class="row text-left">
-						<p style="min-height: 40px;"><%=bookReviewDto.getReviewContent()%></p>
-					</div>
-		
-					<div class="row">
-						<div class="text-left" style="display: inline-block; width: 50%">
+					<div style="display: inline-block; width:75%;">
+						<div style="min-height: 60px;">
+							<%=bookReviewDto.getReviewContent()%>
+						</div>
+						<div style="display: inline-block; width: 45%;">
 							<%MemberDto memberDto = memberDao.getMember(bookReviewDto.getReviewMember());%>
-							<span style="font-size: 12px;"><%=memberDto.getMemberId()%></span>
-							<span style="font-size: 12px;"><%=bookReviewDto.getReviewTime()%></span>
-						</div>
+							<span style="font-size: 14px; margin-right:10px;"><%=memberDto.getMemberId()%></span>	
+							<span style="font-size: 14px; margin-right:10px;"><%=bookReviewDto.getReviewTime()%></span>							
+						</div>						
 						<%if (bookReviewDto.getReviewMember() == member) {%>
-						<div class="text-right" style="display: inline-block; width: 48%;">
-							<div style="display: inline-block;">
-								<input class="edit_button" type="button"
-									data-reviewno="<%=bookReviewDto.getReviewNo()%>" value="수정">
-							</div>
-							<div style="display: inline-block;">
-								<form action="<%=root%>/review/reviewDelete.kh">
-									<input class="float-container right" type="hidden"
-										name="review_no" value="<%=bookReviewDto.getReviewNo()%>">
-									<input type="hidden" name="book_no"
-										value="<%=bookReviewDto.getReviewBook()%>"> <input
-										type="submit" value="삭제" style="display: inline-block;">
-								</form>
-							</div>
-						</div>
-						<%}%>
+							<div style="display: inline-block; width: 45%;" class="text-right">
+								<input class="edit_button form-btn form-btn-normal btn" style="width:45px;" type="button" data-reviewno="<%=bookReviewDto.getReviewNo()%>" value="수정">
+																
+								<form action="<%=root %>/review/reviewDelete.kh" style="display:inline;"> 
+									<input type="hidden" name="book_no"	value="<%=bookReviewDto.getReviewBook()%>">
+									<input type="hidden" name="review_no" value="<%=bookReviewDto.getReviewNo()%>">
+									<input type="submit" class="form-btn form-btn-negative btn" id="delete-review-btn" value="삭제" style="width:45px;">
+								</form>	
+							</div>							
+						<%}%>						
 					</div>
 				</div>
 		
 				<img class="img-1" src="">
 				<%if (bookReviewDto.getReviewMember() == member) {%>
 					<!-- 숨겨놨다가 수정 버튼을 누르면 보여줘야 할 부분   -->
-					<div class="row afterEdit hidden"
-						id="afterEdit<%=bookReviewDto.getReviewNo()%>">
-			
-						<form action="<%=root%>/review/reviewEdit.kh" method="post">
-			
-							<input type="hidden" name="review_no"
-								value="<%=bookReviewDto.getReviewNo()%>">
-							<textarea placeholder="<%=bookReviewDto.getReviewContent()%>"
-								name="review_content"></textarea>
-							<input type="text" placeholder="<%=bookReviewDto.getReviewRate()%>"
-								name="review_rate"> <input class="cancle_button"
-								type="button" data-reviewno="<%=bookReviewDto.getReviewNo()%>"
-								value="취소"> <input type="hidden" name="book_no"
-								value="<%=bookReviewDto.getReviewBook()%>"> <input
-								type="submit" value="수정완료">
-						</form>
+					<div class="review-regit-reply afterEdit hidden" id="afterEdit<%=bookReviewDto.getReviewNo()%>" >
+						<div class="review-row">
+							<div style="display:inline-block; width:75%;">
+								<form action="<%=root%>/review/reviewEdit.kh" class="review_edit_form" method="post">
+									<input type="hidden" name="review_no" value="<%=bookReviewDto.getReviewNo()%>">
+									<div class="row">
+										<%int editRate = bookReviewDto.getReviewRate();%>
+										<%int starCnt = 1; %>
+										<%for (int i = 0; i < editRate; i++) {%>
+											<img id="star<%=starCnt %>" class="star" src="<%=root%>/image/star_on.png">
+											<%starCnt++; %>
+										<%}%>
+										<%for (int i = 0; i < 5 - editRate; i++) {%>
+											<img id="star<%=starCnt %>" class="star" src="<%=root%>/image/star_off.png">
+											<%starCnt++; %>
+										<%}%>
+									</div>
+									<textarea name="review_content" placeholder="<%=bookReviewDto.getReviewContent()%>" rows="3" class="review_inbox_text" style="overflow: hidden; overflow-wrap: break-word; height: 20px;" required></textarea>
+									<input type="hidden" name="review_rate" value="<%=bookReviewDto.getReviewRate()%>" id="review_rate">
+									<input type="hidden" name="review_book"	value="<%=bookReviewDto.getReviewBook()%>">									
+									<input type="hidden" name="review_member"	value="<%=bookReviewDto.getReviewMember()%>">
+								</form>
+							</div>
+							<div class="text-center" style="display:inline-block; width:20%; vertical-align: top; margin-top: 49px;">
+								<input type="button" class="form-btn form-btn-normal btn" id="review_edit_button" value="수정" style="width:45px; height:35px;">
+								<input class="cancle_button form-btn form-btn-negative btn" type="button" data-reviewno="<%=bookReviewDto.getReviewNo()%>" value="취소" style="width:45px; height:35px; margin-right: 20px;"> 			
+							</div>				
+						</div>
 					</div>
 				<%}%>
 			<%}%>
@@ -660,7 +607,8 @@
 			</div>
 		<%}%>
 
-	<!-- 페이지 네이션 -->
+
+		<!-- 페이지 네이션 -->
 		<div class="pagination text-center">
 
 			<%if (startBlock > 1) {%>
@@ -703,4 +651,3 @@
 </script>
 
 <jsp:include page="/template/footer.jsp"></jsp:include>
->>>>>>> refs/remotes/origin/main

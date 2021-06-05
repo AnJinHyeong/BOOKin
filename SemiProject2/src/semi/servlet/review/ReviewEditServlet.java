@@ -18,8 +18,8 @@ public class ReviewEditServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
 			//준비
-			int reviewBookNo = Integer.parseInt(req.getParameter("review_book"));
 			req.setCharacterEncoding("UTF-8");
+			int reviewBookNo = Integer.parseInt(req.getParameter("review_book"));
 			String root = req.getContextPath();
 			ReviewDto reviewDto = new ReviewDto();
 			reviewDto.setReviewNo(Integer.parseInt(req.getParameter("review_no")));

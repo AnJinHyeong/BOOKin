@@ -10,7 +10,25 @@ public class BookReviewDto {
 	private Date reviewTime;
 	private int reviewBook;
 	private int reviewMember;
+	private String reviewBookUrl;
+	private String reviewBookTitle;
 	
+	public String getReviewBookTitle() {
+		return reviewBookTitle;
+	}
+
+	public void setReviewBookTitle(String reviewBookTitle) {
+		this.reviewBookTitle = reviewBookTitle;
+	}
+
+	public String getReviewBookUrl() {
+		return reviewBookUrl;
+	}
+
+	public void setReviewBookUrl(String reviewBookUrl) {
+		this.reviewBookUrl = reviewBookUrl;
+	}
+
 	public BookReviewDto() {
 		super();
 	}
