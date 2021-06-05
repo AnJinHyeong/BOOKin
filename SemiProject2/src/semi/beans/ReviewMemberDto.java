@@ -2,24 +2,15 @@ package semi.beans;
 
 import java.sql.Date;
 
-public class ReviewBookDto {
+public class ReviewMemberDto {
 	private int reviewNo;
 	private String reviewContent;
 	private long reviewRate;
 	private Date reviewTime;
 	private int reviewPurchase;
-	private int bookNo;
-	private String bookTitle;
-	private String bookImage;
-	
-	public ReviewBookDto() {
+	private String memberId;
+	public ReviewMemberDto() {
 		super();
-	}
-	public int getBookNo() {
-		return bookNo;
-	}
-	public void setBookNo(int bookNo) {
-		this.bookNo = bookNo;
 	}
 	public int getReviewNo() {
 		return reviewNo;
@@ -51,17 +42,11 @@ public class ReviewBookDto {
 	public void setReviewPurchase(int reviewPurchase) {
 		this.reviewPurchase = reviewPurchase;
 	}
-	public String getBookTitle() {
-		return bookTitle;
+	public String getMemberId() {
+		return memberId;
 	}
-	public void setBookTitle(String bookTitle) {
-		this.bookTitle = bookTitle;
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
-	public String getBookImage() {
-		return bookImage;
-	}
-	public void setBookImage(String bookImage) {
-		this.bookImage = bookImage;
-	}
-	
+
 }
