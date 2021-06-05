@@ -129,7 +129,7 @@
 		</a>
 		<a class="icon-item align-column" href="#">
 			<img class ="icon" src="<%=root%>/image/writing.svg">
-			<span>리뷰</span>
+			<span><a href="reviewInsert.jsp">리뷰</a></span>
 		</a>
 		<a  class="icon-item align-column" href="<%=root%>/qna/qnaNotice.jsp">
 			<img class ="icon" src="<%=root%>/image/gift.svg">

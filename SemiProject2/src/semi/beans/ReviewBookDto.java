@@ -11,6 +11,7 @@ public class ReviewBookDto {
 	private int bookNo;
 	private String bookTitle;
 	private String bookImage;
+	
 	public ReviewBookDto() {
 		super();
 	}
