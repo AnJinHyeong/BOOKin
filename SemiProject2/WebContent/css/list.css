@@ -148,3 +148,7 @@
 .book-like-delete-btn{
 	background: #ff6b6b;
 }
+
+.book-like-div > .book-item {
+    width: 20%;
+}

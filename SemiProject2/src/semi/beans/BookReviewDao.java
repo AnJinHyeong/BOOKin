@@ -14,13 +14,7 @@ public class BookReviewDao {
 		
 		String sql = "select * from(\n"
 				+ "select rownum rn, TMP.* from(\n"
-				+ "		select \n"
-				+ "		review_no,review_rate,review_content,review_time,review_purchase,\n"
-				+ "		M.member_no,M.MEMBER_id\n"
-				+ "	from\n"
-				+ "	    purchase P \n"
-				+ "	        inner join review R on P.purchase_pk = R.review_purchase\n"
-				+ "	        inner join member M on p.purchase_member = M.member_no WHERE purchase_book = ?\n"
+				+ "		select * from review where review_book = ?"
 				+ "	)TMP\n"
 				+ ") where rn between ? and ?";
 		PreparedStatement ps = con.prepareStatement(sql);
@@ -37,11 +31,9 @@ public class BookReviewDao {
 			bookReviewDto.setReviewNo(rs.getInt("review_no"));
 			bookReviewDto.setReviewContent(rs.getString("review_content"));
 			bookReviewDto.setReviewRate(rs.getInt("review_rate"));
-			bookReviewDto.setReviewTime(rs.getDate("review_time"));
-			bookReviewDto.setReviewPurchase(rs.getInt("review_purchase"));
-			
-			bookReviewDto.setMemberNo(rs.getInt("member_no"));
-			bookReviewDto.setMemberId(rs.getString("member_id"));
+			bookReviewDto.setReviewTime(rs.getDate("review_time"));			
+			bookReviewDto.setReviewMember(rs.getInt("review_member"));
+			bookReviewDto.setReviewBook(rs.getInt("review_book"));
 			
 			list.add(bookReviewDto);
 			
@@ -55,12 +47,7 @@ public class BookReviewDao {
 	public int count(int bookNo) throws Exception{
 		Connection con = JdbcUtils.getConnection();
 		
-		String sql = "select \n"
-				+ "	count(*)\n"
-				+ "from\n"
-				+ "    purchase P \n"
-				+ "        inner join review R on P.purchase_pk = R.review_purchase\n"
-				+ "        inner join member M on p.purchase_member = M.member_no WHERE purchase_book = ?";
+		String sql = "select count(*) from review where review_book = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, bookNo);
 		ResultSet rs = ps.executeQuery();
@@ -76,18 +63,13 @@ public class BookReviewDao {
 	public int avg(int bookNo) throws Exception{
 		Connection con = JdbcUtils.getConnection();
 		
-		String sql ="select \n"
-				+ "	AVG(R.review_rate)\n"
-				+ "from\n"
-				+ "    purchase P \n"
-				+ "        inner join review R on P.purchase_pk = R.review_purchase\n"
-				+ "        inner join member M on p.purchase_member = M.member_no WHERE purchase_book = ?";
+		String sql ="select AVG(review_rate) from review where review_book = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, bookNo);
 		ResultSet rs = ps.executeQuery();
 		
 		rs.next();
-		int avg = (int)rs.getDouble("AVG(R.review_rate)");
+		int avg = (int)rs.getDouble("AVG(review_rate)");
 		
 		con.close();
 		return avg;

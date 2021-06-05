@@ -1,3 +1,5 @@
+<%@page import="semi.beans.ReviewDto"%>
+<%@page import="semi.beans.ReviewDao"%>
 <%@page import="semi.beans.NoticeBoardDto"%>
 <%@page import="semi.beans.NoticeBoardDao"%>
 <%@page import="semi.beans.QnaReplyDto"%>
@@ -45,17 +47,17 @@
 		}
 	}
 	catch(Exception e){
-		pageSize = 15;//기본값 15개
+		pageSize = 15;
 	}
 	
 	//rownum의 시작번호(startRow)와 종료번호(endRow)를 계산
 	int startRow = pageNo * pageSize - (pageSize-1);
 	int endRow = pageNo * pageSize;
 	
-	NoticeBoardDao noticeBoardDao = new NoticeBoardDao();
-	List<NoticeBoardDto> noticeList = noticeBoardDao.list(startRow, endRow);
+	ReviewDao reviewDao = new ReviewDao();
+	List<ReviewDto> reviewList = reviewDao.list(startRow, endRow);
 	
-	int count = noticeBoardDao.getCount();
+	int count = reviewDao.get();
 		
 	int blockSize = 10;
 	int lastBlock = (count + pageSize - 1) / pageSize;
@@ -134,38 +136,8 @@
 <jsp:include page="/template/adminSidebar.jsp"></jsp:include>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
-	function viewContent(obj){
-		var con = document.querySelectorAll(".con");
-		var ans = document.querySelectorAll(".ans");
-				
-		if(con != null){
-			for(var i=0; i<con.length; i++){
-				con[i].style.display = "none";	
-			}				
-		}
-		
-		if(ans != null){
-			for(var i=0; i<ans.length; i++){
-				ans[i].style.display = "none";	
-			}				
-		}
-		
-		var q1 = document.querySelectorAll(".q"+obj.id);
-		var a1 = document.querySelectorAll(".a"+obj.id);
-		
-		if(q1 != null){
-			for(var i=0; i<q1.length; i++){
-				q1[i].style.display = "";	
-			}				
-		}
-		
-		if(a1 != null){
-			for(var i=0; i<a1.length; i++){
-				a1[i].style.display = "";	
-			}				
-		}
-		
-	}
+
+
 </script>
 <script>
 	//페이지 네이션 
@@ -190,100 +162,113 @@
 		});
 	});	
 </script>
-<script>
-	
-	window.onload = function(){
-		var noticeHeaderType = document.querySelectorAll('#notice-header-type');
-		
-		for(var i=0; i<noticeHeaderType.length; i++){
-			
-			var headerType = noticeHeaderType[i].innerHTML == "공지";
-			
-			if(headerType){
-				noticeHeaderType[i].style.color = "#FF5A5A";
-			}
-			else{
-				noticeHeaderType[i].style.color = "#FFB900";
-			}
-		}
-	}
-	
-</script>
 <section>
 	<div class="admin-content_area">
 		<div class="admin-content">
-			<div class="admin-content_title">NOTICE 관리</div>
+			<div class="admin-content_title">리뷰 관리</div>
 		</div>
 	</div>
-		<div class="admin-content_area">
-			<div class="admin-content">
-				<div class="admin-content_title">NOTICE 목록</div>
-				<div class="align-row choice-genre-area">
-					<div class="search-table" style="min-height: 550px;">
-						<table class="table table-border table-hover table-striped" style="text-align: center;">
-							<thead>
-								<tr>
-									<th style="width: 1%;">번호</th>
-									<th style="width: 1%;">구분</th>
-									<th>제목</th>
-									<th style="width: 1%;">작성자</th>
-									<th style="width: 2%;">등록일자</th>
-									<th style="width: 1%;">조회수</th>
-									<th style="width: 1%;">수정</th>
-									<th style="width: 1%;">삭제</th>
-								</tr>
-							</thead>
-							<tbody>
-							<%for(NoticeBoardDto noticeBoardDto : noticeList){ %>
-								<tr>
-									<td><%=noticeBoardDto.getNoticeBoardNo() %></td>
-									<td><span id="notice-header-type"><%=noticeBoardDto.getNoticeBoardHeader() %></span></td>
-									<td style="text-align: left;"><%=noticeBoardDto.getNoticeBoardTitle() %></td>
-									<td>
+	
+<!-- 	<form action="#" method="post"> -->
+<!-- 		<div class="admin-content_area"> -->
+<!-- 			<div class="admin-content"> -->
+<!-- 				<div class="admin-content_title"> -->
+<!-- 					검색 -->
+<!-- 				</div> -->
+<!-- 				<div class="admin-search"> -->
+<!-- 					<div>책 번호</div> -->
+<!-- 					<input type='number' name="bookNo"> -->
+<!-- 				</div> -->
+<!-- 				<div class="admin-search"> -->
+<!-- 					<div>책 제목</div> -->
+<!-- 					<input type='text' name="bookTitle" > -->
+<!-- 				</div> -->
+<!-- 				<div class="admin-search"> -->
+<!-- 					<div>작성자</div> -->
+<!-- 					<input type='text' name="bookAuthor" > -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 		<button class="submit-btn">검색</button> -->
+<!-- 	</form> -->
+	
+	
+	<div class="admin-content_area" >
+		<div class="admin-content">
+			<div class="admin-content_title">리뷰 목록</div>
+			<div class="align-row choice-genre-area">
+				<div class="search-table" style="min-height: 630px;">
+					<table class="table table-border table-hover table-striped" style="text-align: center;">
+						<thead>
+							<tr>
+								<th style="width: 1%;">리뷰번호</th>
+								<th style="width: 1%;">상품번호</th>
+								<th style="width: 15%;">리뷰내용</th>
+								<th style="width: 2%;">작성자</th>
+								<th style="width: 3%;">별점</th>
+								<th style="width: 3%;">등록일자</th>
+								<th style="width: 3%;">상품정보</th>
+							</tr>
+						</thead>
+						<tbody>
+						<%for(ReviewDto reviewDto : reviewList){ %>
+							<tr>
+								<td><%=reviewDto.getReviewNo() %></td>
+								<td><%=reviewDto.getReviewBook() %></td>
+								<td style="text-align: left;"><%=reviewDto.getReviewContent() %></td>
+								<td>
 									<%
 										MemberDao memberDao = new MemberDao();
-									    MemberDto memberDto = memberDao.getMember(noticeBoardDto.getNoticeBoardWriter());
+									    MemberDto memberDto = memberDao.getMember(reviewDto.getReviewMember());
 									    String Id = memberDto.getMemberId();
 								    %>
 								    <%=Id %>
-								    </td>
-									<td><%=noticeBoardDto.getNoticeBoardTime() %></td>
-									<td><%=noticeBoardDto.getNoticeBoardRead() %></td>
-									<td><a class="update-btn" href="noticeEdit.jsp?noticeBoardNo=<%=noticeBoardDto.getNoticeBoardNo()%>">수정</a></td>
-									<td><a class="update-btn" style="background-color: #FF5A5A;" href="<%=root%>/admin/qnaNoticeDelete.kh?noticeBoardNo=<%=noticeBoardDto.getNoticeBoardNo()%>">삭제</a></td>
-								</tr>
-							<%} %>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<!-- 페이지 네비게이션 자리 -->
-				<div class="pagination">
-				
-					<%if(startBlock > 1){ %>
-					<a class="move-link">이전</a>
-					<%} %>
-					
-					<%for(int i = startBlock; i <= endBlock; i++){ %>
-						<%if(i == pageNo){ %>
-							<a class="on"><%=i%></a>
-						<%}else{ %>
-							<a><%=i%></a>
+							    </td>
+								<td>
+									<span style="display: none;"><%=reviewDto.getReviewRate() %></span>
+									<%long reviewRate = reviewDto.getReviewRate() ; %>
+									<%for(int i=0; i<reviewRate; i++){ %>
+										<img src="<%=root%>/image/star_on.png">
+									<%} %>
+									<%for(int i=0; i<5-reviewRate; i++){ %>
+										<img src="<%=root%>/image/star_off.png">
+									<%} %>
+								</td>
+								<td><%=reviewDto.getReviewTime() %></td>
+								<td><a class="update-btn" href="<%=root%>/book/bookDetail.jsp?no=<%=reviewDto.getReviewBook()%>">상품정보 이동</a></td>
+							</tr>
 						<%} %>
-					<%} %>
-					
-					<%if(endBlock < lastBlock){ %>
-					<a class="move-link">다음</a>
-					<%} %>
-					
+						</tbody>
+					</table>
 				</div>
-					
-				<form class="page-form" action="notice.jsp" method="post">
-					<input type="hidden" name="pageNo">
-				</form>
 			</div>
+			<!-- 페이지 네비게이션 자리 -->
+			<div class="pagination">
 			
+				<%if(startBlock > 1){ %>
+				<a class="move-link">이전</a>
+				<%} %>
+				
+				<%for(int i = startBlock; i <= endBlock; i++){ %>
+					<%if(i == pageNo){ %>
+						<a class="on"><%=i%></a>
+					<%}else{ %>
+						<a><%=i%></a>
+					<%} %>
+				<%} %>
+				
+				<%if(endBlock < lastBlock){ %>
+				<a class="move-link">다음</a>
+				<%} %>
+				
+			</div>
+				
+			<form class="page-form" action="review.jsp" method="post">
+				<input type="hidden" name="pageNo">
+			</form>
 		</div>
+		
+	</div>
 </section>
 </body>
 </html>

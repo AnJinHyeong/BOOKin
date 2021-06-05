@@ -3,7 +3,7 @@
     <%
 	String root = request.getContextPath();
 %>
-
+<script src="http://d3js.org/d3.v3.min.js"></script>
 <jsp:include page="/template/adminSidebar.jsp"></jsp:include>
 	<section>
 		<div class="admin-home_content_area">
@@ -34,8 +34,14 @@
 				<div class="admin-content_title">
 					매출 통계
 				</div>
+				<div>
+					<svg></svg>
+				</div>
 			</div>
 		</div>
 	</section>
+	<script>
+
+	</script>
 </body>
 </html>

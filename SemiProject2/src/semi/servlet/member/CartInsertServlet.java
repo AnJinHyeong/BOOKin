@@ -21,11 +21,28 @@ public class CartInsertServlet extends HttpServlet{
          cartDto.setMemberNo(Integer.parseInt(req.getParameter("memberNo")));
          cartDto.setBookNo(Integer.parseInt(req.getParameter("bookNo")));
          cartDto.setCartAmount(Integer.parseInt(req.getParameter("cartAmount")));
+      
+         int bookNo;
+         try {
+			bookNo = Integer.parseInt(req.getParameter("no"));
+		} catch (Exception e) {
+			bookNo = 0;
+		}
          
          
          CartDao cartDao = new CartDao();
          
-         cartDao.insert(cartDto);
+         
+         boolean result = cartDao.check(cartDto);
+         
+         
+         if(result) {
+        	 cartDao.edit(cartDto);
+         }
+         else {
+        	 cartDao.insert(cartDto);
+         }
+         
          
          resp.sendRedirect(req.getContextPath() + "/book/bookDetail.jsp?no=" + cartDto.getBookNo());   
          

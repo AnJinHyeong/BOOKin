@@ -34,7 +34,7 @@
     </div><br>
     <div class="purchase-success-box-btn container-500 text-center">
        <span><a href="<%=root%>/index.jsp" class="success-main-btn">메인페이지로</a></span>
-       <span><a href="#" class="success-main-btn2">내 주문목록</a></span>
+       <span><a href="<%=root %>/member/deliveryList.jsp" class="success-main-btn2">내 주문목록</a></span>
 
     </div>
     <jsp:include page="/template/footer.jsp"></jsp:include>
