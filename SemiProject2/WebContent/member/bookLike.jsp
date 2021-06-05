@@ -128,6 +128,7 @@
 			}			
 			
 			var url = "<%=root%>/book/bookLike.kh";
+			console.log("??");
 			$.ajax({
 				type:"GET",
 				url:url,
@@ -188,13 +189,41 @@
 					$(this).next().click();
 				}				
 			});
-			location.reload();
+			location.replace("bookLike.jsp");
 		});		
 		
 		$(window).bind("pageshow", function(event){
 			if(event.originalEvent.persisted){
 				console.log("back");
 			}
+		});
+		
+		$(".into-purchase-btn").click(function(){				
+			$(".book-like-checkbox").each(function(index){
+				var url = "<%=root%>/member/cartInsert.kh";
+				
+				if($(this).is(":checked")){					
+					$.ajax({
+						type:"POST",
+						url: url,
+						dataType:"html",
+						data:{		
+							memberNo: <%=memberNo%>,
+							bookNo : $(this).val(),
+							cartAmount : 1,							
+						},
+						error : function(request,status,error){
+							alert('code:'+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error); //에러 상태에 대한 세부사항 출력
+							alert(e);
+						}
+					});
+				}				
+			});
+			
+			if(confirm("장바구니로 이동하시겠습니까?"))
+				location.replace("cart.jsp");
+			else
+				location.reload();
 		});
 	});	
 	
@@ -295,7 +324,7 @@
 					<input type="submit" class="book-like-btn" value="선택상품 구매">
 					<input type="button" class="book-like-btn book-like-delete-btn" value="선택상품 삭제">
 				</div>
-				</form>
+								
 				<div class="pagination">	
 					<%if(startBlock > 1){ %>
 					<a class="move-link">이전</a>
