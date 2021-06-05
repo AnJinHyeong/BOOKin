@@ -330,6 +330,7 @@
 				</div>
 				</form>
 								
+						
 				<div class="pagination">	
 					<%if(startBlock > 1){ %>
 					<a class="move-link">이전</a>

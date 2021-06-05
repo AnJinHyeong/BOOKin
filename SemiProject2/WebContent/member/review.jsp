@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="semi.beans.BookReviewDto"%>
 <%@page import="semi.beans.ReviewDto"%>
 <%@page import="semi.beans.ReviewDao"%>
@@ -252,8 +253,10 @@
 				<div class="row text-center">
 					<div style="margin-top: 40px; width:86%; margin-left:7%;">
 						<p style="font-size:35px; color:#FFBE0A; margin-bottom: 20px;" class="site-color">내가 작성한 리뷰</p>
-						<div style="border-top:2px solid #39373a;"></div>					
+						<div style="border-top:2px solid #39373a;"></div>	
+							<%List<Integer> reviewPkList = new ArrayList<>(); %>				
 							<%for (BookReviewDto bookReviewDto : myReviewList) {%>
+								<%if(reviewPkList.contains(bookReviewDto.getReviewNo())) { continue; }%>
 								<!-- 처음에 보여줘야 할 부분  -->
 								<div style="display: inline-block; width:20%; padding-top:7px; padding-bottom:5px;">
 									<img src="<%=bookReviewDto.getReviewBookUrl() %>">
@@ -280,8 +283,9 @@
 											style="width:100px; margin-right: 20px; margin-bottom: 10px;">
 									</div>
 								</div>									
-								<div style="border-bottom:1px solid gray;"></div>	
-							<%}%>
+								<div style="border-bottom:1px solid gray;"></div>
+								<%reviewPkList.add(bookReviewDto.getReviewNo()); %>	
+							<%}%>							
 						<div style="border-bottom:2px solid #39373a;"></div>
 					</div>
 				</div>
