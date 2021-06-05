@@ -242,7 +242,7 @@
 								</a>										
 							<%} %>
 						<%} else{%>
-							<p style=" margin-top: 80px;font-size:35px; color:#39373a;">리뷰를 남길 책이 없습니다</p>
+							<p style=" margin-top: 80px;font-size:35px; color:#dcdcdc;">리뷰를 남길 책이 없습니다</p>
 						<%} %>
 					</div>
 					<div class="review-right-arrow-div"><img class="review-right-img" src="<%=root%>/image/right-arrow.png"></div>
@@ -251,7 +251,7 @@
 				<!--작성한 리뷰 목록 -->
 				<div class="row text-center">
 					<div style="margin-top: 40px; width:86%; margin-left:7%;">
-						<p style="font-size:35px; color:#39373a; margin-bottom: 20px;" class="site-color">내가 작성한 리뷰</p>
+						<p style="font-size:35px; color:#FFBE0A; margin-bottom: 20px;" class="site-color">내가 작성한 리뷰</p>
 						<div style="border-top:2px solid #39373a;"></div>					
 							<%for (BookReviewDto bookReviewDto : myReviewList) {%>
 								<!-- 처음에 보여줘야 할 부분  -->
@@ -277,7 +277,7 @@
 									</div>
 									<div style="text-align: right; width:100%;">
 										<input type="button" class="form-btn form-btn-positive btn move-book-detail-btn" id="<%=bookReviewDto.getReviewBook() %>" value="리뷰 보러가기" 
-											style="width:100px; margin-right: 20px;">
+											style="width:100px; margin-right: 20px; margin-bottom: 10px;">
 									</div>
 								</div>									
 								<div style="border-bottom:1px solid gray;"></div>	

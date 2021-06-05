@@ -162,10 +162,8 @@
 
 	<h2 class="subtitle">문의등록</h2>
 
-	<hr style="width: 1000px; margin: 0px auto;">
 
-	<div class="qna-insert">
-
+	<div class="qna-insert" style="border-top: 1px solid #3c3c3c;">
 		<form action="qnaboardInsert.kh" method="post">
 			<div class="qna-row">
 				<span>문의유형</span> 
