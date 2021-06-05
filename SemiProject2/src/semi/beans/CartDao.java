@@ -20,6 +20,19 @@ public class CartDao {
 			con.close();
 			return no;
 	}
+	
+	// 장바구니 확인 기능
+		public boolean check(CartDto cartDto)throws Exception {
+			Connection con = JdbcUtils.getConnection();
+			String sql = "select * from cart where book_no = ? and member_no = ?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(1, cartDto.getBookNo());
+			ps.setInt(2, cartDto.getMemberNo());
+			ResultSet rs = ps.executeQuery();
+			boolean result = rs.next();
+			con.close();
+			return result;
+	}	
 
 	// 장바구니 담기
 	public void insert(CartDto cartDto) throws Exception {
@@ -39,15 +52,16 @@ public class CartDao {
 	public boolean edit(CartDto cartDto) throws Exception {
 		Connection con = JdbcUtils.getConnection();
 		
-		String sql = "update cart set cart_amount=? where cart_no = ?";
+		String sql = "update cart set cart_amount=cart_amount + ? where book_no =?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, cartDto.getCartAmount());
-		ps.setInt(2, cartDto.getCartNo());
+		ps.setInt(2, cartDto.getBookNo());
 		int count = ps.executeUpdate();
 		
 		con.close();
 		return count > 0;
 	}
+	
 	
 	// 삭제 = 제거하거나 구매후
 	public boolean delete(CartDto cartDto) throws Exception{
@@ -75,19 +89,8 @@ public class CartDao {
 		
 		return count > 0;
 	}
-	// 장바구니 확인 기능
-	public boolean check(CartDto cartDto)throws Exception {
-		Connection con = JdbcUtils.getConnection();
-		String sql = "select * from cart where book_no = ? and member_no = ?";
-		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setInt(1, cartDto.getBookNo());
-		ps.setInt(2, cartDto.getMemberNo());
-		ResultSet rs = ps.executeQuery();
-		boolean result = rs.next();
-		con.close();
-		return result;
-		
-	}
+	
+	
 	 // 목록기능
 	   public List<CartDto> list(int startRow, int endRow) throws Exception {
 		   Connection con = JdbcUtils.getConnection();

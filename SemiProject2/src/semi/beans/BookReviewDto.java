@@ -8,11 +8,27 @@ public class BookReviewDto {
 	private String reviewContent;
 	private int reviewRate;
 	private Date reviewTime;
-	private int reviewPurchase;
+	private int reviewBook;
+	private int reviewMember;
+	private String reviewBookUrl;
+	private String reviewBookTitle;
 	
-	private int memberNo;
-	private String MemberId;
-	
+	public String getReviewBookTitle() {
+		return reviewBookTitle;
+	}
+
+	public void setReviewBookTitle(String reviewBookTitle) {
+		this.reviewBookTitle = reviewBookTitle;
+	}
+
+	public String getReviewBookUrl() {
+		return reviewBookUrl;
+	}
+
+	public void setReviewBookUrl(String reviewBookUrl) {
+		this.reviewBookUrl = reviewBookUrl;
+	}
+
 	public BookReviewDto() {
 		super();
 	}
@@ -49,29 +65,23 @@ public class BookReviewDto {
 		this.reviewTime = reviewTime;
 	}
 
-	public int getReviewPurchase() {
-		return reviewPurchase;
+	public int getReviewBook() {
+		return reviewBook;
 	}
 
-	public void setReviewPurchase(int reviewPurchase) {
-		this.reviewPurchase = reviewPurchase;
+	public void setReviewBook(int reviewBook) {
+		this.reviewBook = reviewBook;
 	}
 
-	public int getMemberNo() {
-		return memberNo;
+	public int getReviewMember() {
+		return reviewMember;
 	}
 
-	public void setMemberNo(int memberNo) {
-		this.memberNo = memberNo;
+	public void setReviewMember(int reviewMember) {
+		this.reviewMember = reviewMember;
 	}
 
-	public String getMemberId() {
-		return MemberId;
-	}
-
-	public void setMemberId(String memberId) {
-		MemberId = memberId;
-	}
+	
 	
 	
 	

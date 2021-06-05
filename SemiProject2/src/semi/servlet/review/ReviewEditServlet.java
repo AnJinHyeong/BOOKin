@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import semi.beans.BookReviewDto;
 import semi.beans.ReviewDao;
 import semi.beans.ReviewDto;
 
@@ -18,17 +19,20 @@ public class ReviewEditServlet extends HttpServlet{
 		try {
 			//준비
 			req.setCharacterEncoding("UTF-8");
+			int reviewBookNo = Integer.parseInt(req.getParameter("review_book"));
+			String root = req.getContextPath();
 			ReviewDto reviewDto = new ReviewDto();
 			reviewDto.setReviewNo(Integer.parseInt(req.getParameter("review_no")));
 			reviewDto.setReviewContent(req.getParameter("review_content"));
 			reviewDto.setReviewRate(Long.parseLong(req.getParameter("review_rate")));
-			
+			reviewDto.setReviewMember(Integer.parseInt(req.getParameter("review_member")));
+			reviewDto.setReviewBook(Integer.parseInt(req.getParameter("review_book")));
 			//계산
 			ReviewDao reviewDao = new ReviewDao();
 			reviewDao.edit(reviewDto);
 			
 			//출력
-			resp.sendRedirect("reviewDetail.jsp?no="+reviewDto.getReviewNo());
+			resp.sendRedirect(root+"/book/bookDetail.jsp?no="+reviewBookNo);
 		}
 		catch(Exception e) {
 			e.printStackTrace();

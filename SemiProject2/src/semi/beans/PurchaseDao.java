@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PurchaseDao {
-
+	
 	public int getNumber() throws Exception{
 		Connection con=JdbcUtils.getConnection();
 		String sql="select purchase_seq.nextval from dual";

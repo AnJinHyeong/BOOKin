@@ -9,11 +9,9 @@ private int reviewNo;
 private String reviewContent;
 private long reviewRate;
 private Date reviewTime;
-private int reviewPurchase;
-private int reviewMember;
+
 private int reviewBook;
-
-
+private int reviewMember;
 
 
 
@@ -22,24 +20,6 @@ public ReviewDto() {
 }
 
 
-public int getReviewBook() {
-	return reviewBook;
-}
-
-
-public void setReviewBook(int reviewBook) {
-	this.reviewBook = reviewBook;
-}
-
-
-public int getReviewMember() {
-	return reviewMember;
-}
-
-
-public void setReviewMember(int reviewMember) {
-	this.reviewMember = reviewMember;
-}
 
 
 public int getReviewNo() {
@@ -66,13 +46,35 @@ public Date getReviewTime() {
 public void setReviewTime(Date reviewTime) {
 	this.reviewTime = reviewTime;
 }
-public int getReviewPurchase() {
-	return reviewPurchase;
+
+
+
+
+public int getReviewBook() {
+	return reviewBook;
 }
-public void setReviewPurchase(int reviewPurchase) {
-	this.reviewPurchase = reviewPurchase;
+
+
+
+
+public void setReviewBook(int reviewBook) {
+	this.reviewBook = reviewBook;
 }
 
 
+
+
+public int getReviewMember() {
+	return reviewMember;
 }
 
+
+
+
+public void setReviewMember(int reviewMember) {
+	this.reviewMember = reviewMember;
+}
+
+
+
+}

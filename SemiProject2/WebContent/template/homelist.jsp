@@ -187,9 +187,8 @@
 			xhr.open('GET', nextURL); 
 			xhr.send();
 			xhr.responseType = "document";		
-
-			$.fn.initBookLike();
-			}
+	         $.fn.initBookLike();
+	         }
 		};
 	});
 </script>

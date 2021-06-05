@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import semi.beans.ReviewDao;
+import semi.beans.ReviewDto;
 
 
 
@@ -17,15 +18,18 @@ public class ReviewDeleteServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
-			//준비
-			int reviewNo = Integer.parseInt(req.getParameter("no"));
 			
+			String root = req.getContextPath();
+			//준비
+			int reviewNo = Integer.parseInt(req.getParameter("review_no"));
+			int reviewBookNo =Integer.parseInt(req.getParameter("book_no"));
 			//계산
+			
 			ReviewDao reviewDao = new ReviewDao();
 			reviewDao.delete(reviewNo);
 			
 			//출력
-			resp.sendRedirect("reviewList.jsp");
+			resp.sendRedirect(root+"/book/bookDetail.jsp?no="+reviewBookNo);
 		}
 		catch(Exception e) {
 			e.printStackTrace();

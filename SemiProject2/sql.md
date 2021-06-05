@@ -91,7 +91,6 @@ ALTER TABLE book ADD book_view number(19) DEFAULT 0 NOT NULL CHECK (book_view >=
 
 create sequence book_seq;
 
-
 #genre 장르 테이블 
 create table genre(
 genre_no number(38) primary key,
@@ -99,11 +98,10 @@ genre_name varchar2(30) not null,
 genre_parents references genre(genre_no)
 );
 
-
 #book_like 좋아요 테이블 
 create table book_like( 
-member_no references member(member_no) on delete cascade, 
-book_origin references book(book_no) on delete cascade, 
+member_no references member(member_no) ON DELETE CASCADE, 
+book_origin references book(book_no) ON DELETE CASCADE, 
 like_time date default sysdate not null, 
 constraint book_like_pk primary key(member_no, book_origin) 
 );
@@ -111,15 +109,16 @@ constraint book_like_pk primary key(member_no, book_origin)
 
 #purchase 구매기록 테이블 ,sequence 
 create table purchase(
-purchase_pk NUMBER(10) primary key,
+purchase_pk number(10) primary key,
 purchase_no number(38),
 purchase_state varchar2(50) default '결제완료' not null check(purchase_state in ('결제완료','주문확인','배송중','배송완료')) ,
 purchase_book references book(book_no) not null,
 purchase_member references member(member_no) not null,
 purchase_date date default sysdate not null,
 purchase_recipient varchar2(100) not null,
-purchase_phone number(38) not null,
-purchase_address varchar2(400) not null
+purchase_phone varchar2(11) not null,
+purchase_address varchar2(400) not null,
+purchase_amount number(10) default 1 not null
 );
 
 create sequence purchase_pk_seq;
@@ -132,7 +131,8 @@ review_no number(18) primary key,
 review_content varchar2(4000) not null,
 review_rate number(5) , 
 review_time date default sysdate,
-review_purchase REFERENCES purchase(purchase_pk) on delete cascade
+review_book number(18) not null,
+review_member number(18) not null
 );
 
 CREATE SEQUENCE review_seq;
@@ -141,13 +141,11 @@ CREATE SEQUENCE review_seq;
 #cart 장바구니 테이블 ,sequence
 create table cart(
 cart_no number primary key,
-member_no number not null,
-book_no number(10) not null,
+member_no number not NULL REFERENCES member(member_no) on delete cascade,
+book_no number(10) not NULL REFERENCES book(book_no) on delete cascade,
 cart_amount number(10) not null,
 cart_time date default sysdate
 );
-alter table cart add CONSTRAINT cart_member_no_fk FOREIGN key(member_no) REFERENCES member(member_no) on delete cascade; 
-alter table cart add CONSTRAINT cart_book_bo_fk FOREIGN key(book_no) REFERENCES book(book_no) on delete cascade;
 
 create SEQUENCE cart_seq NOCACHE;
 

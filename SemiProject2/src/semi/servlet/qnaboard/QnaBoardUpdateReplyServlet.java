@@ -1,6 +1,7 @@
 package semi.servlet.qnaboard;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,7 +27,12 @@ public class QnaBoardUpdateReplyServlet extends HttpServlet{
 			QnaReplyDao qnaReplyDao = new QnaReplyDao();
 			qnaReplyDao.edit(qnaReplyDto);		
 			
-			resp.sendRedirect(req.getContextPath()+"/admin/qnaReply.jsp");
+			resp.setContentType("text/html; charset=UTF-8");
+			PrintWriter writer = resp.getWriter();
+			
+			writer.println("<script>alert('답변이 수정되었습니다.'); location.href='"+req.getContextPath()+"/admin/qnaReply.jsp';</script>");
+			
+			writer.close();
 		}
 		catch(Exception e) {
 			e.printStackTrace();

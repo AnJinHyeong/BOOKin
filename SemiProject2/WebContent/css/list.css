@@ -17,6 +17,10 @@
     position: relative;
 } 
 
+.book-like-div > .book-item {
+	 width: 20%;
+}
+
 .myInfo-article > .book-list > .book-item{
 	width: 20%;
     height: 245px;
@@ -143,4 +147,8 @@
 
 .book-like-delete-btn{
 	background: #ff6b6b;
+}
+
+.book-like-div > .book-item {
+    width: 20%;
 }
