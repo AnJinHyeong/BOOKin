@@ -1,3 +1,5 @@
+<%@page import="java.util.Map"%>
+<%@page import="semi.beans.PurchaseDao"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="semi.beans.CartListDto"%>
 <%@page import="semi.beans.CartListDao"%>
@@ -16,7 +18,7 @@
    String root = request.getContextPath();
    
 %>
-<%   
+<%
 
    int member;
    try{
@@ -107,7 +109,52 @@
 		else
 			cartTotalPrice = totalPrice + a;
 		
+		
+		MemberDao memberDao = new MemberDao();
+		MemberDto memberDto = memberDao.getMember(member);
+		PurchaseDao purchaseDao = new PurchaseDao();
+		Map<String,List<Integer>> map = purchaseDao.getMemberPurchaseStateCount(member);
+		
+		int orderConfirm=0;
+		int delieverying=0;
+		int delieverySucces=0;
+		int pay=0;
+		
+		if(map.containsKey("주문확인")){
+			
+			orderConfirm=map.get("주문확인").size();
+			
+		}
+		if(map.containsKey("결제완료")){
+			
+			pay=map.get("결제완료").size();
+			
+		}
+		if(map.containsKey("배송중")){
+			
+			delieverying=map.get("배송중").size();
+			
+		}
+		if(map.containsKey("배송완료")){
+			
+			delieverySucces=map.get("배송완료").size();
+			
+		}
+		
 %>
+
+<%
+	int no;
+	try{
+		no = Integer.parseInt(request.getParameter("no"));
+	}
+	catch(Exception e){
+		no = 0;
+	}
+	
+	
+%>
+
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -126,7 +173,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
    var checktest = false;
-   var priceReset = false;
+   //var priceReset = false;
+   var resetPrice=false;
+   
    
    $(function(){
       $(".btn-del").click(function(){     
@@ -138,7 +187,7 @@
     	  }
       });
       
-      $.fn.calPrice = function(){
+       $.fn.calPrice = function(){
     	  $(".check-item").each(function(index, item){
          	 if($(item).is(":checked")){
          		var cartno = "#" + $(item).attr("data-cartno");
@@ -150,7 +199,8 @@
 				$("#totalprice").text(o);
          	 }
           });
-      };
+      }; 
+  
       
       $(".pl").click(function(){
          var a = $(this).prev();
@@ -370,71 +420,76 @@
 </script>
 
 <script>
-
+	window.addEventListener("load",function(){
+		document.querySelector(".purchase-form-submit").addEventListener("click",function(){
+			var checkbox=document.querySelectorAll(".book-cart-check");
+			var purchaseForm=document.querySelector(".purchase-form");
+			for(var i=0;i<checkbox.length;i++){
+				console.dir(checkbox[i].checked);
+				if(checkbox[i].checked){
+					console.dir(checkbox[i].parentElement.parentElement.nextElementSibling.nextElementSibling.children[0].children[1].value);
+					var value=checkbox[i].parentElement.parentElement.nextElementSibling.nextElementSibling.children[0].children[1].value;
+					var inputAmount=document.createElement("input");
+					inputAmount.setAttribute("type","hidden");
+					inputAmount.setAttribute("name","amount");
+					inputAmount.setAttribute("value",value);
+					purchaseForm.appendChild(inputAmount);
+				}
+			}
+			purchaseForm.submit();
+		});
+	});
 </script>
    <!-- 주문 현황 영역 -->
    <div class="container-1200 myInfo-header">
-      <dl class="bottom" style="padding-bottom:55px;">
-      <dt>주문현황</dt>
-      <dd>
-         <div class="tit">0</div>
-         <div class="txt">주문접수</div>
-      </dd>
-      <dd class="bottom-next">
-         <img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
-      </dd>
-      <dd>
-         <div class="tit">0</div>
-         <div class="txt">결제완료</div>
-      </dd>
-      <dd class="bottom-next">
-         <img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
-      </dd>
-      <dd>
-         <div class="tit">0</div>
-         <div class="txt">상품준비중</div>
-      </dd>
-      <dd class="bottom-next">
-         <img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
-      </dd>
-      <dd>
-         <div class="tit">0</div>
-         <div class="txt">출고시작</div>
-      </dd>
-      <dd class="bottom-next">
-         <img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
-      </dd>
-      <dd> 
-         <div class="tit">0</div>
-         <div class="txt">배송중</div>
-      </dd>
-      <dd class="bottom-next">
-         <img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
-      </dd>
-      <dd>
-         <div class="tit">0</div>
-         <div class="txt">거래완료</div>
-      </dd>
-   </dl>
-   </div>
+		<dl class="bottom" style="padding-bottom:55px;">
+		<dt>주문현황</dt>
+		<dd>
+			<div class="tit"><a><%=pay %></a></div>
+			<div class="txt">결제완료</div>
+		</dd>
+		<dd class="bottom-next">
+			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
+		</dd>
+		<dd>
+			<div class="tit"><a><%=orderConfirm %></a></div>
+			<div class="txt">주문확인</div>
+		</dd>
+		<dd class="bottom-next">
+			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
+		</dd>
+		<dd>
+			<div class="tit"><a><%=delieverying %></a></div>
+			<div class="txt">배송중</div>
+		</dd>
+		<dd class="bottom-next">
+			<img src="<%=root %>/image/myInfo_next.png" width="30px" height="30px">
+		</dd>
+		<dd>
+			<div class="tit"><a><%=delieverySucces %></a></div>
+			<div class="txt">거래완료</div>
+		</dd>
+	</dl>
+	</div>
    <main class="myInfo-main">      
       <!-- 사이드영역 -->
       <aside class="myInfo-aside">
          <h2 class="tit">MYPAGE</h2>
          <ul class="menu" >
             <li><a href="myInfo_check.jsp" id="edit-info">회원정보 수정 / 탈퇴</a></li>
-            <li><a href="#">주문목록 / 배송조회</a></li>
-            <li><a href="#">리뷰관리</a></li>            
-            <li><a href="#">배송지 / 환불계좌 관리</a></li>
-            <li><a href="#">고객센터</a></li>
-            <li class="on"><a href="#">장바구니</a></li>
-            <li><a href="#">좋아요</a></li>
+            <li><a href="deliveryList.jsp">주문목록 / 배송조회</a></li>
+            <li><a href="review.jsp">리뷰관리</a></li>            
+            <li><a href="<%=root%>/qna/qnaList.jsp">고객센터</a></li>
+            <li class="on"><a href="cart.jsp">장바구니</a></li>
+            <li><a href="bookLike.jsp">좋아요</a></li>
          </ul>
       </aside>
       <!-- 장바구니 -->
       <section class="cart-section">
       	<h2 class="cart-t">장바구니</h2>
+     
    		<div class="cart-table">
+   			<form action="<%=root%>/purchase/purchase.jsp" method="get" class="purchase-form">
                         <table>
                            <caption></caption>
                            <colgroup style="width: 700px;">
@@ -465,17 +520,22 @@
                            <tr>
                               <td>
                                	<span class="cs-form">
-                                 	<input type="checkbox" class="check-item"  id="checked<%=cartListDto.getBookNo() %>" data-bookno="<%=cartListDto.getBookNo()%>" data-cartno="<%=cartListDto.getCartNo() %>" name="list_cart"> 
+                                 	<input type="checkbox" class="check-item book-cart-check"  id="checked<%=cartListDto.getBookNo() %>" data-bookno="<%=cartListDto.getBookNo()%>" data-cartno="<%=cartListDto.getCartNo() %>" name="no" value="<%=cartListDto.getBookNo() %>"> 
+                                	
                                 </span>
                              </td>                                    
                               <td class="tleft">      
                                    <div>
-                                       <a href="/bookDetail.jsp?" >
+                                   		
+                                       <a href="<%=root %>/book/bookDetail.jsp?no=<%=cartListDto.getBookNo() %>" >
                                            <img src="<%=cartListDto.getBookImage() %>">
                                        </a>
                                            <div class="tit">
-                                             <%=cartListDto.getBookTitle() %>  
-                                          </div>                                   
+                                           		<a href="<%=root %>/book/bookDetail.jsp?no=<%=cartListDto.getBookNo() %>" >
+                                           		   <%=cartListDto.getBookTitle() %>  
+                                           		</a>   
+                                          </div>     
+                                                                        
                                     </div>                                   
                              </td>
                                  
@@ -483,7 +543,8 @@
                               <td>
                                   <div class="cart-count">
                                      <button type="button" name="button" class="mi" data-bookno="<%=cartListDto.getBookNo()%>"><img src="<%=root %>/image/minus-solid.svg" alt="minus" class="amount-image"></button>
-                                     <input type="text" onkeyPress="javascript:checkInputNum();"value="<%=cartListDto.getCartAmount()%>" id="<%=cartListDto.getCartNo()%>">   
+                                    <%--  <input type="text" onkeyPress="javascript:checkInputNum();"value="<%=cartListDto.getCartAmount()%>" id="<%=cartListDto.getCartNo()%>" name="amount" >  --%>  
+                                      <input type="text" onkeyPress="javascript:checkInputNum();"value="<%=cartListDto.getCartAmount()%>" id="<%=cartListDto.getCartNo()%>"> 
                                      <button type="button" name="button" class="pl"  data-bookno="<%=cartListDto.getBookNo()%>"><img src="<%=root %>/image/plus-solid.svg" alt="plus" class="amount-image"></button>                                 
                                   </div>
                               </td>
@@ -527,6 +588,7 @@
                            </tbody>
                         </table>
                         
+                   </form>
                      <div class="btnbox right"> 
                         <input type="button" class="allCheck" value="전체상품 선택" id="btn-s-black">
                         <input type="button" class="btn-s-black " id="del" value="선택상품 삭제" >
@@ -558,7 +620,7 @@
                </div>
     
     
-    
+    			
      		
               	 <div id="paybox" class="paybox" >
                    <div class="cart-top">
@@ -589,12 +651,14 @@
                    </div>
                         
                    <div class="btnbox">                         
-                         <button class="btn-m-red" type="button" style="margin-bottom : 2px;">
-                             전체상품 주문하기
-                         </button>
-                         <button class="btn-m-line" type="button" >
-                             선택상품 주문하기
-                         </button>                          
+                         <button class="btn-m-red purchase-form-submit" type="button" >
+                            주문하기
+                         </button> 
+                      
+                         
+    						
+    						
+    				
                    </div>
                                                
                </div>

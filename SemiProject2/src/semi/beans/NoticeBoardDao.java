@@ -132,7 +132,8 @@ public class NoticeBoardDao {
    public List<NoticeBoardDto> titleList(String noticeBoardHeader, int startRow, int endRow) throws Exception {
       Connection con = JdbcUtils.getConnection();
    
-      String sql = "select * from( " + "   select rownum rn, TMP.* from( "
+      String sql = "select * from( "
+    		+ "   select rownum rn, TMP.* from( "
             + "      select * from notice_board where notice_board_header=? order by notice_board_no desc " 
             + "   )TMP "
             + ") where rn between ? and ?";

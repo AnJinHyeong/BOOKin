@@ -1,43 +1,45 @@
 @charset "UTF-8";
-	.review-row{ 
- 		width: 100%;
- 		margin: 5px auto;
- 		padding-left: 10px;
- 		min-height:150px;
- 	} 
-	.review-regit-reply {
-		width: 98%;
-		min-height: 100px;
-		margin: 10px auto ;
- 	    padding: 5px 0 ;
-	    border: 2px solid #cfcfcf;
-	    border-radius: 6px;
-	    box-sizing: border-box;
-	}
-	.review_inbox_text{
-	    display: block;
-	    width: 100%;
-	    min-height: 100px;
-	    border: 0;
-	    font-size: 13px;
-	    resize: none;
-	    box-sizing: border-box;
-	    background: transparent;
-	    color: var(--skinTextColor);
-	    outline: 0;
-	  	
-	}
-	.review-row{ 
- 		width: 70%;
- 		margin: 5px auto;
- 		padding-left: 10px;
- 	} 
- 	
- 	.edit_button{
- 	display:inline_block;
- 	}
- 	.delete_button{
-display:inline_block;
- 	}
- 	
- 	
+
+.review-row {
+	width: 100%;
+	margin: 5px auto;
+	padding-left: 10px;
+}
+
+.review-regit-reply {
+	width: 98%;
+	min-height: 100px;
+	margin: 10px auto;
+	padding: 5px 0;
+	border: 2px solid #cfcfcf;
+	border-radius: 6px;
+	box-sizing: border-box;
+}
+
+.review_inbox_text {
+	display: block;
+	width: 100%;
+	min-height: 100px;
+	border: 0;
+	font-size: 13px;
+	resize: none;
+	box-sizing: border-box;
+	background: transparent;
+	color: var(- -skinTextColor);
+	outline: 0;
+}
+
+.review-row {
+	width: 100%;
+	margin: 5px auto;
+	padding-left: 10px;
+}
+
+.edit_button {
+	display: inline_block;
+}
+
+.delete_button {
+	display: inline_block;
+}
+

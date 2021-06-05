@@ -1,3 +1,5 @@
+<%@page import="semi.beans.NoticeBoardDto"%>
+<%@page import="semi.beans.NoticeBoardDao"%>
 <%@page import="semi.beans.BookDto"%>
 <%@page import="semi.beans.BookDao"%>
 <%@page import="java.util.List"%>
@@ -11,6 +13,10 @@
 <%
 	String root = request.getContextPath();
 	Integer memberNo = (Integer) session.getAttribute("member");
+	NoticeBoardDao noticeBoardDao = new NoticeBoardDao();
+	List<NoticeBoardDto> eventList = noticeBoardDao.titleList("이벤트",1,6);
+	
+	
 	MemberDao memberDao = new MemberDao();
 	boolean isLogin = false;
 	boolean isAdmin=false;
@@ -129,7 +135,7 @@
 		</a>
 		<a class="icon-item align-column" href="<%=root%>/member/review.jsp">
 			<img class ="icon" src="<%=root%>/image/writing.svg">
-			<span><a href="reviewInsert.jsp">리뷰</a></span>
+			<span>리뷰</span>
 		</a>
 		<a  class="icon-item align-column" href="<%=root%>/qna/qnaNotice.jsp">
 			<img class ="icon" src="<%=root%>/image/gift.svg">
@@ -202,5 +208,54 @@
 		}
 	})
 </script>
+<div><img class="left-img" src="<%=root%>/image/left-arrow.png"></div>
+<div class="event-tab">
+<div class="align-row event-container">
+	<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(0).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/243/700/600"></a><span class="event_title"><%=eventList.get(0).getNoticeBoardTitle() %></span></div>
+	<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(1).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/184/700/600"></a><span class="event_title"><%=eventList.get(1).getNoticeBoardTitle() %></span></div>
+	<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(2).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/24/700/600"></a><span class="event_title"><%=eventList.get(2).getNoticeBoardTitle() %></span></div>
+	<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(3).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/12/700/600"></a><span class="event_title"><%=eventList.get(3).getNoticeBoardTitle() %></span></div>
+	<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(4).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/39/700/600"></a><span class="event_title"><%=eventList.get(4).getNoticeBoardTitle() %></span></div>
+	<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(5).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/287/700/600"></a><span class="event_title"><%=eventList.get(5).getNoticeBoardTitle() %></span></div>
+</div>
+</div>
+<div><img class="right-img" src="<%=root%>/image/right-arrow.png"></div>
 <section style="min-height: 800px" class="container-1200">
+<script>
+	window.addEventListener("load",function(){
+		const left_img = document.querySelector(".left-img");
+		const right_img = document.querySelector(".right-img");
+		const event_container=document.querySelector(".event-container");
+		var slide_num=0;
+		left_img.addEventListener("click",function(){
+			slide_num-=1;
+			if(slide_num==-3){
+				slide_num=2;
+			}
+			console.dir(this)
+			console.dir(event_container)
+			event_container.style.transition="0.3s";
+			event_container.style.transform= "translateX("+-720*slide_num+"px)";
+		})
+		right_img.addEventListener("click",function(){
+			slide_num+=1;
+			if(slide_num==3){
+				slide_num=-2;
+			}
+			console.dir(this)
+			console.dir(event_container)
+			event_container.style.transition="0.3s";
+			event_container.style.transform= "translateX("+-720*slide_num+"px)";
+		})
+		
+		setInterval(function() {
 
+			right_img.click();
+			
+		}, 3000);
+
+
+	})
+	
+	
+</script>
