@@ -66,18 +66,19 @@
 	CartListDao cartListDao = new CartListDao();
 	List<CartListDto> cartList;
 		if(isTitle){
-			cartList = cartListDao.titleList(bookTitle, startRow, endRow);	
+			cartList = cartListDao.titleList(bookTitle, member, startRow, endRow);
 		}
 		else{
-			cartList = cartListDao.list(startRow, endRow);
+			cartList = cartListDao.list(member, startRow, endRow);
 		}
 
 		int count;
+		
 		if(isTitle){
-			count = cartListDao.getCountTitle(bookTitle);
+			count = cartListDao.getCountTitle(bookTitle, member);
 		}
 		else{
-			count = cartListDao.getCount();
+			count = cartListDao.getCount(member);
 		}
 		
 		int blockSize = 10;
