@@ -72,36 +72,80 @@
     	}
 	}
 	
-	
-	
+	int member;
+	try {
+		member = (int) session.getAttribute("member");
+	} catch (Exception e) {
+		member = 0;
+	}	
 %>
-  <link rel="stylesheet" type="text/css" href="<%= root%>/css/search.css">
-   <link rel="stylesheet" type="text/css" href="<%= root%>/css/common.css">
-
-
+<link rel="stylesheet" type="text/css" href="<%= root%>/css/search.css">
+<link rel="stylesheet" type="text/css" href="<%= root%>/css/common.css">
 
 <jsp:include page="/template/searchHeader.jsp"></jsp:include>
+<style>
+.search-page-btn{
+    width: 100;
+    height: 30;
+    padding-top: 5px;
+    display: block;
+    font-size: 15px;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+}
+</style>
 
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script>
+	$(function(){
+		$(".go-to-cart").click(function(){
+			var form = $(this).next();
+			var hidden = form.children();
+			var data = [];
+			
+			hidden.each(function(){
+				data.push($(this).val());
+			});			
+									
+			var url = "<%=root%>/member/searchToCartInsert.kh";
+			
+			console.log(url);
+			$.ajax({
+				type:"POST",
+				url: url,
+				dataType:"html",
+				data:{
+					cartAmount : data[0],
+					memberNo : data[1],
+					bookNo : data[2]
+				},
+				error : function(request,status,error){
+					alert('code:'+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error); //에러 상태에 대한 세부사항 출력
+					alert(e);
+				}
+			});
+			
+			alert("장바구니에 담겼습니다.");
+		});
+	});
+</script>
 <div class="container-1200 align-column">
 
 <%if(type==null){ %>
 	<div class="search-head" style="margin-top:-40px;align-self: flex-start;">
-		<span><span class="keyword">'<%=keyword %>'</span> 검색결과 <%=titleCount%></span>
+		<span>책 제목에서 <span class="keyword">'<%=keyword %>'</span> 검색결과 <%=titleCount%></span>
 	</div>
 	<div class="search-list-area align-column">
 	<%for(BookDto bookDto:bookTitleList){ %>
 		<div class="align-row space-between search-list">
-			<a href="bookDetail.jsp?no=<%=bookDto.getBookNo()%>">
-			
+			<a href="bookDetail.jsp?no=<%=bookDto.getBookNo()%>">			
 			
 			<%if(bookDto.getBookImage().startsWith("https")){ %>
 			<img title="<%=bookDto.getBookTitle() %>" class="search-img" src="<%=bookDto.getBookImage()%>">
 			<%}else{ %>
 			<img title="<%=bookDto.getBookTitle() %>" class="search-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">
 			<%} %>
-			
-			
-			
 			
 			</a>
 			<div class="book-info">
@@ -110,9 +154,8 @@
 				<span class="author_pub"><%=bookDto.getBookAuthor()%> | <%=bookDto.getBookPublisher()%> | <%=bookDto.getBookPubDate() %></span>
 				<span><%=bookDto.getBookDescription()%></span>
 			</div>
-			<div class="search-book-review">
-				<span>4/5</span>
-				<span>리뷰 200</span>
+			<div class="search-book-review">				
+				<span>조회수 <%=bookDto.getBookView()%></span>
 			</div>
 			<div class="search-book-price">
 			
@@ -124,8 +167,13 @@
 			<%}; %>
 			</div>
 			<div class="search-book-review search-button">
-				<a href="<%=root %>/purchase/purchase.jsp?no=<%=bookDto.getBookNo()%>">바로구매</a>
-				<a href="">장바구니</a>
+				<a class="search-page-btn" href="<%=root %>/purchase/purchase.jsp?no=<%=bookDto.getBookNo()%>">바로구매</a>
+				<a class="search-page-btn go-to-cart" href="javascript:void(0);">장바구니</a>
+				<form action="<%=root %>/member/cartInsert.kh" method="post" class="searchToCartInsert">
+					<input type="hidden" name="cartAmount" value="1">                  
+					<input type="hidden" name="memberNo" value="<%=member %>">
+					<input type="hidden" name="bookNo" value="<%=bookDto.getBookNo() %>"> 				
+               </form>				
 			</div>
 		</div>
 	<%} %>
@@ -138,7 +186,7 @@
 	</div>
 	
 	<div class="search-head search-head-margintop" >
-		<span ><span class="keyword">저자</span> 검색결과 <%=authorCount%></span>
+		<span >저자에서 <span class="keyword">'<%=keyword %>'</span> 검색결과 <%=authorCount%></span>
 	</div>
 	
 	<div class="search-list-area align-column">
@@ -173,8 +221,13 @@
 			<%}; %>
 			</div>
 			<div class="search-book-review search-button">
-				<a>바로구매</a>
-				<a>장바구니</a>
+				<a class="search-page-btn" href="<%=root %>/purchase/purchase.jsp?no=<%=bookDto.getBookNo()%>">바로구매</a>
+				<a class="search-page-btn go-to-cart" href="javascript:void(0);">장바구니</a>
+				<form action="<%=root %>/member/cartInsert.kh" method="post" class="searchToCartInsert">
+					<input type="hidden" name="cartAmount" value="1">                  
+					<input type="hidden" name="memberNo" value="<%=member %>">
+					<input type="hidden" name="bookNo" value="<%=bookDto.getBookNo() %>"> 				
+               </form>
 			</div>
 		</div>
 	<%} %>
@@ -189,7 +242,7 @@
 	
 	
 	<div class="search-head search-head-margintop" >
-		<span ><span class="keyword">출판사</span> 검색결과 <%=publisher%></span>
+		<span >출판사에서 <span class="keyword">'<%=keyword %>'</span> 검색결과 <%=publisher%></span>
 	</div>
 	
 	
@@ -225,8 +278,13 @@
 			<%}; %>
 			</div>
 			<div class="search-book-review search-button">
-				<a>바로구매</a>
-				<a>장바구니</a>
+				<a class="search-page-btn" href="<%=root %>/purchase/purchase.jsp?no=<%=bookDto.getBookNo()%>">바로구매</a>
+				<a class="search-page-btn go-to-cart" href="javascript:void(0);">장바구니</a>
+				<form action="<%=root %>/member/cartInsert.kh" method="post" class="searchToCartInsert">
+					<input type="hidden" name="cartAmount" value="1">                  
+					<input type="hidden" name="memberNo" value="<%=member %>">
+					<input type="hidden" name="bookNo" value="<%=bookDto.getBookNo() %>"> 				
+               </form>
 			</div>
 		</div>
 	<%} %>
@@ -277,18 +335,17 @@
 			<%}; %>
 			</div>
 			<div class="search-book-review search-button">
-				<a>바로구매</a>
-				<a>장바구니</a>
+				<a class="search-page-btn" href="<%=root %>/purchase/purchase.jsp?no=<%=bookDto.getBookNo()%>">바로구매</a>
+				<a class="search-page-btn go-to-cart" href="javascript:void(0);">장바구니</a>
+				<form action="<%=root %>/member/cartInsert.kh" method="post" class="searchToCartInsert">
+					<input type="hidden" name="cartAmount" value="1">                  
+					<input type="hidden" name="memberNo" value="<%=member %>">
+					<input type="hidden" name="bookNo" value="<%=bookDto.getBookNo() %>"> 				
+               </form>
 			</div>
 		</div>
 	<%} %>
 	</div>
-	
-	
-	
-	
-	
-	
 	
 	<ol class="pagination-list pagination" style="margin:30px">
 		<%if(pageNo>10){ %>

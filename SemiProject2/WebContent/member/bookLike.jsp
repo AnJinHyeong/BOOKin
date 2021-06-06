@@ -128,7 +128,6 @@
 			}			
 			
 			var url = "<%=root%>/book/bookLike.kh";
-			console.log("??");
 			$.ajax({
 				type:"GET",
 				url:url,

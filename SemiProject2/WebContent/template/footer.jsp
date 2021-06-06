@@ -26,7 +26,7 @@
 		<span class="small-font">점심 12:00~13:00</span>
 		<span class="small-font site-color-red">일요일 14:00~17:00</span>
 	</div>
-	<div class="align-column notice overflow" style="align-items: flex-start;">
+	<div class="align-column notice overflow" style="align-items: flex-start; margin-top: -73px;">
 		<div class="line-nomargin"></div>
 		<h5 style="padding:0.5rem 0">NOTICE</h5>
 		<%for(NoticeBoardDto noticeBoardDto : noticeBoardList){ %>
@@ -34,7 +34,7 @@
 		<%} %>
 		<a href="<%=root%>/qna/qnaNotice.jsp"><span class="small-font">더보기 +</span></a>
 	</div>
-	<div class="align-column" style="align-items: flex-start;">
+	<div class="align-column" style="align-items: flex-start; margin-top: -95px; margin-right: -40px;">
 		<h5>DELIVERY</h5>
 		<h5 class="site-color-red" style="margin-bottom: 20px">반품주소</h5>
 		<span class="small-font">서울특별시 영등포구 선유동2로 57 이레빌딩(구관) 19F, 20F</span>

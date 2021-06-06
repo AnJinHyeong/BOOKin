@@ -66,7 +66,7 @@
 	CartListDao cartListDao = new CartListDao();
 	List<CartListDto> cartList;
 		if(isTitle){
-			cartList = cartListDao.titleList(bookTitle, member, startRow, endRow);
+			cartList = cartListDao.titleList(bookTitle, member, startRow, endRow);	
 		}
 		else{
 			cartList = cartListDao.list(member, startRow, endRow);
@@ -152,10 +152,7 @@
 	catch(Exception e){
 		no = 0;
 	}
-	
-	
 %>
-
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -172,12 +169,7 @@
 <link rel="stylesheet" type="text/css" href="<%=root%>/css/cart.css">
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<script>
-   var checktest = false;
-   //var priceReset = false;
-   var resetPrice=false;
-   
-   
+<script>   
    $(function(){
       $(".btn-del").click(function(){     
     	  if(confirm("삭제하시겠습니까?") == true){
@@ -188,20 +180,25 @@
     	  }
       });
       
-       $.fn.calPrice = function(){
+      $.fn.calPrice = function(){
+    	  var totalPrice = 0;
+    	  var price = 0;
+    	  
     	  $(".check-item").each(function(index, item){
          	 if($(item).is(":checked")){
-         		var cartno = "#" + $(item).attr("data-cartno");
-         		var bookno = "#" + $(item).attr("data-bookno");
+         		var cartno = "#" + $(item).attr("data-cartno"); //수량
+         		var bookno = "#" + $(item).attr("data-bookno"); //금액
          		
-         		var q = Number($(bookno).text()) * Number($(cartno).val()) + Number(cartprice);  	 
-				var o = Number($(bookno).text()) * Number($(cartno).val()) + Number(price);
-				$("#carttotalprice").text(q);
-				$("#totalprice").text(o);
+         		price += Number($(bookno).text()) * Number($(cartno).val());
          	 }
           });
-      }; 
-  
+    	  
+    	  if(price != 0)
+    	  	totalPrice = Number(price) + 2500;
+    		  
+    	  $("#carttotalprice").text(totalPrice);  
+          $("#totalprice").text(price);
+      };   
       
       $(".pl").click(function(){
          var a = $(this).prev();
@@ -212,15 +209,7 @@
          var id = "#checked" + $(this).attr("data-bookno");
          
          if($(id).is(":checked")){
-        	 var bookno = "#" + $(this).attr("data-bookno");                   
-             var price = $("#totalprice").text(); //상품금액           
-             var cartprice = $("#carttotalprice").text(); //총 결제금액
-                         
-             var p = Number(cartprice) + Number($(bookno).text());
-             var o = Number(price) + Number($(bookno).text());
-             
-             $("#carttotalprice").text(p);  
-             $("#totalprice").text(o);  
+        	 $.fn.calPrice();
          }       
            
       });
@@ -240,58 +229,31 @@
 		var id = "#checked" + $(this).attr("data-bookno");
          
          if($(id).is(":checked")){
-        	 var bookno = "#" + $(this).attr("data-bookno");                    
-             var price = $("#totalprice").text(); //상품금액            
-             var cartprice = $("#carttotalprice").text(); //총 결제금액
-                          
-             var p = Number(cartprice) - Number($(bookno).text());      
-             var o = Number(price) - Number($(bookno).text());
-             
-             $("#carttotalprice").text(p);   
-             $("#totalprice").text(o);  
-         }   
-		
+        	 $.fn.calPrice();
+         }   		
       });
-      
-      
+            
       
       $(".check-item").click(function(){
-    	  var bookno = "#" + $(this).attr("data-bookno"); //가격   	 	
-		  var cartno = "#" + $(this).attr("data-cartno"); //수량   
-		
-			var cartprice = $("#carttotalprice").text();   	
-			var price = $("#totalprice").text();
-			
-			if($(this).is(":checked") == true){
-				
-				var q = Number($(bookno).text()) * Number($(cartno).val()) + Number(cartprice);  	 
-				var o = Number($(bookno).text()) * Number($(cartno).val()) + Number(price);
-				$("#carttotalprice").text(q);
-				$("#totalprice").text(o);
-			}
-			else{
-				  var q = Number(cartprice) - (Number($(bookno).text()) * Number($(cartno).val()));   	
-			      var o = Number(price) - (Number($(bookno).text()) * Number($(cartno).val()));
-					$("#carttotalprice").text(q);
-					$("#totalprice").text(o);
-			}	 	
-						
-			var price=0;
-			
-			if(resetPrice){
-				var price = Number($("#carttotalprice").text()) + Number(2500) ;
-				console.log(price);
-					
-				$("#carttotalprice").text(price);				
-				resetPrice = false;
-			}		
-			
-			if($("#carttotalprice").text() == "2500"){
-				$("#carttotalprice").text("0");
-				resetPrice =true;
-			}
-      });
-      
+    	  $.fn.calPrice();
+    	  
+    	  var checkCnt = 0;
+    	  
+    	  $(".check-item").each(function(){
+    		  if($(this).is(":checked"))
+    			  checkCnt++;    		  
+    	  });
+    	  
+    	  if(checkCnt == $(".check-item").length){
+    		  $(".allCheckBox").prop("checked", true);
+    		  $(".allCheck").val("전체상품 해제");
+    	  }
+    	  
+    	  if(checkCnt == 0){
+    		  $(".allCheckBox").prop("checked", false);
+    		  $(".allCheck").val("전체상품 선택");
+    	  }
+      });      
      
       
       $("#del").click(function(){ 	    	  
@@ -302,7 +264,6 @@
     	  
     	  $(".check-item").each(function(index, item){
     		  if($(item).is(":checked")){        		  
-        		  <%-- $(location).attr("href", "<%=root%>/member/cartDelete.kh?cartNo=" + $(item).attr("data-cartno")); --%>
         		  $.ajax({
                       url: "<%=root%>/member/cartDelete.kh",
                       type: "GET",           
@@ -320,14 +281,8 @@
         	  }
     	  });   
     	  
-    	  alert("삭제완료");
+    	  alert("장바구니에서 삭제되었습니다.");
     	  location.reload();
-    	     
-    	  <%-- for(int i=0; i<checkBox.length; i++){
-    		  if(checkBox[i].is(":checked")){        		  
-        		  $(location).attr("href", "<%=root%>/member/cartDelete.kh?cartNo=" + checkBox[i].attr("data-cartno"));
-        	  }
-    	  } --%>
       });
       
       $("#delAll").click(function(){
@@ -344,46 +299,21 @@
          if($(this).is(":checked") == true){
             $(".check-item").prop("checked", true);
             $(".allCheck").val("전체상품 해제");
-            
-            $("#carttotalprice").text(<%=cartTotalPrice %>);
- 			$("#totalprice").text(<%=totalPrice %>);
          }
          else{
             $(".check-item").prop("checked", false);            
             $(".allCheck").val("전체상품 선택");
-            
-            $("#carttotalprice").text(0);
- 			$("#totalprice").text(0);
- 			resetPrice = true;
-         }
-         checktest = !checktest;      
+         } 
+         
+         $.fn.calPrice();
       });   
       
       <!-- 버튼 -->
       $(".allCheck").click(function(){
-          if(checktest == false){
-             $(".check-item").prop("checked", true);   
-             $(".allCheckBox").prop("checked", true);
-             $(this).val("전체상품 해제");
-             
-            $("#carttotalprice").text(<%=cartTotalPrice %>);
- 			$("#totalprice").text(<%=totalPrice %>);
-          }
-          else{
-             $(".check-item").prop("checked", false);
-             $(".allCheckBox").prop("checked", false);
-             $(this).val("전체상품 선택");
-             
-             $("#carttotalprice").text(0);
- 			$("#totalprice").text(0);
- 			resetPrice = true;
-          }
-          	checktest = !checktest;      
-         
-       });      
+    	  $(".allCheckBox").click();         
+      });      
     
-     $(".allCheck").click();
-     
+	  $(".allCheckBox").click();   
      
    });
 
@@ -425,10 +355,10 @@
 		document.querySelector(".purchase-form-submit").addEventListener("click",function(){
 			var checkbox=document.querySelectorAll(".book-cart-check");
 			var purchaseForm=document.querySelector(".purchase-form");
+			var count = 0;
 			for(var i=0;i<checkbox.length;i++){
-				console.dir(checkbox[i].checked);
 				if(checkbox[i].checked){
-					console.dir(checkbox[i].parentElement.parentElement.nextElementSibling.nextElementSibling.children[0].children[1].value);
+					count++;
 					var value=checkbox[i].parentElement.parentElement.nextElementSibling.nextElementSibling.children[0].children[1].value;
 					var inputAmount=document.createElement("input");
 					inputAmount.setAttribute("type","hidden");
@@ -437,6 +367,11 @@
 					purchaseForm.appendChild(inputAmount);
 				}
 			}
+			if(count ==0){
+				alert("선택된 상품이 없습니다.");
+				return;
+			}
+			
 			purchaseForm.submit();
 		});
 	});
@@ -551,10 +486,9 @@
                                  <!-- 수량체크부분 -->
                               <td>
                                   <div class="cart-count">
-                                     <button type="button" name="button" class="mi" data-bookno="<%=cartListDto.getBookNo()%>"><img src="<%=root %>/image/minus-solid.svg" alt="minus" class="amount-image"></button>
-                                    <%--  <input type="text" onkeyPress="javascript:checkInputNum();"value="<%=cartListDto.getCartAmount()%>" id="<%=cartListDto.getCartNo()%>" name="amount" >  --%>  
-                                      <input type="text" onkeyPress="javascript:checkInputNum();"value="<%=cartListDto.getCartAmount()%>" id="<%=cartListDto.getCartNo()%>"> 
-                                     <button type="button" name="button" class="pl"  data-bookno="<%=cartListDto.getBookNo()%>"><img src="<%=root %>/image/plus-solid.svg" alt="plus" class="amount-image"></button>                                 
+                                     <button style="width: 20px; border: none; background-color: white;" type="button" name="button" class="mi" data-bookno="<%=cartListDto.getBookNo()%>"><span style="color:#FF9B00; width: 30px; height: 15px; padding: 3px 5px;" class="purchase-ok purchase-link-btn">-</span></button>
+                                     <input type="text" onkeyPress="javascript:checkInputNum();"value="<%=cartListDto.getCartAmount()%>" id="<%=cartListDto.getCartNo()%>"> 
+                                     <button style="width: 20px; border: none; background-color: white;" type="button" name="button" class="pl"  data-bookno="<%=cartListDto.getBookNo()%>"><span style="color:#FF9B00; width: 30px; height: 15px; padding: 3px 5px;" class="purchase-ok purchase-link-btn">+</span></button>
                                   </div>
                               </td>
                                  
@@ -589,7 +523,7 @@
                               
                                  <!-- 삭제버튼 -->
                              <td>
-                                  <button class="btn-del" type="button" id="<%=cartListDto.getCartNo()%>">X</button>
+                                  <button class="btn-del purchase-ok purchase-link-btn" style="color:#FF3232; width: 25px;" type="button" id="<%=cartListDto.getCartNo()%>">X</button>
                              </td>   
                                                               
                            </tr>
@@ -637,7 +571,6 @@
                         <span class="cart-price">
                            <strong>
                            		<span id = "carttotalprice">
-                           			<%=cartTotalPrice %>
                            		</span>원	
                            </strong>
                         </span>
@@ -646,7 +579,6 @@
 	                    총 상품금액
 	                       <span class="c2">
 	                       		<span id = "totalprice">
-	                           		<%=totalPrice %>
 	                           	</span>원
 	                       </span><br>
 	
@@ -663,13 +595,7 @@
                          <button class="btn-m-red purchase-form-submit" type="button" >
                             주문하기
                          </button> 
-                      
-                         
-    						
-    						
-    				
-                   </div>
-                                               
+                   </div>                                               
                </div>
 
       </section>      
