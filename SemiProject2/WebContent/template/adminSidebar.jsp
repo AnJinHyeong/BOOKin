@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>BOOKin - ADMIN</title>
     <link rel="stylesheet" type="text/css" href="<%= root%>/css/template.css">
     <link rel="stylesheet" type="text/css" href="<%= root%>/css/adminPage.css">
     
@@ -39,11 +39,11 @@
 					<li><a href="<%=root%>/admin/notice.jsp">NOTICE 조회/관리</a></li>
 				</ul>
 			</li>
-<!-- 			<li class="admin-aside-top_menu"><span class="admin-aside-top_text">정산</span> -->
-<!-- 				<ul class="admin-aside-side_menus"> -->
-<!-- 					<li><a>정산 내역</a></li> -->
-<!-- 				</ul> -->
-<!-- 			</li> -->
+			<li class="admin-aside-top_menu"><span class="admin-aside-top_text">정산</span>
+				<ul class="admin-aside-side_menus">
+					<li><a href="<%=root%>/admin/sales.jsp">정산 내역</a></li>
+				</ul>
+			</li>
 			<li class="admin-aside-top_menu"><span class="admin-aside-top_text"></span>
 				<ul class="admin-aside-side_menus">
 					<li><a href="<%=root%>">메인 페이지</a></li>
