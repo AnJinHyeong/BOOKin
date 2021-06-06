@@ -3,6 +3,7 @@ package semi.beans;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -347,5 +348,20 @@ public class ReviewDao {
 		con.close();
 		
 		return list;
+	}
+	
+	public int getTodayReview() throws Exception {
+		int count=0;
+		Connection con = JdbcUtils.getConnection();
+
+		String sql = "select * from review where review_time between TO_DATE(sysdate, 'yy-mm-dd') and  TO_DATE(sysdate+1, 'yy-mm-dd')";
+		PreparedStatement ps =con.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()) {
+			count=rs.getInt(1);
+		}	
+		con.close();
+		
+		return count;
 	}
 }

@@ -42,7 +42,7 @@
 			</li>
 			<li class="admin-aside-top_menu"><span class="admin-aside-top_text">정산</span>
 				<ul class="admin-aside-side_menus">
-					<li><a>정산 내역</a></li>
+					<li><a href="<%=root%>/admin/sales.jsp">정산 내역</a></li>
 				</ul>
 			</li>
 			<li class="admin-aside-top_menu"><span class="admin-aside-top_text"></span>
