@@ -355,10 +355,10 @@
 		document.querySelector(".purchase-form-submit").addEventListener("click",function(){
 			var checkbox=document.querySelectorAll(".book-cart-check");
 			var purchaseForm=document.querySelector(".purchase-form");
+			var count = 0;
 			for(var i=0;i<checkbox.length;i++){
-				console.dir(checkbox[i].checked);
 				if(checkbox[i].checked){
-					console.dir(checkbox[i].parentElement.parentElement.nextElementSibling.nextElementSibling.children[0].children[1].value);
+					count++;
 					var value=checkbox[i].parentElement.parentElement.nextElementSibling.nextElementSibling.children[0].children[1].value;
 					var inputAmount=document.createElement("input");
 					inputAmount.setAttribute("type","hidden");
@@ -367,6 +367,11 @@
 					purchaseForm.appendChild(inputAmount);
 				}
 			}
+			if(count ==0){
+				alert("선택된 상품이 없습니다.");
+				return;
+			}
+			
 			purchaseForm.submit();
 		});
 	});
@@ -481,10 +486,9 @@
                                  <!-- 수량체크부분 -->
                               <td>
                                   <div class="cart-count">
-                                     <button type="button" name="button" class="mi" data-bookno="<%=cartListDto.getBookNo()%>"><img src="<%=root %>/image/minus-solid.svg" alt="minus" class="amount-image"></button>
-                                    <%--  <input type="text" onkeyPress="javascript:checkInputNum();"value="<%=cartListDto.getCartAmount()%>" id="<%=cartListDto.getCartNo()%>" name="amount" >  --%>  
-                                      <input type="text" onkeyPress="javascript:checkInputNum();"value="<%=cartListDto.getCartAmount()%>" id="<%=cartListDto.getCartNo()%>"> 
-                                     <button type="button" name="button" class="pl"  data-bookno="<%=cartListDto.getBookNo()%>"><img src="<%=root %>/image/plus-solid.svg" alt="plus" class="amount-image"></button>                                 
+                                     <button style="width: 20px; border: none; background-color: white;" type="button" name="button" class="mi" data-bookno="<%=cartListDto.getBookNo()%>"><span style="color:#FF9B00; width: 30px; height: 15px; padding: 3px 5px;" class="purchase-ok purchase-link-btn">-</span></button>
+                                     <input type="text" onkeyPress="javascript:checkInputNum();"value="<%=cartListDto.getCartAmount()%>" id="<%=cartListDto.getCartNo()%>"> 
+                                     <button style="width: 20px; border: none; background-color: white;" type="button" name="button" class="pl"  data-bookno="<%=cartListDto.getBookNo()%>"><span style="color:#FF9B00; width: 30px; height: 15px; padding: 3px 5px;" class="purchase-ok purchase-link-btn">+</span></button>
                                   </div>
                               </td>
                                  
@@ -519,7 +523,7 @@
                               
                                  <!-- 삭제버튼 -->
                              <td>
-                                  <button class="btn-del" type="button" id="<%=cartListDto.getCartNo()%>">X</button>
+                                  <button class="btn-del purchase-ok purchase-link-btn" style="color:#FF3232; width: 25px;" type="button" id="<%=cartListDto.getCartNo()%>">X</button>
                              </td>   
                                                               
                            </tr>
@@ -591,13 +595,7 @@
                          <button class="btn-m-red purchase-form-submit" type="button" >
                             주문하기
                          </button> 
-                      
-                         
-    						
-    						
-    				
-                   </div>
-                                               
+                   </div>                                               
                </div>
 
       </section>      

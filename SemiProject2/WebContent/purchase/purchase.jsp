@@ -39,6 +39,7 @@ if(amounts==null){
 	}
 %>
 
+<link rel="stylesheet" type="text/css" href="<%=root%>/css/template.css">
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <jsp:include page="/template/header.jsp"></jsp:include>
@@ -83,7 +84,7 @@ if(amounts==null){
 	      			<td><%=bookList.get(i).getBookTitle() %></td>
 	      			<td style="text-align:right;"><input class="purchaseAmount" name="purchaseAmount" type="number" min="1" value=<%=amounts[i] %> style="width:40px; margin-left:60px;"/></td>    			
 	      			<td style="text-align:center"><%=bookList.get(i).getBookDiscount() %></td>
-	      			<td><button class="btn-del " type="button" id="<%=bookList.get(i).getBookNo()%>" >X</button></td>
+	      			<td><button class="btn-del purchase-ok purchase-link-btn" type="button" style="width: 21px; color: #FF3232;" id="<%=bookList.get(i).getBookNo()%>" >X</button></td>
 	      			
 	      		</tr>
 	      		<%} %>
@@ -183,11 +184,10 @@ var memberAddress='<%=memberDto.getMemberAddress()%>';
 
 
 //radio box 신규배송지 체크시 div 출력
- function newRecipientInfo(v){
-	
+ function newRecipientInfo(v){	
 	if(v=="2"){
-		document.getElementById("member-name").value="";
-		document.getElementById("member-phone").value="";
+		document.getElementById("member-name").value=memberName;
+		document.getElementById("member-phone").value=memberPhone;
 		document.getElementById("member-address").value=""; 	
 	}else{
 		document.getElementById("member-name").value=memberName;
@@ -301,7 +301,7 @@ window.addEventListener("load",function(){
 					}
 			}
 			
-				this.parentElement.parentElement.style.display="none"
+				this.parentElement.parentElement.remove()
 				count--;
 			}
 		});
