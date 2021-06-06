@@ -290,6 +290,8 @@
 						tr[i].children[0].children[0].classList.add("ckfalse");
 					}
 				}
+				
+				
 			})
 		}
 		

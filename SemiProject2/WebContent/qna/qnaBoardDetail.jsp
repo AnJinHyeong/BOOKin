@@ -271,7 +271,7 @@
 		
 		<div class="notice-content">
 			<div style="float: left; width: 100%;min-height: 200px; padding: 10px 20px 10px 20px;">
-				<pre><%=qnaBoardDto.getQnaBoardContent() %></pre>
+				<pre class="overflow_nowrap"><%=qnaBoardDto.getQnaBoardContent() %></pre>
 			</div>
 		</div>
 	<!-- 버튼 -->

@@ -22,8 +22,8 @@ public class BookInsertServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {			
-			//String path="D:/upload";
-			String path= "/Users/anjinhyeong/git/upload";	
+			String path="D:/upload";
+//			String path= "/Users/anjinhyeong/git/upload";	
 //			String path= "C:/Users/Jeon/upload";	
 			int maximumSize = 10*1024*1024;
 			String encoding="UTF-8";
