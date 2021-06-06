@@ -232,14 +232,17 @@
 				<div class="review-rolling-div">
 					<div class="review-left-arrow-div"><img class="review-left-img" src="<%=root%>/image/left-arrow.png"></div>
 					<div class="review-rolling-content">
-						<%if(noReviewBookList.size()>0) {%>	
-							<%for(BookDto bookDto : noReviewBookList){ %>	
+						<%if(noReviewBookList.size()>0) {System.out.println(noReviewBookList.size());%>	
+							<%List<Integer> reviewPkList = new ArrayList<>(); %>
+							<%for(BookDto bookDto : noReviewBookList){ %>
+								<%if(reviewPkList.contains(bookDto.getBookNo())) { continue; }%>	
 								<a href="<%=root%>/book/bookDetail.jsp?no=<%=bookDto.getBookNo() %>" class="review-book-img">	
 									<%if(bookDto.getBookImage().startsWith("https")){ %>
 						            	<img title="<%=bookDto.getBookTitle() %>" src="<%=bookDto.getBookImage()%>">
 						            <%}else{ %>
-						            	<img title="<%=bookDto.getBookTitle() %>" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">
+						            	<img title="<%=bookDto.getBookTitle() %>" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">						            	
 						            <%} %>
+						            <%reviewPkList.add(bookDto.getBookNo()); %>	
 								</a>										
 							<%} %>
 						<%} else{%>
@@ -253,10 +256,9 @@
 				<div class="row text-center">
 					<div style="margin-top: 40px; width:86%; margin-left:7%;">
 						<p style="font-size:35px; color:#FFBE0A; margin-bottom: 20px;" class="site-color">내가 작성한 리뷰</p>
-						<div style="border-top:2px solid #39373a;"></div>	
-							<%List<Integer> reviewPkList = new ArrayList<>(); %>				
+						<div style="border-top:2px solid #39373a;"></div>												
 							<%for (BookReviewDto bookReviewDto : myReviewList) {%>
-								<%if(reviewPkList.contains(bookReviewDto.getReviewNo())) { continue; }%>
+								
 								<!-- 처음에 보여줘야 할 부분  -->
 								<div style="display: inline-block; width:20%; padding-top:7px; padding-bottom:5px;">
 									<img src="<%=bookReviewDto.getReviewBookUrl() %>">
@@ -283,8 +285,7 @@
 											style="width:100px; margin-right: 20px; margin-bottom: 10px;">
 									</div>
 								</div>									
-								<div style="border-bottom:1px solid gray;"></div>
-								<%reviewPkList.add(bookReviewDto.getReviewNo()); %>	
+								<div style="border-bottom:1px solid gray;"></div>								
 							<%}%>							
 						<div style="border-bottom:2px solid #39373a;"></div>
 					</div>
