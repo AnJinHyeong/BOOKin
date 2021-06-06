@@ -260,10 +260,10 @@
 							<th style="width:35%;">상품이름</th>
 							<th style="width:6%;">수령인</th>
 							<th style="width:15%;">배송지</th>
-							<th style="width:4%;">수량</th>
+							<th style="width:7%;">수량</th>
 							<th style="width:5%;">금액</th>
 							<th style="width:8%;">주문일</th>
-							<th style="width:6%;">상태</th>
+							<th style="width:7%;">상태</th>
 							<th style="width:7%;">-</th>
 						</tr>
 					</thead>
@@ -271,23 +271,23 @@
 					<%for(PurchaseBookMemberDto purchaseBookMemberDto : purchaseList){ %>
 					<tbody style="border-bottom: 1px solid #bebebe; font-size: 10px; ">
 						<tr style="margin: 10px 0; height: 50px; ">
-							<th style="width:7%;"><%=purchaseBookMemberDto.getPurchaseNo() %></th>
-							<th style="width:35%; text-align: left;"><a href="<%=root%>/book/bookDetail.jsp?no=<%=purchaseBookMemberDto.getPurchaseBook()%>"><%=purchaseBookMemberDto.getBookTitle() %></a></th>
-							<th style="width:6%;"><%=purchaseBookMemberDto.getPurchaseRecipient() %></th>
-							<th style="width:15%;"><%=purchaseBookMemberDto.getPurchaseAddress() %></th>
-							<th style="width:4%;"><%=purchaseBookMemberDto.getPurchaseAmount() %></th>
+							<th><%=purchaseBookMemberDto.getPurchaseNo() %></th>
+							<th style=" text-align: left;"><a href="<%=root%>/book/bookDetail.jsp?no=<%=purchaseBookMemberDto.getPurchaseBook()%>"><%=purchaseBookMemberDto.getBookTitle() %></a></th>
+							<th><%=purchaseBookMemberDto.getPurchaseRecipient() %></th>
+							<th><%=purchaseBookMemberDto.getPurchaseAddress() %></th>
+							<th><%=purchaseBookMemberDto.getPurchaseAmount() %></th>
 							<%if(purchaseBookMemberDto.getBookDiscount() == 0){ %>
-								<th style="width:5%;"><%=purchaseBookMemberDto.getBookPrice() * purchaseBookMemberDto.getPurchaseAmount()%></th>
+								<th ><%=purchaseBookMemberDto.getBookPrice() * purchaseBookMemberDto.getPurchaseAmount()%></th>
 							<%} else{%>
-								<th style="width:5%;"><%=purchaseBookMemberDto.getBookDiscount() * purchaseBookMemberDto.getPurchaseAmount()%></th>
+								<th><%=purchaseBookMemberDto.getBookDiscount() * purchaseBookMemberDto.getPurchaseAmount()%></th>
 							<%} %>
-							<th style="width:8%;"><%=purchaseBookMemberDto.getPurchaseDate() %></th>
-							<th style="width:6%;" id="state"><%=purchaseBookMemberDto.getPurchaseState() %></th>
-							<th style="width:7%; display: none;" class="state1">-</th>
-							<th style="width:7%; display: none;" class="state2">
+							<th ><%=purchaseBookMemberDto.getPurchaseDate() %></th>
+							<th id="state"><%=purchaseBookMemberDto.getPurchaseState() %></th>
+							<th style="display: none;" class="state1">-</th>
+							<th style="display: none;" class="state2">
 								<a style="color:#FF9B00;" class="purchase-ok purchase-link-btn" id="<%=purchaseBookMemberDto.getPurchaseNo()%>">상품수령</a>
 							</th>
-							<th style="width:7%; display: none;" class="state3">
+							<th style="display: none;" class="state3">
 								<a style="color: #FF3232;" class="purchase-cancel purchase-link-btn" id="<%=purchaseBookMemberDto.getPurchaseNo()%>">구매취소</a>
 							</th>
 						</tr>
