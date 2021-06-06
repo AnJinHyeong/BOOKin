@@ -297,7 +297,7 @@
                <%} %>
                   <div class="row">
                      <span style="width: 50px; text-align: left;">수량</span>
-                     <input type="number" name="cartAmount" value="1" min="1" style="margin: 0 0 0 40px; height: 30px; width: 150px;" id="cartAmount">
+                     <input type="number" name="cartAmount" value="1" min="1" style="margin: 0 0 0 40px; height: 30px; width: 150px; padding-left: 10;" id="cartAmount">
                      <span class="book-price"></span>                     
                   </div><br>
                   <input type="hidden" name="memberNo" value="<%=member %>">

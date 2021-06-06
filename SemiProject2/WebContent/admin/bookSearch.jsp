@@ -30,6 +30,7 @@
     	if(request.getParameter("bookNo")!=null && !request.getParameter("bookNo").equals("")){
     		bookDto=bookDao.get(Integer.parseInt(request.getParameter("bookNo")));
     		bookList.add(bookDto);
+    		count=1;
     	}else{
     		long genreNo=0;
 			if(request.getParameter("bookGenre")!=null){
@@ -179,29 +180,30 @@
 						</tbody>
 					</table>
 				
-				
-				<ol class="pagination-list pagination" style="margin:30px;margin-left: 32%;">
-					<%if(pageNo>10){ %>
-					<li><a>이전</a></li>
-					<%} %>
-					<% for(int i = startBlock;i<=endBlock;i++){ %>
-					<%if(pageNo==i){ %>
-					<li class="on"><a><%=i %></a></li>
-					<%}else{ %>
-					<li><a><%=i %></a></li>
-					<%} %>
-					<%} %>
-					<%if(pageNo-1<endBlock/10*10){ %>
-					<li><a>다음</a></li>
-					<%} %>
-				</ol>
-				<form class="search-page-form" action="" method="get">
-					<input type="hidden" name="bookTitle"  value="<%=request.getParameter("bookTitle")%>">
-					<input type="hidden" name="bookAuthor" value="<%=request.getParameter("bookAuthor")%>">
-					<input type="hidden" name="bookPublisher"  value="<%=request.getParameter("bookPublisher")%>">
-					<input type="hidden" name='bookGenre' value="<%=request.getParameter("bookGenre")%>">
-					<input type="hidden" name="pageNo"/>
-				</form>
+				<%if(count > 1) { %>
+					<ol class="pagination-list pagination" style="text-align: center; margin-top: 20px;">
+						<%if(pageNo>10){ %>
+						<li><a>이전</a></li>
+						<%} %>
+						<% for(int i = startBlock;i<=endBlock;i++){ %>
+						<%if(pageNo==i){ %>
+						<li class="on"><a><%=i %></a></li>
+						<%}else{ %>
+						<li><a><%=i %></a></li>
+						<%} %>
+						<%} %>
+						<%if(pageNo-1<endBlock/10*10){ %>
+						<li><a>다음</a></li>
+						<%} %>
+					</ol>
+					<form class="search-page-form" action="" method="get">
+						<input type="hidden" name="bookTitle"  value="<%=request.getParameter("bookTitle")%>">
+						<input type="hidden" name="bookAuthor" value="<%=request.getParameter("bookAuthor")%>">
+						<input type="hidden" name="bookPublisher"  value="<%=request.getParameter("bookPublisher")%>">
+						<input type="hidden" name='bookGenre' value="<%=request.getParameter("bookGenre")%>">
+						<input type="hidden" name="pageNo"/>
+					</form>
+				<%} %>
 	<%} %>
 				</div>
 			</div>

@@ -260,7 +260,7 @@
 						if(mySet.has('\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t주문확인\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t')){
 							delivery.style.display = 'block'
 							confirmOrder.style.display="none"
-						}else if(mySet.has('\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\결제완료\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t')){
+						}else if(mySet.has('\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t결제완료\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t')){
 							delivery.style.display = 'none'
 							confirmOrder.style.display="block"
 						}	

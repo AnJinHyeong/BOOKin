@@ -121,12 +121,11 @@ public class CartListDao {
   	
   	public int getCountTitle(String bookTitle, int memberNo) throws Exception {
 		Connection con = JdbcUtils.getConnection();
-
-		String sql = "select count(*) from cart_view where book_title=? and member_no = ?";
+		String sql = "select count(*) from cart_view where book_title=? and member_no=?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, bookTitle);
 		ps.setInt(2, memberNo);
-			
+		
 		ResultSet rs = ps.executeQuery();
 		rs.next();
 		int count = rs.getInt(1);
