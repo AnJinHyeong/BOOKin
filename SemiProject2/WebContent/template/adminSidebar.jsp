@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>BOOKin - ADMIN</title>
     <link rel="stylesheet" type="text/css" href="<%= root%>/css/template.css">
     <link rel="stylesheet" type="text/css" href="<%= root%>/css/adminPage.css">
     

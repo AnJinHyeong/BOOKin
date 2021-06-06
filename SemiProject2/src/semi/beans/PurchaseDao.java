@@ -77,16 +77,17 @@ public class PurchaseDao {
 				+ "    inner join member on member_no = PURCHASE_MEMBER "
 				+ "    where PURCHASE_DATE between ? and ? ";
 		if(type!=null) {
-			if(type.equals("주문번호")) {
+			if(type.equals("purchaseNo")) {
 				sql+=" and purchase_no="+keyword;
-			}else if(type.equals("상품번호")) {
+			}else if(type.equals("bookNo")) {
 				sql+=" and book_no="+keyword;
-			}else if(type.equals("주문자명")) {
-				sql+=" and PURCHASE_RECIPIENT='"+keyword+"'";
+			}else if(type.equals("purchaseRecipient")) {
+				sql+=" and instr(PURCHASE_RECIPIENT,'"+keyword+"')>0";
 			}else {
 				
 			}
 		}
+		System.out.println(type + "  " +keyword);
 		if(dType.equals("전체")) {
 			
 		}else {
