@@ -164,30 +164,29 @@
 		
 		function madeBox(){
 			page+=1;
-	         if(page<10){
-	         const URLSearch = new URLSearchParams(location.search);
-	         URLSearch.set('page', String(page));
-	         const newParam = URLSearch.toString();
-	         const nextURL='<%=root%>/template/homelist.jsp?'+newParam;
-	         console.log('<%=root%>/template/homelist.jsp?'+newParam);
-	         const xhr = new XMLHttpRequest();
-	         xhr.onreadystatechange = function() {
-	            if (xhr.readyState === xhr.DONE) { 
-	                if (xhr.status === 200 || xhr.status === 201) {
-	                  const data = xhr.response; // 다음페이지의 정보
-	                  const addList = data.querySelector('.inf-list'); // 다음페이지에서 list아이템을 획득
-	                  inf_container.appendChild(addList); // infinite에 list를 더해주기
-	                  oneTime = false; // oneTime을 다시 false로 돌려서 madeBox를 불러올 수 있게 해주기
-	                } else {
-	                  console.error(xhr.response);
-	                }
-	             }
-	         };
-	         
-	         xhr.open('GET', nextURL); 
-	         xhr.send();
-	         xhr.responseType = "document";      
-
+			if(page<10){
+			const URLSearch = new URLSearchParams(location.search);
+			URLSearch.set('page', String(page));
+			const newParam = URLSearch.toString();
+			const nextURL='<%=root%>/template/homelist.jsp?'+newParam;
+			console.log('<%=root%>/template/homelist.jsp?'+newParam);
+			const xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState === xhr.DONE) { 
+				    if (xhr.status === 200 || xhr.status === 201) {
+				      const data = xhr.response; // 다음페이지의 정보
+				      const addList = data.querySelector('.inf-list'); // 다음페이지에서 list아이템을 획득
+				      inf_container.appendChild(addList); // infinite에 list를 더해주기
+				      oneTime = false; // oneTime을 다시 false로 돌려서 madeBox를 불러올 수 있게 해주기
+				    } else {
+				      console.error(xhr.response);
+				    }
+				 }
+			};
+			
+			xhr.open('GET', nextURL); 
+			xhr.send();
+			xhr.responseType = "document";		
 	         $.fn.initBookLike();
 	         }
 		};

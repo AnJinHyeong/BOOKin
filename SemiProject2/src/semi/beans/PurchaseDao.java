@@ -77,16 +77,17 @@ public class PurchaseDao {
 				+ "    inner join member on member_no = PURCHASE_MEMBER "
 				+ "    where PURCHASE_DATE between ? and ? ";
 		if(type!=null) {
-			if(type.equals("주문번호")) {
+			if(type.equals("purchaseNo")) {
 				sql+=" and purchase_no="+keyword;
-			}else if(type.equals("상품번호")) {
+			}else if(type.equals("bookNo")) {
 				sql+=" and book_no="+keyword;
-			}else if(type.equals("주문자명")) {
-				sql+=" and PURCHASE_RECIPIENT='"+keyword+"'";
+			}else if(type.equals("purchaseRecipient")) {
+				sql+=" and instr(PURCHASE_RECIPIENT,'"+keyword+"')>0";
 			}else {
 				
 			}
 		}
+		System.out.println(type + "  " +keyword);
 		if(dType.equals("전체")) {
 			
 		}else {
@@ -154,5 +155,95 @@ public class PurchaseDao {
 		return map;
 	}
 	
+	public List<List<String>> getChartData(String start,String end) throws Exception{
+		Connection con = JdbcUtils.getConnection();
+		String sql="select tmp.pdate,tmp2.amount,tmp2.price from (SELECT TO_CHAR( TO_DATE('"+start+"', 'yy-mm-dd') + ROWNUM-1, 'yy-mm-dd') AS pdate "
+				+ "FROM DUAL "
+				+ "CONNECT BY level <= ROUND( TO_DATE('"+end+"', 'yy-mm-dd') - TO_DATE('"+start+"', 'yy-mm-dd') )) tmp "
+				+ "    left outer join (select sum(amount) amount,pdate,sum(price) price from "
+				+ "(select purchase_amount amount,TO_DATE(PURCHASE_DATE,'yy-mm-dd') pdate, "
+				+ "case when book_discount = 0 then purchase_amount*book_price else purchase_amount*book_discount end as price "
+				+ "from purchase "
+				+ "    inner join book on book_no = purchase_book "
+				+ "    where PURCHASE_DATE between '"+start+"' and '"+end+"' "
+				+ "    order by PURCHASE_DATE) "
+				+ "    group by pdate) tmp2 on tmp.pdate=tmp2.pdate "
+				+ "    order by tmp.pdate ";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		
+		List<List<String>> returnList = new ArrayList<>();
+		while(rs.next()) {
+			List<String> tmpLi = new ArrayList<>();
+			tmpLi.add(rs.getString(1));
+			
+			if(rs.getString(2)==null) {
+				tmpLi.add("0");
+			}else {
+				tmpLi.add(rs.getString(2));
+			}
+			
+			if(rs.getString(3)==null) {
+				tmpLi.add("0");
+			}else {
+				tmpLi.add(rs.getString(3));
+			}
+			
+			returnList.add(tmpLi);
+		}
+		con.close();
+		return returnList;
+	}
+	
+	public List<List<String>> getTableData(String start,String end) throws Exception{
+		Connection con = JdbcUtils.getConnection();
+		String sql="select TO_DATE(PURCHASE_DATE,'yy-mm-dd') pdate,purchase_amount amount,purchase_no,purchase_book,book_price, "
+				+ "case when book_discount = 0 then book_price else book_discount end as discount, "
+				+ "case when book_discount = 0 then purchase_amount*book_price else purchase_amount*book_discount end as price "
+				+ "from purchase "
+				+ "    inner join book on book_no = purchase_book "
+				+ "    where PURCHASE_DATE between '"+start+"' and '"+end+"' "
+				+ "    order by PURCHASE_DATE";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		
+		List<List<String>> returnList = new ArrayList<>();
+		while(rs.next()) {
+			List<String> tmpLi = new ArrayList<>();
+			tmpLi.add(rs.getString(1));
+			tmpLi.add(rs.getString(2));
+			tmpLi.add(rs.getString(3));
+			tmpLi.add(rs.getString(4));
+			tmpLi.add(rs.getString(5));
+			tmpLi.add(rs.getString(6));
+			tmpLi.add(rs.getString(7));
+			returnList.add(tmpLi);
+		}
+		con.close();
+		return returnList;
+	}
+	public Map<String,Integer> getAllPurchaseState (String start,String end) throws Exception{
+		Connection con = JdbcUtils.getConnection();
+		String sql = "select PURCHASE_STATE,count(purchase_no) from (select purchase_no,PURCHASE_STATE from purchase  "
+				+ "				inner join book on book_no = purchase_book "
+				+ "				inner join member on member_no = PURCHASE_MEMBER  "
+				+ "				where PURCHASE_DATE between ? and ? "
+				+ "                group by purchase_no,purchase_state) "
+				+ "                group by purchase_state";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, start);
+		ps.setString(2, end);
+		ResultSet rs = ps.executeQuery();
+		Map<String,Integer> map = new HashMap<>();
+		map.put("결제완료", 0);
+		map.put("주문확인", 0);
+		map.put("배송중", 0);
+		map.put("배송완료", 0);
+		while(rs.next()) {
+			map.put(rs.getString(1), rs.getInt(2));
+		}
+		con.close();
+		return map;
+	}
 }
 

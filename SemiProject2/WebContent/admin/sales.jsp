@@ -1,6 +1,5 @@
-<%@page import="semi.beans.QnaBoardDao"%>
-<%@page import="semi.beans.ReviewDao"%>
-<%@page import="java.util.Map"%>
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="semi.beans.BookDao"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.List"%>
@@ -14,13 +13,9 @@
     String endDate=request.getParameter("endDate");
     Date dateS = new Date(System.currentTimeMillis()-7*24*60*60*1000);
     Date dateE = new Date(System.currentTimeMillis()+24*60*60*1000);
+    BookDao bookDao = new BookDao();
     SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd");
-    Map<String,Integer> map = purchaseDao.getAllPurchaseState(format.format(dateS), format.format(dateE));
-    ReviewDao reviewDao = new ReviewDao();
-    QnaBoardDao qnaDao = new QnaBoardDao();
-    
-    int todayReviewCount = reviewDao.getTodayReview();
-    int qnaCount = qnaDao.getNoReplyQna();
+    int sum=0;
     if(startDate==null){
     	startDate=format.format(dateS);
     }
@@ -28,46 +23,72 @@
     	endDate=format.format(dateE);
     }
     List<List<String>> pList =  purchaseDao.getChartData(startDate,endDate);
+    List<List<String>> ptList =  purchaseDao.getTableData(startDate,endDate);
+    DecimalFormat format2 = new DecimalFormat("###,###");
 	%>
 
 <jsp:include page="/template/adminSidebar.jsp"></jsp:include>
 	<section>
-		<div class="admin-home_content_area">
-			<div class="admin-home_content">
+		<div class="admin-content_area">
+			<div class="admin-content">
 				<div class="admin-content_title">
-					주문 / 배송
-				</div>
-				<div class="admin-content-itmes">
-				<div><span>신규 주문</span><a href="<%=root %>/admin/purchaseSearch.jsp?startDate=<%=format.format(dateS) %>&endDate=<%=format.format(dateE) %>&type=전체&keyword=&dType=결제완료"><%=map.get("결제완료") %> 건</a></div>
-				<div><span>주문확인</span><a href="<%=root %>/admin/purchaseSearch.jsp?startDate=<%=format.format(dateS) %>&endDate=<%=format.format(dateE) %>&type=전체&keyword=&dType=주문확인"><%=map.get("주문확인") %> 건</a></div>
-				<div><span>배송중</span><a href="<%=root %>/admin/purchaseSearch.jsp?startDate=<%=format.format(dateS) %>&endDate=<%=format.format(dateE) %>&type=전체&keyword=&dType=배송중"><%=map.get("배송중") %> 건</a></div>
-				<div><span>배송완료</span><a href="<%=root %>/admin/purchaseSearch.jsp?startDate=<%=format.format(dateS) %>&endDate=<%=format.format(dateE) %>&type=전체&keyword=&dType=배송완료"><%=map.get("배송완료") %> 건</a></div>
+					매출 통계
 				</div>
 			</div>
-			<div class="admin-home_content">
-				<div class="admin-content_title">
-					문의/리뷰
-				</div>
-				<div class="admin-content-itmes">
-				<div><span>신규 리뷰</span><a href="<%=root %>/admin/review.jsp"><%=todayReviewCount %> 건</a></div>
-				<div><span>미답변 문의</span><a href="<%=root %>/admin/qnaReply.jsp"><%=qnaCount %> 건</a></div>
-				</div>
-			</div>
-			
 		</div>
 		<div class="admin-home_chart_area">
-			
 			<div class="admin-chart">
-				<div class="admin-content_title admin-search date-search">
-					매출 통계
-					<a style="margin-left:20px;">1주일</a><a>1개월</a><a>3개월</a>
+				<div class="admin-content_title admin-search date-search" >
+					
+					<a style="margin-left:8px;">1주일</a><a>1개월</a><a>3개월</a>
 					<form action="" class="date_form">
-					<input type="date" name="startDate" class="date1" style="visibility: hidden">
-					<input type="date" name="endDate" class="date2" style="visibility: hidden">
+					<input type="date" name="startDate" class="date1" style="margin-left:20px;" <%if(startDate!=null){ %>value="<%=startDate%>"<%} %> > <span> &nbsp;~&nbsp; </span> 
+					<input type='date' name="endDate" class="date2" <%if(endDate!=null){ %>value="<%=endDate%>"<%} %>  >
+					<input type="submit" value="검색" style="margin-left:12px; padding:0.2rem 1rem; color:white; background-color:#ff9f43;border:none;cursor: pointer;box-shadow: rgb(0 0 0 / 16%) 0px 1px 4px; ">
 					</form>
 				</div>
 				<div class="chart">
 					<canvas id="myChart"  style="width:100%;height: 530px;"></canvas>
+				</div>
+			</div>
+		</div>
+		
+		<div class="admin-content_area" style="margin-top: 45px;">
+			<div class="admin-content">
+				<div class="search-table">
+				<%if(ptList.size()==0){ %>
+				<span class="no_Data">데이터가 없습니다</span>
+				<%}else{ %>
+					<table class="table table-border table-hover table-striped">
+						<thead>
+							<tr>
+								<th style="width:10%">구매일</th>
+								<th style="width:5%">상품번호</th>
+								<th style="width:40%">상품</th>
+								<th style="width:5%">구매번호</th>
+								<th style="width:5%">수량</th>
+								<th style="width:5%">정가</th>
+								<th style="width:5%">할인가</th>
+								<th style="width:5%">판매가</th>
+							</tr>
+						</thead>
+						<tbody>
+						<%for(List<String> bd : ptList){ %>
+							<tr>
+								<td style="	text-align: center;"><%=bd.get(0).substring(0,10) %></td>
+								<td><%=bd.get(3)%></td>
+								<td><%=bookDao.get(Integer.parseInt(bd.get(3))).getBookTitle() %></td>
+								<td><%=bd.get(2) %></td>
+								<td><%=bd.get(1) %></td>
+								<td style="	text-align: center;"><%=format2.format(Integer.parseInt(bd.get(4))) %></td>
+								<td style="	text-align: center;"><%=format2.format(Integer.parseInt(bd.get(5))) %></td>
+								<td style="	text-align: center;"><%=format2.format(Integer.parseInt(bd.get(6))) %></td>
+							</tr>
+						<%	sum+=Integer.parseInt(bd.get(6));} %>
+						</tbody>
+					</table>
+					<div style="text-align: right; padding : 1rem">합계 <%=format2.format(sum) %>원</div>
+	<%} %>
 				</div>
 			</div>
 		</div>

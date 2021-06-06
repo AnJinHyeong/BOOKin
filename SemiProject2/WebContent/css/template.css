@@ -190,6 +190,10 @@
          text-overflow: ellipsis;
          white-space: nowrap;
       }
+      .overflow_nowrap{
+    	white-space: pre-wrap;
+    	overflow-wrap: anywhere;
+      }
       .main-menu{
           margin-top: 24px;
        }
@@ -321,3 +325,7 @@
 		background-color: #F7F7F7;
 		border-radius: 3px;
 	}
+	.overflow_nowrap{
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+     }

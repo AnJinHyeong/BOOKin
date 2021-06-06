@@ -256,4 +256,17 @@ public class QnaBoardDao {
 		con.close();
 		return count > 0;
 	}
+	
+	public int getNoReplyQna() throws Exception {
+		int count = 0;
+		Connection con = JdbcUtils.getConnection();
+		String sql="select count(*) from qna_board where qna_board_reply=0";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()) {
+			count=rs.getInt(1);
+		}
+		con.close();
+		return count;
+	}
 }

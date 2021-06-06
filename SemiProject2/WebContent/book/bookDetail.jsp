@@ -201,11 +201,15 @@
 		
 		
 		$("#review_insert_button").click(function(){
+			if($(".review_inbox_text.insert").val()){
 			$(".review_input_form").submit()
+			}
 		});
 	
 		$("#review_edit_button").click(function(){
+			if($(".review_inbox_text.edit").val()){
 			$(".review_edit_form").submit()
+			}
 		});
 	});
 </script>
@@ -283,7 +287,14 @@
             
             
             <div class="payment-button-box">
-               <form action="<%=root %>/member/cartInsert.kh" method="post" onsubmit="foo();" class="cartInsertForm">
+            	<%if(session.getAttribute("member")!=null){ 
+            		System.out.println(session.getAttribute("member"));
+            	%>
+               	<form action="<%=root %>/member/cartInsert.kh" method="post" onsubmit="foo();" class="cartInsertForm">
+               <%}else{ %>
+               	<form action="<%=root %>/member/login.jsp" method="post" onsubmit="foo2();" class="cartInsertForm">
+
+               <%} %>
                   <div class="row">
                      <span style="width: 50px; text-align: left;">수량</span>
                      <input type="number" name="cartAmount" value="1" min="1" style="margin: 0 0 0 40px; height: 30px; width: 150px; padding-left: 10;" id="cartAmount">
@@ -294,9 +305,18 @@
                   <div style="margin-top:30px;">
                      
                      <ul style="display:flex;" class="payment-button-ul">
+                     
+                     <%if(session.getAttribute("member")!=null){%>
                      	<li class="cart-btn" style="background-color:rgb(223,48,127);"><a href="<%=root %>/purchase/purchase.jsp?no=<%=bookDto.getBookNo()%>" class="payment-button-text js_purchase_btn">바로구매</a></li>
+		               <%}else{ %>
+                     	<li class="cart-btn" style="background-color:rgb(223,48,127);"><a href="<%=root %>/member/login.jsp" class="payment-button-text js_purchase_btn">바로구매</a>
+		               <%} %>
                     
+                    	<%if(session.getAttribute("member")!=null){%>
                      	<li class="cart-btn" style="background-color:rgb(226,68,87);"onClick="gotoCart()"><a href="#" class="payment-button-text">장바구니 담기</a>
+		               <%}else{ %>
+                     	<li class="cart-btn" style="background-color:rgb(226,68,87);"onClick="foo2()"><a href="<%=root %>/member/login.jsp" class="payment-button-text">장바구니 담기</a>
+		               <%} %>
                      </ul>
                   </div>
 
@@ -511,7 +531,7 @@
 							<img id="star4" class="star" src="<%=root%>/image/star_off.png">
 							<img id="star5" class="star" src="<%=root%>/image/star_off.png">
 						</div>
-						<textarea name="review_content" placeholder="리뷰를 남겨보세요" rows="3" class="review_inbox_text" style="overflow: hidden; overflow-wrap: break-word; height: 20px;" required></textarea>
+						<textarea required name="review_content" placeholder="리뷰를 남겨보세요" rows="3" class="review_inbox_text insert" style="overflow: hidden; overflow-wrap: break-word; height: 20px;" required></textarea>
 						<!--  <label>평점</label>   -->
 						<input type="hidden" name="review_rate" value="1" id="review_rate">
 						<input type="hidden" name="review_book" value="<%=no%>"> 
@@ -583,7 +603,7 @@
 											<%starCnt++; %>
 										<%}%>
 									</div>
-									<textarea name="review_content" placeholder="<%=bookReviewDto.getReviewContent()%>" rows="3" class="review_inbox_text" style="overflow: hidden; overflow-wrap: break-word; height: 20px;" required></textarea>
+									<textarea required name="review_content" placeholder="<%=bookReviewDto.getReviewContent()%>" rows="3" class="review_inbox_text edit" style="overflow: hidden; overflow-wrap: break-word; height: 20px;" required></textarea>
 									<input type="hidden" name="review_rate" value="<%=bookReviewDto.getReviewRate()%>" id="review_rate">
 									<input type="hidden" name="review_book"	value="<%=bookReviewDto.getReviewBook()%>">									
 									<input type="hidden" name="review_member"	value="<%=bookReviewDto.getReviewMember()%>">
@@ -636,14 +656,21 @@
 	function foo() {
 		alert("장바구니에 담겼습니다.");
 	};
+	function foo2() {
+		alert("로그인 후 이용 가능합니다.");
+	};
 	
 	window.addEventListener("load",function(){
 		js_purchase_btn = document.querySelector(".js_purchase_btn")
 		
 		js_purchase_btn.addEventListener("click",function(e){
 			console.dir(this)
-			this.href+="&amount="+document.getElementById("cartAmount").value;
+			<%if(session.getAttribute("member")!=null){%>
+				this.href+="&amount="+document.getElementById("cartAmount").value;
+			<%}else{ %>
+			alert("로그인 후 이용 가능합니다.");
 			
+			<%}%>
 		})
 	})
 	function gotoCart(){

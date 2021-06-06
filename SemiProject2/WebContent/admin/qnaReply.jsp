@@ -222,6 +222,7 @@
 		}
 	}
 </script>
+
 <section>
 	<div class="admin-content_area">
 		<div class="admin-content">
@@ -238,7 +239,7 @@
 								<tr>
 									<th style="width: 1%;">번호</th>
 									<th style="width: 2%;">구분</th>
-									<th>제목</th>
+									<th style="width: 20%;">제목</th>
 									<th style="width: 3%;">작성자</th>
 									<th style="width: 3%;">등록일자</th>
 									<th style="width: 2%;">답변여부</th>
@@ -250,8 +251,8 @@
 							<%for(QnaBoardDto qnaBoardDto : qnaList){ %>
 								<tr>
 									<td><%=qnaBoardDto.getQnaBoardNo() %></td>
-									<td><%=qnaBoardDto.getQnaBoardHeader() %></td>
-									<td style="text-align: left;"><%=qnaBoardDto.getQnaBoardTitle() %></td>
+									<td ><%=qnaBoardDto.getQnaBoardHeader() %></td>
+									<td class="overflow" style="text-align: left;"><%=qnaBoardDto.getQnaBoardTitle() %></td>
 									<td>
 									<%
 										MemberDao memberDao = new MemberDao();
@@ -279,7 +280,7 @@
 									<td colspan="8" class="q1-a1" style="padding: 0;">
 										<div style="width: 100%; min-height: 500px; background-color: white; padding: 10px;">
 											<div class="notice-regit-reply" style="text-align: left; padding: 0 5px;">
-												<span><%=qnaBoardDto.getQnaBoardContent() %></span>
+												<pre class="overflow_nowrap"><%=qnaBoardDto.getQnaBoardContent() %></pre>
 											</div>
 											
 											<!-- 답글 화면 구현 -->
@@ -293,20 +294,20 @@
 													<strong>BOOKin 관리자</strong>
 												</div>
 												<div class="admin-qna-row" style="text-align: left; min-height: 50px;">							
-													<span><%=qnaReplyMemberDto.getQnaReplyContent() %></span>
+													<pre class="overflow_nowrap"><%=qnaReplyMemberDto.getQnaReplyContent() %></pre>
 												</div>
 												<div class="admin-qna-row" style="text-align: left;">
 													<span><%=qnaReplyMemberDto.getQnaReplyTime() %></span>
 												</div>
 												<div class="admin-qna-row" style=" text-align: right; padding-right: 10px;">
 													<a id="<%=qnaReplyMemberDto.getQnaReplyNo()%>" href="#" onclick="updateReply(this); return false" class="form-btn form-btn-normal update-btn">수정</a>
-													<a class="form-btn form-btn-normal" href="<%= root%>/qna/deleteQnaReply.kh?qnaReplyNo=<%=qnaReplyMemberDto.getQnaReplyNo() %>&qnaReplyWriter=<%=qnaReplyMemberDto.getQnaReplyWriter() %>&qnaReplyOrigin=<%=qnaReplyMemberDto.getQnaReplyOrigin() %>">삭제</a>
+													<a class="form-btn form-btn-normal" href="<%= root%>/admin/deleteQnaReply.kh?qnaReplyNo=<%=qnaReplyMemberDto.getQnaReplyNo() %>&qnaReplyWriter=<%=qnaReplyMemberDto.getQnaReplyWriter() %>&qnaReplyOrigin=<%=qnaReplyMemberDto.getQnaReplyOrigin() %>">삭제</a>
 												</div>
 											</div>
 											
 											
 											<div class="notice-regit-reply up" id="up<%=qnaReplyMemberDto.getQnaReplyNo() %>" style="display:none;">
-												<form action="<%=root %>/qna/updateQnaReply.kh" method="post" >
+												<form action="<%=root %>/admin/updateQnaReply.kh" method="post" >
 													<div class="admin-qna-row">
 														<div class="admin-qna-row" style="text-align: left;">
 															<strong><%=qnaReplyMemberDto.getMemberId() %>(BOOKin 관리자)</strong>
@@ -328,7 +329,7 @@
 											<%} %>
 											<!-- 답글 작성 -->
 											<div class="notice-regit-reply">
-												<form action="<%=root %>/qna/insertQnaReply.kh" method="post">	
+												<form action="<%=root %>/admin/insertQnaReply.kh" method="post">	
 													<div class="admin-qna-row">
 														<div class="admin-qna-row" style="text-align: left; padding-left: 10px; ">
 															<strong>BOOKin 관리자</strong>

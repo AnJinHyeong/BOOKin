@@ -207,40 +207,6 @@
 
 </style>
 
-<script>
-	function updateReply(obj){
-		var viewClass = document.querySelectorAll(".re");
-		var editClass = document.querySelectorAll(".up");
-		
-		for(var i=0; i<viewClass.length; i++){
-			viewClass[i].style.display = "";
-			editClass[i].style.display = "none";
-		}
-		
-		var viewWindow = document.querySelector("#re"+obj.id);
-		var editWindow = document.querySelector("#up"+obj.id);
-		
-		if(viewWindow != null)
-			viewWindow.style.display = "none";
-		
-		if(editWindow != null)
-			editWindow.style.display = "";	
-		
-		var textarea = document.querySelector("#comment_update");
-		textarea.focus();
-	}
-	
-	function cancleUpdate(){
-		var viewClass = document.querySelectorAll(".re");
-		var editClass = document.querySelectorAll(".up");
-		
-		for(var i=0; i<viewClass.length; i++)if
-			viewClass[i].style.display = "";
-			editClass[i].style.display = "none";
-		}
-	}
-</script>
-
 <div class="qna">
 
 	<h2 class="title">고객센터</h2>
@@ -271,10 +237,10 @@
 		
 		<div class="notice-content">
 			<div style="float: left; width: 100%;min-height: 200px; padding: 10px 20px 10px 20px;">
-				<pre><%=qnaBoardDto.getQnaBoardContent() %></pre>
+				<pre class="overflow_nowrap"><%=qnaBoardDto.getQnaBoardContent() %></pre>
 			</div>
 		</div>
-	<!-- 버튼 -->
+		<!-- 버튼 -->
 		<%if(memberNo == qnaBoardDto.getQnaBoardWriter()){ %>
     	<div class="notice-bottom">
 	        <a class="form-btn form-btn-normal delete-btn" href="qnaBoardEdit.jsp?qnaBoardNo=<%=qnaBoardNo%>">수정</a>
@@ -282,54 +248,22 @@
      	</div>
      	<%} %>
      	
-		<div class="notice-reply-line" style="margin-left:10px;">	</div>
+		<div class="notice-reply-line" style="margin-left:10px;"></div>
 					
 		<div class="notice-reply">
 			<%if(list != null) { %>
-				
-
 				<%for(QnaReplyMemberDto qnaReplyMemberDto : list){ %>
 					<div class="row re" id="re<%=qnaReplyMemberDto.getQnaReplyNo() %>">
 						<div class="row">
-							<span><%=qnaReplyMemberDto.getMemberId() %></span>
-						</div>
-						
-
-						<div class="row">
-							<span><%=qnaReplyMemberDto.getQnaReplyContent() %></span>
+							<span>BOOKin 관리자</span>
 						</div>
 						<div class="row">
-							<span style="display:inline-block; text-align:left;"><%=qnaReplyMemberDto.getQnaReplyTime().toLocaleString() %></span>
-							<%if(memberNo == qnaReplyMemberDto.getQnaReplyWriter()) {%>
-								<div style="float:right;">																
-									<a id="<%=qnaReplyMemberDto.getQnaReplyNo()%>" href="#" onclick="updateReply(this); return false" class="form-btn form-btn-normal update-btn">수정</a>							
-									<a href="deleteQnaReply.kh?qnaReplyNo=<%=qnaReplyMemberDto.getQnaReplyNo() %>&qnaReplyWriter=<%=qnaReplyMemberDto.getQnaReplyWriter() %>&qnaReplyOrigin=<%=qnaReplyMemberDto.getQnaReplyOrigin() %>" 
-									class="form-btn form-btn-normal delete-btn">삭제</a>															
-								</div>								
-							<%} %>
+							<pre class="overflow_nowrap"><%=qnaReplyMemberDto.getQnaReplyContent() %></pre>
+						</div>
+						<div class="row">
+							<span style="display:inline-block; text-align:left; font-size: 13px;"><%=qnaReplyMemberDto.getQnaReplyTime().toLocaleString() %></span>
 						</div>
 					</div>
-					
-					<div class="notice-update-reply up" id="up<%=qnaReplyMemberDto.getQnaReplyNo() %>" style="display:none;">
-						<form action="updateQnaReply.kh" method="post" >
-							<div class="row">
-								<div class="row">
-									<strong><%=memberDto.getMemberId() %></strong>
-								</div>
-								<div class="row">							
-									<textarea name="qnaReplyContent" placeholder="<%=qnaReplyMemberDto.getQnaReplyContent() %>" rows="1" class="comment_inbox_text" id="comment_update" style="overflow: hidden; overflow-wrap: break-word; height: 30px;" required></textarea>
-									<input type="hidden" name="qnaReplyNo" value="<%=qnaReplyMemberDto.getQnaReplyNo() %>">
-									<input type="hidden" name="qnaReplyWriter" value="<%=memberNo %>">
-									<input type="hidden" name="qnaReplyOrigin" value="<%=qnaBoardNo %>" >
-								</div>
-							</div>
-							
-							<div class="row text-right" style="padding:0 10px 5px 0;">
-								<input type="submit" class="form-btn form-btn-normal regit-btn" value="수정" style="width:50px; ">
-								<input type="button" class="form-btn form-btn-normal regit-btn" value="취소" onclick="cancleUpdate();" style="width:50px; ">
-							</div>
-						</form>
-					</div>	
 								
 					<div class="notice-reply-line">
 					</div>

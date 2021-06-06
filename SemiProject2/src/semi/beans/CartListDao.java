@@ -36,7 +36,7 @@ public class CartListDao {
          Connection con = JdbcUtils.getConnection();
          
          String sql = "select * from( " + "   select rownum rn, TMP.* from( "
-               + "      select * from cart_view where member_no = ? order by cart_no desc " 
+               + "      select * from cart_view where member_no =? order by cart_no desc " 
                + "   )TMP "
                + ") where rn between ? and ?";
          PreparedStatement ps = con.prepareStatement(sql);
@@ -68,11 +68,11 @@ public class CartListDao {
       }
       
 //   	title 조회 목록 기능
-  	public List<CartListDto> titleList(String bookTitle, int memberNo, int startRow, int endRow) throws Exception {
+  	public List<CartListDto> titleList(String bookTitle,int memberNo, int startRow, int endRow) throws Exception {
   		Connection con = JdbcUtils.getConnection();
   	
   		String sql = "select * from( " + "	select rownum rn, TMP.* from( "
-  				+ "		select * from cart_view where book_title=? and member_no = ? order by cart_no desc " 
+  				+ "		select * from cart_view where book_title=? and member_no =? order by cart_no desc " 
   				+ "	)TMP "
   				+ ") where rn between ? and ?";
   		PreparedStatement ps = con.prepareStatement(sql);
@@ -107,10 +107,9 @@ public class CartListDao {
   	public int getCount(int memberNo) throws Exception {
   		Connection con = JdbcUtils.getConnection();
 
-  		String sql = "select count(*) from cart_view where member_no = ?";
+  		String sql = "select count(*) from cart_view where member_no =?";
   		PreparedStatement ps = con.prepareStatement(sql);
   		ps.setInt(1, memberNo);
-
   		ResultSet rs = ps.executeQuery();
   		rs.next();
   		int count = rs.getInt(1);
@@ -122,12 +121,11 @@ public class CartListDao {
   	
   	public int getCountTitle(String bookTitle, int memberNo) throws Exception {
 		Connection con = JdbcUtils.getConnection();
-
 		String sql = "select count(*) from cart_view where book_title=? and member_no=?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, bookTitle);
 		ps.setInt(2, memberNo);
-
+		
 		ResultSet rs = ps.executeQuery();
 		rs.next();
 		int count = rs.getInt(1);

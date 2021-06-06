@@ -178,7 +178,7 @@
 
 			<div class="qna-row">
 				<label>제목</label> 
-				<input class="qna-form-input" type="text" name="qnaBoardTitle" placeholder="제목을 입력해주세요." required>
+				<input class="qna-form-input" type="text" name="qnaBoardTitle" placeholder="30자 이내로 제목을 입력해주세요." required maxlength='30'>
 			</div>
 
 			<div class="qna-row">

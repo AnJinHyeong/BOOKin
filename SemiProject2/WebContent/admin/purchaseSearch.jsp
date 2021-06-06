@@ -247,6 +247,10 @@
 				}
 				
 				const ck = document.querySelectorAll(".cktrue");
+				if(ck.length==0){
+					delivery.style.display = 'none'
+					confirmOrder.style.display="none"
+				}
 				for(var j=0;j<ck.length;j++){
 					console.log(this.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent)
 					mySet.add(ck[j].parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent)
@@ -256,7 +260,7 @@
 						if(mySet.has('\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t주문확인\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t')){
 							delivery.style.display = 'block'
 							confirmOrder.style.display="none"
-						}else{
+						}else if(mySet.has('\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\결제완료\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t')){
 							delivery.style.display = 'none'
 							confirmOrder.style.display="block"
 						}	
@@ -286,6 +290,8 @@
 						tr[i].children[0].children[0].classList.add("ckfalse");
 					}
 				}
+				
+				
 			})
 		}
 		

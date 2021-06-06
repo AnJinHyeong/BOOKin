@@ -12,8 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebFilter(urlPatterns = {
-      "/qna/qnaInsert.jsp", "/qna/qnaDetail.jsp" ,
-      "/qna/qnaMyList.jsp", "/member/cart.jsp", "/member/cartInsert.kh"
+      "/qna/qnaInsert.jsp", "/qna/qnaDetail.jsp","/qna/qnaBoardEdit.jsp",
+      "/qna/qnaMyList.jsp", 
+      "/member/review.jsp","/member/bookLike.jsp","/member/deliveryList.jsp","/member/myInfo_check.jsp","/member/myInfo.jsp",
+      "/member/cart.jsp", "/member/cartInsert.kh",
+      "/purchase/*"
 })
 public class MemberFilter implements Filter{
    @Override
