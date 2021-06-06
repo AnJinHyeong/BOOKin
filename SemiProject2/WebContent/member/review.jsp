@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="semi.beans.BookReviewDto"%>
 <%@page import="semi.beans.ReviewDto"%>
 <%@page import="semi.beans.ReviewDao"%>
@@ -231,18 +232,21 @@
 				<div class="review-rolling-div">
 					<div class="review-left-arrow-div"><img class="review-left-img" src="<%=root%>/image/left-arrow.png"></div>
 					<div class="review-rolling-content">
-						<%if(noReviewBookList.size()>0) {%>	
-							<%for(BookDto bookDto : noReviewBookList){ %>	
+						<%if(noReviewBookList.size()>0) {System.out.println(noReviewBookList.size());%>	
+							<%List<Integer> reviewPkList = new ArrayList<>(); %>
+							<%for(BookDto bookDto : noReviewBookList){ %>
+								<%if(reviewPkList.contains(bookDto.getBookNo())) { continue; }%>	
 								<a href="<%=root%>/book/bookDetail.jsp?no=<%=bookDto.getBookNo() %>" class="review-book-img">	
 									<%if(bookDto.getBookImage().startsWith("https")){ %>
 						            	<img title="<%=bookDto.getBookTitle() %>" src="<%=bookDto.getBookImage()%>">
 						            <%}else{ %>
-						            	<img title="<%=bookDto.getBookTitle() %>" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">
+						            	<img title="<%=bookDto.getBookTitle() %>" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">						            	
 						            <%} %>
+						            <%reviewPkList.add(bookDto.getBookNo()); %>	
 								</a>										
 							<%} %>
 						<%} else{%>
-							<p style=" margin-top: 80px;font-size:35px; color:#39373a;">리뷰를 남길 책이 없습니다</p>
+							<p style=" margin-top: 80px;font-size:35px; color:#dcdcdc;">리뷰를 남길 책이 없습니다</p>
 						<%} %>
 					</div>
 					<div class="review-right-arrow-div"><img class="review-right-img" src="<%=root%>/image/right-arrow.png"></div>
@@ -251,9 +255,10 @@
 				<!--작성한 리뷰 목록 -->
 				<div class="row text-center">
 					<div style="margin-top: 40px; width:86%; margin-left:7%;">
-						<p style="font-size:35px; color:#39373a; margin-bottom: 20px;" class="site-color">내가 작성한 리뷰</p>
-						<div style="border-top:2px solid #39373a;"></div>					
+						<p style="font-size:35px; color:#FFBE0A; margin-bottom: 20px;" class="site-color">내가 작성한 리뷰</p>
+						<div style="border-top:2px solid #39373a;"></div>												
 							<%for (BookReviewDto bookReviewDto : myReviewList) {%>
+								
 								<!-- 처음에 보여줘야 할 부분  -->
 								<div style="display: inline-block; width:20%; padding-top:7px; padding-bottom:5px;">
 									<img src="<%=bookReviewDto.getReviewBookUrl() %>">
@@ -277,11 +282,11 @@
 									</div>
 									<div style="text-align: right; width:100%;">
 										<input type="button" class="form-btn form-btn-positive btn move-book-detail-btn" id="<%=bookReviewDto.getReviewBook() %>" value="리뷰 보러가기" 
-											style="width:100px; margin-right: 20px;">
+											style="width:100px; margin-right: 20px; margin-bottom: 10px;">
 									</div>
 								</div>									
-								<div style="border-bottom:1px solid gray;"></div>	
-							<%}%>
+								<div style="border-bottom:1px solid gray;"></div>								
+							<%}%>							
 						<div style="border-bottom:2px solid #39373a;"></div>
 					</div>
 				</div>

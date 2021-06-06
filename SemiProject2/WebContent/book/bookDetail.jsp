@@ -283,7 +283,7 @@
             
             
             <div class="payment-button-box">
-               <form action="<%=root %>/member/cartInsert.kh" method="post" onsubmit="foo();">
+               <form action="<%=root %>/member/cartInsert.kh" method="post" onsubmit="foo();" class="cartInsertForm">
                   <div class="row">
                      <span style="width: 50px; text-align: left;">수량</span>
                      <input type="number" name="cartAmount" value="1" min="1" style="margin: 0 0 0 40px; height: 30px; width: 150px;" id="cartAmount">
@@ -291,15 +291,13 @@
                   </div><br>
                   <input type="hidden" name="memberNo" value="<%=member %>">
                   <input type="hidden" name="bookNo" value="<%=no %>">
-                  <div style="display:flex; margin-top:30px;">
-                     <div style="float: left; padding-left: 15px; ">
-                        <span class="payment-button" style="background-color:rgb(223,48,127); padding: 1rem 3rem;">
-                        <a href="<%=root %>/purchase/purchase.jsp?no=<%=bookDto.getBookNo()%>" class="payment-button-text js_purchase_btn">바로구매</a>
-                        </span> 
-                     </div>
-                     <div style="float: right; padding-right: 15px;">
-                            <span class="payment-button" style="background-color:rgb(226,68,87); padding: 1rem 3rem;"><input type="submit" value="장바구니 담기" class="cart-btn"></span>
-                     </div>
+                  <div style="margin-top:30px;">
+                     
+                     <ul style="display:flex;" class="payment-button-ul">
+                     	<li class="cart-btn" style="background-color:rgb(223,48,127);"><a href="<%=root %>/purchase/purchase.jsp?no=<%=bookDto.getBookNo()%>" class="payment-button-text js_purchase_btn">바로구매</a></li>
+                    
+                     	<li class="cart-btn" style="background-color:rgb(226,68,87);"onClick="gotoCart()"><a href="#" class="payment-button-text">장바구니 담기</a>
+                     </ul>
                   </div>
 
                </form>
@@ -648,6 +646,10 @@
 			
 		})
 	})
+	function gotoCart(){
+		document.querySelector(".cartInsertForm").submit();
+		alert("장바구니에 담겼습니다.");
+	}
 </script>
 
 <jsp:include page="/template/footer.jsp"></jsp:include>

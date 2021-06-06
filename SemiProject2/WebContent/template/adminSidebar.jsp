@@ -25,7 +25,6 @@
 			<li class="admin-aside-top_menu"><span class="admin-aside-top_text">판매</span>
 				<ul class="admin-aside-side_menus">
 					<li><a href="<%=root%>/admin/purchaseSearch.jsp">주문확인/발송관리</a></li>
-					<li><a>취소 관리</a></li>
 				</ul>
 			</li>
 			<li class="admin-aside-top_menu"><span class="admin-aside-top_text">문의/리뷰</span>

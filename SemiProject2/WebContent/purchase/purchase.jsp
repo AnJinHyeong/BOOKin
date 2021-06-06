@@ -74,9 +74,9 @@ if(amounts==null){
 	      		<tr>	
 	      			<td><a href="<%=root%>/book/bookDetail.jsp?no=<%=bookList.get(i).getBookNo()%>">
 			            <%if(bookList.get(i).getBookImage().startsWith("https")){ %>
-			            <img src="<%=bookList.get(i).getBookImage() %>" style="margin-right:20px;">
+			            <img src="<%=bookList.get(i).getBookImage() %>" style="margin-right:20px; ">
 						<%}else{ %>
-						<img src="<%=root%>/book/bookImage.kh?bookNo=<%=bookList.get(i).getBookNo()%>" style="margin-right:20px;">
+						<img src="<%=root%>/book/bookImage.kh?bookNo=<%=bookList.get(i).getBookNo()%>" style="margin-right:20px; widthL: 82px; height: 114px;">
 						<%} %>
           		  </a>
           		  <input type="hidden" value="<%=bookList.get(i).getBookNo()%>" name="purchaseBook" style="margin-left:15px;"></td>

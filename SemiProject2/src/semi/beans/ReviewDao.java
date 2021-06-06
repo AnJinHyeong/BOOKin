@@ -315,7 +315,7 @@ public class ReviewDao {
 		String sql = "select p.purchase_book, r.review_no, B.*"
 				+ "    from purchase P"
 				+ "    left outer join review R"
-				+ "        on p.purchase_book = r.review_book"
+				+ "        on (p.purchase_member = r.review_member and p.purchase_book=r.review_book)"
 				+ "    left outer join book B"
 				+ "        on p.purchase_book = b.book_no"
 				+ "        where p.purchase_member = ?";

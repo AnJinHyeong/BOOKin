@@ -293,7 +293,11 @@
 								<%if(bookDto.getBookImage()==null){
 									bookDto.setBookImage(root+"/image/nullbook.png");
 								} %>
-								<img title="<%=bookDto.getBookTitle() %>" class="book-img" src="<%=bookDto.getBookImage()%>" >
+								<%if(bookDto.getBookImage().startsWith("https")){ %>
+					           	 	<img title="<%=bookDto.getBookTitle() %>" class="book-img" src="<%=bookDto.getBookImage()%>">
+					            <%}else{ %>
+					            	<img title="<%=bookDto.getBookTitle() %>" class="book-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">
+					            <%} %>
 							</a>
 							
 							<input type="checkbox" class="book-like-checkbox" name="no" value="<%=bookDto.getBookNo()%>">	
@@ -324,7 +328,9 @@
 					<input type="submit" class="book-like-btn" value="선택상품 구매">
 					<input type="button" class="book-like-btn book-like-delete-btn" value="선택상품 삭제">
 				</div>
+				</form>
 								
+						
 				<div class="pagination">	
 					<%if(startBlock > 1){ %>
 					<a class="move-link">이전</a>
