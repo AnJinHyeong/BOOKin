@@ -232,7 +232,7 @@
 				<div class="review-rolling-div">
 					<div class="review-left-arrow-div"><img class="review-left-img" src="<%=root%>/image/left-arrow.png"></div>
 					<div class="review-rolling-content">
-						<%if(noReviewBookList.size()>0) {%>	
+						<%if(noReviewBookList.size()>0) {System.out.println(noReviewBookList.size());%>	
 							<%List<Integer> reviewPkList = new ArrayList<>(); %>
 							<%for(BookDto bookDto : noReviewBookList){ %>
 								<%if(reviewPkList.contains(bookDto.getBookNo())) { continue; }%>	
