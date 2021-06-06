@@ -190,7 +190,7 @@
 	$(function(){
 		 $(".purchase-ok").click(function(){     
 	    	  if(confirm("상품수령을 확인 하시겠습니까?") == true){
-	         	$(location).attr("href", "<%=root%>/purchase/delete.kh?member=<%=member%>&purchaseNo=" + $(this).attr('id'));
+	         	$(location).attr("href", "<%=root%>/purchase/purchaseState.kh?member=<%=member%>&purchaseNo=" + $(this).attr('id'));
 	         }
 	    	  else{
 	    		  return;
@@ -256,15 +256,15 @@
 				<table class="table table-border" style="font-size: 12px;">
 					<thead style="border-bottom: 1px solid black; border-top: 1px solid black; background-color: #FAEBCD">
 						<tr>
-							<th style="width:7%;">주문번호</th>
-							<th style="width:35%;">상품이름</th>
-							<th style="width:6%;">수령인</th>
-							<th style="width:15%;">배송지</th>
-							<th style="width:7%;">수량</th>
-							<th style="width:5%;">금액</th>
-							<th style="width:8%;">주문일</th>
-							<th style="width:7%;">상태</th>
-							<th style="width:7%;">-</th>
+							<th style="width:70px;">주문번호</th>
+							<th style="width:300px;;">상품이름</th>
+							<th style="width:53px;;">수령인</th>
+							<th style="width:134px;">배송지</th>
+							<th style="width:60px;">수량</th>
+							<th style="width:50px;">금액</th>
+							<th style="width:70px;">주문일</th>
+							<th style="width:65px;;">상태</th>
+							<th style="width:63px;">-</th>
 						</tr>
 					</thead>
 					
