@@ -179,7 +179,7 @@
 		</div>
 		
 		<div class="notice-content">
-			<pre><%=noticeBoardDto.getNoticeBoardContent() %></pre>
+			<pre class="overflow_nowrap"><%=noticeBoardDto.getNoticeBoardContent() %></pre>
 		</div>
 		
 		<div class="qna-notice-prev">

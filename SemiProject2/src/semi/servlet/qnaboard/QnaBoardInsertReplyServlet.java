@@ -13,7 +13,7 @@ import semi.beans.QnaBoardDao;
 import semi.beans.QnaReplyDao;
 import semi.beans.QnaReplyDto;
 
-@WebServlet(urlPatterns = "/qna/insertQnaReply.kh")
+@WebServlet(urlPatterns = "/admin/insertQnaReply.kh")
 public class QnaBoardInsertReplyServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

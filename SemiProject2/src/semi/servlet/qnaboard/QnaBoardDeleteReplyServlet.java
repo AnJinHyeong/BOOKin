@@ -13,7 +13,7 @@ import semi.beans.QnaBoardDao;
 import semi.beans.QnaReplyDao;
 import semi.beans.QnaReplyDto;
 
-@WebServlet(urlPatterns = "/qna/deleteQnaReply.kh")
+@WebServlet(urlPatterns = "/admin/deleteQnaReply.kh")
 public class QnaBoardDeleteReplyServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

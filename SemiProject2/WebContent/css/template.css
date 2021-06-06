@@ -321,3 +321,7 @@
 		background-color: #F7F7F7;
 		border-radius: 3px;
 	}
+	.overflow_nowrap{
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+     }
