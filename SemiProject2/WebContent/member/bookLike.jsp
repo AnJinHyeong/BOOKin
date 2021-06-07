@@ -128,7 +128,6 @@
 			}			
 			
 			var url = "<%=root%>/book/bookLike.kh";
-			console.log("??");
 			$.ajax({
 				type:"GET",
 				url:url,
@@ -260,7 +259,7 @@
 		</dd>
 		<dd>
 			<div class="tit"><a><%=delieverySucces %></a></div>
-			<div class="txt">거래완료</div>
+			<div class="txt">배송완료</div>
 		</dd>
 	</dl>
 	</div>

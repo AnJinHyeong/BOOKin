@@ -35,7 +35,7 @@ public class AdminFilter implements Filter {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			resp.sendError(500);
+			resp.sendRedirect(req.getContextPath() + "/index.jsp");
 		}
 
 	}

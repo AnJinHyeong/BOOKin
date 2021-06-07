@@ -226,7 +226,7 @@
 		</dd>
 		<dd>
 			<div class="tit"><a><%=delieverySucces %></a></div>
-			<div class="txt">거래완료</div>
+			<div class="txt">배송완료</div>
 		</dd>
 	</dl>
 	</div>
@@ -252,11 +252,11 @@
 			</div>
 			
 			<form action="<%=root %>/purchase/purchaseState.kh" method="post">
-			<div style="width: 90%; margin: 0 auto; min-height: 450px;">
+			<div style="width: 92%; margin: 0 auto; min-height: 450px;">
 				<table class="table table-border" style="font-size: 12px;">
 					<thead style="border-bottom: 1px solid black; border-top: 1px solid black; background-color: #FAEBCD">
 						<tr>
-							<th style="width:70px;">주문번호</th>
+							<th style="width:64px;">주문번호</th>
 							<th style="width:300px;">상품이름</th>
 							<th style="width:53px;">수령인</th>
 							<th style="width:134px;">배송지</th>

@@ -1,3 +1,5 @@
+<%@page import="semi.beans.BookDto"%>
+<%@page import="semi.beans.BookDao"%>
 <%@page import="java.util.List"%>
 <%@page import="semi.beans.GenreDto"%>
 <%@page import="semi.beans.GenreDao"%>
@@ -21,7 +23,17 @@
 		}
 	}
 	String keyword = request.getParameter("keyword");
+	
+	//조회수 Top 10 
+		int startRow = 1;
+		int endRow = 10;
+		BookDao bookDao = new BookDao();
+		List<BookDto> bookList = bookDao.bookViewTop(startRow, endRow);
+		
+		int barCount =1;
+		int topCount =1;
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,9 +43,41 @@
     <link rel="stylesheet" type="text/css" href="<%= root%>/css/template.css">
     <link rel="stylesheet" type="text/css" href="<%= root%>/css/signup.css">
     <link rel="stylesheet" type="text/css" href="<%= root%>/css/detail.css">
+    <link rel="stylesheet" type="text/css" href="<%= root%>/css/bookRankLolling.css">
    <style>
 		
    </style>
+   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+	<script>
+		// 인기 도서 lolling 기능
+		$(document).ready(function() {
+			var height = $(".bookrank").height();
+			var num = $(".rolling li").length;
+			var max = height * num;
+			var move = 0;
+			function noticeRolling() {
+				move += height;
+				$(".rolling").animate({
+					"top" : -move
+				}, 600, function() {
+					if (move >= max) {
+						$(this).css("top", 0);
+						move = 0;
+					}
+					;
+				});
+			}
+			;
+			noticeRollingOff = setInterval(noticeRolling, 2000);
+			$(".rolling").append($(".rolling li").first().clone());
+			
+			$(".rolling").hover(function() {
+				clearInterval(noticeRollingOff);
+			}, function(){
+				noticeRollingOff = setInterval(noticeRolling, 2000);
+			});
+		});
+	</script>
 </head>
 <body class="align-column">
 <div class="member-area container-1200">
@@ -73,24 +117,28 @@
 
 	<div class="searchrank-area">
 		<div class="searchrank-item border-bottom">
-			<div>
-				<span class="site-color">1.</span>
-				<a href="#"><span class="searchrank-item-text">명탐정코난</span></a>
+			<div class="bookrank">
+				<ul class="rolling">
+					<%for(BookDto bookDto : bookList){ %>
+						<li><a href="<%=root%>/book/bookDetail.jsp?no=<%=bookDto.getBookNo()%>"><strong><%=barCount++%>.</strong><span class="searchrank-item-text overflow" style="left:20px;"><%=bookDto.getBookTitle() %></span></a></li>
+					<%} %>
+				</ul>
 			</div>
 			<span class="site-color">▼</span>
 		</div>
 		<div class="searchrank-list" style="background-color: white;">
-			<div class="line text-center keyword"><span>인기검색어</span></div>
-			<% for(int i =1;i<11;i++){ %>
+			<div class="line text-center keyword"><span>인기도서</span></div>
+			<%for(BookDto bookDto : bookList){ %>
 			<div class="searchrank-item">
 				<div>
-					<span class="site-color"><%=i %>.</span>
-					<a href="#"><span class="searchrank-item-text overflow">명탐정코난asdasdasdasdasd</span></a>
+					<strong class="site-color"><%=topCount++%>.</strong>
+					<a href="<%=root%>/book/bookDetail.jsp?no=<%=bookDto.getBookNo()%>"><span class="searchrank-item-text overflow"><%=bookDto.getBookTitle() %></span></a>
 				</div>
 				<span class="site-color">NEW</span>
 			</div>
 			<%} %>
 		</div>
+		
 	</div>
 </div>
 

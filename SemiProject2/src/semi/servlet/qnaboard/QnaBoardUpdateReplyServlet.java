@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import semi.beans.QnaReplyDao;
 import semi.beans.QnaReplyDto;
 
-@WebServlet(urlPatterns = "/qna/updateQnaReply.kh")
+@WebServlet(urlPatterns = "/admin/updateQnaReply.kh")
 public class QnaBoardUpdateReplyServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
