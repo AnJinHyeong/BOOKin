@@ -26,10 +26,14 @@
     	List<GenreDto> topGenreList = genreDao.topGenreList();
     	BookDao bookDao = new BookDao();
     	BookDto bookDto=null;
+    	
     	List<BookDto> bookList = new ArrayList<>();
+    	
     	if(request.getParameter("bookNo")!=null && !request.getParameter("bookNo").equals("")){
     		bookDto=bookDao.get(Integer.parseInt(request.getParameter("bookNo")));
+    		System.out.println(bookDto);
     		bookList.add(bookDto);
+    		count=1;
     	}else{
     		long genreNo=0;
 			if(request.getParameter("bookGenre")!=null){

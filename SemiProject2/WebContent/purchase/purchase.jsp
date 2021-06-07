@@ -301,7 +301,8 @@ window.addEventListener("load",function(){
 					}
 			}
 			
-				this.parentElement.parentElement.style.display="none"
+				this.parentElement.parentElement.remove()
+				
 				count--;
 			}
 		});
