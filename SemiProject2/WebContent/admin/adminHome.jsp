@@ -50,7 +50,7 @@
 				</div>
 				<div class="admin-content-itmes">
 				<div><span>신규 리뷰</span><a href="<%=root %>/admin/review.jsp"><%=todayReviewCount %> 건</a></div>
-				<div><span>미답변 문의</span><a href="<%=root %>/admin/qnaReply.jsp"><%=qnaCount %> 건</a></div>
+				<div><span>미답변 문의</span><a href="<%=root %>/admin/qnaReply.jsp?type=noreply"><%=qnaCount %> 건</a></div>
 				</div>
 			</div>
 			

@@ -257,6 +257,7 @@
 					
 					if(mySet.size==1){
 						console.dir(mySet)
+						console.log(mySet)
 						if(mySet.has('\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t주문확인\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t')){
 							delivery.style.display = 'block'
 							confirmOrder.style.display="none"
@@ -290,7 +291,6 @@
 						tr[i].children[0].children[0].classList.add("ckfalse");
 					}
 				}
-				
 				
 			})
 		}
