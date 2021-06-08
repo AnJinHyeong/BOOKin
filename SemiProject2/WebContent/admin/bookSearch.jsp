@@ -1,3 +1,4 @@
+<%@page import="semi.beans.PurchaseDao"%>
 <%@page import="org.apache.catalina.filters.ExpiresFilter.XServletOutputStream"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="semi.beans.BookDto"%>
@@ -20,7 +21,7 @@
 		int endRow=0;
 		
 		int count=0;
-		
+		PurchaseDao purchaseDao = new PurchaseDao();
 		String root = request.getContextPath();
     	GenreDao genreDao = new GenreDao();
     	List<GenreDto> topGenreList = genreDao.topGenreList();
@@ -31,9 +32,11 @@
     	
     	if(request.getParameter("bookNo")!=null && !request.getParameter("bookNo").equals("")){
     		bookDto=bookDao.get(Integer.parseInt(request.getParameter("bookNo")));
+    		if(bookDto!=null){
     		System.out.println(bookDto);
     		bookList.add(bookDto);
     		count=1;
+    		}
     	}else{
     		long genreNo=0;
 			if(request.getParameter("bookGenre")!=null){
@@ -177,7 +180,11 @@
 								<td style="	text-align: center;"><%=genreDao.get(bd.getBookGenreNo()).getGenreName() %></td>
 								<td style="	text-align: center;"><%=bd.getBookPubDate() %></td>
 								<td style="	text-align: center;"><a class="update-btn" href="bookEdit.jsp?bookNo=<%=bd.getBookNo()%>">수정</a></td>
+								<%if(!purchaseDao.hasPurchaseByBookNo(bd.getBookNo())) {%>
 								<td style="	text-align: center;"><a class="update-btn" href="<%=root%>/book/bookDelete.kh?bookNo=<%=bd.getBookNo()%>" style="background-color:#ff6b6b">삭제</a></td>
+								<%}else{ %>
+								<td style="	text-align: center;"><a class="update-btn cantDelete"  style="background-color:#ff6b6b">삭제</a></td>
+								<%} %>
 							</tr>
 						<%} %>
 						</tbody>
@@ -245,6 +252,11 @@
 				})
 			}
 		}
+		
+		const cantDelete = document.querySelector(".cantDelete")
+		cantDelete.addEventListener("click",function(){
+			alert("주문목록에 있어 삭제할수 없습니다.")
+		})
 		
 	})
 

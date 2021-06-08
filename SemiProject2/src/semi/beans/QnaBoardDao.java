@@ -130,6 +130,35 @@ public class QnaBoardDao {
 		con.close();
 		return boardList;
 	}
+	public List<QnaBoardDto> noReplyList(int startRow, int endRow) throws Exception {
+		Connection con = JdbcUtils.getConnection();
+		
+		String sql = "select * from( " + "	select rownum rn, TMP.* from( "
+				+ "		select * from qna_board where qna_board_reply=0 order by qna_board_no desc " 
+				+ "	)TMP "
+				+ ") where rn between ? and ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, startRow);
+		ps.setInt(2, endRow);
+		ResultSet rs = ps.executeQuery();
+		
+		// List로 변환
+		List<QnaBoardDto> boardList = new ArrayList<>();
+		while (rs.next()) {
+			QnaBoardDto boardDto = new QnaBoardDto();
+			boardDto.setQnaBoardNo(rs.getInt("qna_board_no"));
+			boardDto.setQnaBoardHeader(rs.getString("qna_board_header"));
+			boardDto.setQnaBoardTitle(rs.getString("qna_board_title"));
+			boardDto.setQnaBoardWriter(rs.getInt("qna_board_writer"));
+			boardDto.setQnaBoardTime(rs.getDate("qna_board_time"));
+			boardDto.setQnaBoardContent(rs.getString("qna_board_content"));
+			boardDto.setQnaBoardReply(rs.getInt("qna_board_reply"));
+			
+			boardList.add(boardDto);
+		}
+		con.close();
+		return boardList;
+	}
 
 // 내가 등록한 1:1 목록 보기
 	public List<QnaBoardDto> mylist(int qnaBoardWriter, int startRow, int endRow) throws Exception {

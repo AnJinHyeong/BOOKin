@@ -7,6 +7,7 @@
 
 <% 
 	String root = request.getContextPath();
+	Integer memberNo = (Integer)session.getAttribute("member");
 	String keyword = request.getParameter("keyword");
 	String type=request.getParameter("type");
 	String typeToKor=null;
@@ -100,6 +101,7 @@
 <script>
 	$(function(){
 		$(".go-to-cart").click(function(){
+			<%if(memberNo!=null){%>
 			var form = $(this).next();
 			var hidden = form.children();
 			var data = [];
@@ -127,6 +129,9 @@
 			});
 			
 			alert("장바구니에 담겼습니다.");
+			<%}else{%>
+				alert("로그인 후 이용해주세요");
+			<%}%>
 		});
 	});
 </script>

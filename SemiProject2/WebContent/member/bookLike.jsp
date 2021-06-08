@@ -182,6 +182,21 @@
 			allSelected = !allSelected;
 		});
 		
+		$(".purchasebookbtnn").click(function(e){
+			var has_true=false
+			$(".book-like-checkbox").each(function(index){
+				console.dir($(this).is(":checked"))
+				if($(this).is(":checked")){
+					has_true=true
+				}				
+			});
+			if(has_true){
+			}else{
+				alert("선택한 상품이 없습니다")
+				e.preventDefault();
+			}
+		})
+		
 		$(".book-like-delete-btn").click(function(){
 			$(".book-like-checkbox").each(function(index){
 				if($(this).is(":checked")){
@@ -324,7 +339,7 @@
 				
 				<div class="row text-center" style="margin-bottom: 30px; margin-top: 30px;">
 					<input type="button" id="allSelect-btn" class="book-like-btn" value="전체선택">
-					<input type="submit" class="book-like-btn" value="선택상품 구매">
+					<input type="submit" class="book-like-btn purchasebookbtnn" value="선택상품 구매">
 					<input type="button" class="book-like-btn book-like-delete-btn" value="선택상품 삭제">
 				</div>
 				</form>
