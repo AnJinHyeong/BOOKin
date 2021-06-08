@@ -75,8 +75,8 @@
 					}
 					;
 				});
-			}
-			;
+			};
+			
 			noticeRollingOff = setInterval(noticeRolling, 2000);
 			$(".rolling").append($(".rolling li").first().clone());
 			
