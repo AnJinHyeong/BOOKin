@@ -23,7 +23,8 @@ public class BookEditServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 try {
 			//String path="D:/upload";
-			String path= "C:/Users/Jeon/upload";
+			//String path= "C:/Users/Jeon/upload";
+			String path="D:/upload/kh73";
 			int maximumSize = 10*1024*1024;
 			String encoding="UTF-8";
 			DefaultFileRenamePolicy policy = new DefaultFileRenamePolicy();
