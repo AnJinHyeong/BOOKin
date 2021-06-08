@@ -209,12 +209,16 @@
 <div><img class="left-img" src="<%=root%>/image/left-arrow.png"></div>
 <div class="event-tab">
 	<div class="align-row event-container">
-		<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(0).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/243/700/600"></a><span class="event_title"><%=eventList.get(0).getNoticeBoardTitle() %></span></div>
-		<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(1).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/184/700/600"></a><span class="event_title"><%=eventList.get(1).getNoticeBoardTitle() %></span></div>
-		<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(2).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/24/700/600"></a><span class="event_title"><%=eventList.get(2).getNoticeBoardTitle() %></span></div>
-		<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(3).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/12/700/600"></a><span class="event_title"><%=eventList.get(3).getNoticeBoardTitle() %></span></div>
-		<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(4).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/39/700/600"></a><span class="event_title"><%=eventList.get(4).getNoticeBoardTitle() %></span></div>
-		<div class="event-area"><a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=eventList.get(5).getNoticeBoardNo() %>"><img class="event-img" src="https://picsum.photos/id/287/700/600"></a><span class="event_title"><%=eventList.get(5).getNoticeBoardTitle() %></span></div>
+		<%int cnt=1; %>
+		<%for(NoticeBoardDto noticeBoardDto : eventList){ %>
+			<div class="event-area">
+				<a href="<%=root%>/qna/qnaNoticeDetail.jsp?noticeBoardNo=<%=noticeBoardDto.getNoticeBoardNo() %>">
+					<img class="event-img" src="<%=root%>/image/homeEvent<%=cnt %>.png" style="width:100%; height: 100%;">
+				</a>
+				<span class="event_title"><%=noticeBoardDto.getNoticeBoardTitle() %></span>
+			</div>
+			<%cnt++;%>			
+		<%} %>
 	</div>
 </div>
 <div><img class="right-img" src="<%=root%>/image/right-arrow.png"></div>
@@ -224,29 +228,42 @@
 		const left_img = document.querySelector(".left-img");
 		const right_img = document.querySelector(".right-img");
 		const event_container=document.querySelector(".event-container");
+		var div_img = document.querySelectorAll(".event-area");
 		var slide_num=0;
+		var interval;
+		
 		left_img.addEventListener("click",function(){
 			slide_num-=1;
-			if(slide_num==-3){
-				slide_num=2;
-			}
-			console.dir(this)
-			console.dir(event_container)
-			event_container.style.transition="0.3s";
-			event_container.style.transform= "translateX("+-720*slide_num+"px)";
-		})
-		right_img.addEventListener("click",function(){
-			slide_num+=1;
-			if(slide_num==3){
-				slide_num=-2;
-			}
-			console.dir(this)
-			console.dir(event_container)
+			if(slide_num < -3){
+				slide_num=-3;
+			}			
 			event_container.style.transition="0.3s";
 			event_container.style.transform= "translateX("+-720*slide_num+"px)";
 		})
 		
-		setInterval(function() {
+		right_img.addEventListener("click",function(){
+			slide_num+=1;
+			
+			if(slide_num==(div_img.length-3)){
+				slide_num=-3;
+			}
+			event_container.style.transition="0.3s";
+			event_container.style.transform= "translateX("+-720*slide_num+"px)";
+		})
+		
+		event_container.onmouseover = function(){
+			clearInterval(interval);
+		};
+		
+		event_container.onmouseout = function(){
+			interval = setInterval(function() {
+
+				right_img.click();
+				
+			}, 3000);
+		};
+		
+		interval = setInterval(function() {
 
 			right_img.click();
 			
