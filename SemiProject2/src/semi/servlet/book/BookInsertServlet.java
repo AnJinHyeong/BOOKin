@@ -24,7 +24,8 @@ public class BookInsertServlet extends HttpServlet{
 		try {			
 //			String path="D:/upload";
 //			String path= "/Users/anjinhyeong/git/upload";	
-			String path= "C:/Users/Jeon/upload";	
+//			String path= "C:/Users/Jeon/upload";
+			String path="D:/upload/kh73";
 			int maximumSize = 10*1024*1024;
 			String encoding="UTF-8";
 			DefaultFileRenamePolicy policy = new DefaultFileRenamePolicy();

@@ -49,7 +49,8 @@ public class BookImageDownloadServlet extends HttpServlet{
 //			File dir = new File("D:/upload");
 
 //			File dir = new File("/Users/anjinhyeong/git/upload");
-			File dir = new File("C:/Users/Jeon/upload");
+//			File dir = new File("C:/Users/Jeon/upload");
+			File dir = new File("D:/upload/kh73");
 
 			File target = new File(dir, bookDto.getBookImage());
 			
