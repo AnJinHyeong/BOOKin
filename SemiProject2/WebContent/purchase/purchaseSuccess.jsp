@@ -26,9 +26,9 @@
        <div class="purchase-success-text">주문일자 : <%=purchaseDto.getPurchaseDate() %></div><br>
        <div class="purchase-success-text">주문번호 : <%=purchaseDto.getPurchaseNo() %></div><br>
        <div class="purchase-success-text">주문목록 : <%=bookDto.getBookTitle() %> 
-       <%if(amount>1){ %>
-       <span> 외 <%=amount%> 권</span>
-       <%} %>
+	       <%if(amount>1){ %>
+	      	 <span> 외 <%=amount%> 권</span>
+	       <%} %>
        </div>
        </div>
     </div><br>
