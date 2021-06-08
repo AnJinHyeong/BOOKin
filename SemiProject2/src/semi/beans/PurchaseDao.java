@@ -245,5 +245,19 @@ public class PurchaseDao {
 		con.close();
 		return map;
 	}
+	
+	public boolean hasPurchaseByBookNo(int no) throws Exception{
+		Connection con = JdbcUtils.getConnection();
+		String sql ="select * from purchase where purchase_book=?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, no);
+		ResultSet rs = ps.executeQuery();
+		int count=0;
+		while(rs.next()) {
+			count++;
+		}
+		con.close();
+		return count>0;
+	}
 }
 

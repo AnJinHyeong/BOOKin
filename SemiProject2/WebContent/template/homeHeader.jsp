@@ -234,9 +234,9 @@
 		
 		left_img.addEventListener("click",function(){
 			slide_num-=1;
-			if(slide_num < -3){
-				slide_num=-3;
-			}			
+			if(slide_num==-3){
+				slide_num=2;
+			}
 			event_container.style.transition="0.3s";
 			event_container.style.transform= "translateX("+-720*slide_num+"px)";
 		})

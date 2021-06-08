@@ -15,6 +15,7 @@
 	request.setCharacterEncoding("UTF-8");
 
 	String root = request.getContextPath();
+	String type=request.getParameter("type");
 	int member;
 	try{
 		member = (int)session.getAttribute("member");
@@ -51,8 +52,12 @@
 	int endRow = pageNo * pageSize;
 	
 	QnaBoardDao qnaBoardDao = new QnaBoardDao();
-	List<QnaBoardDto> qnaList = qnaBoardDao.list(startRow, endRow);
-	
+	List<QnaBoardDto> qnaList;
+	if(type==null||type.equals("all")){
+	qnaList = qnaBoardDao.list(startRow, endRow);
+	}else{
+	qnaList = qnaBoardDao.noReplyList(startRow, endRow);
+	}
 	int count = qnaBoardDao.getCount();
 		
 	int blockSize = 10;
@@ -221,12 +226,38 @@
 			editClass[i].style.display = "none";
 		}
 	}
+	
+	window.addEventListener("load",function(){
+		const all=document.querySelector(".all");
+		const noreply=document.querySelector(".noreply");
+		const rsform=document.querySelector(".rsform");
+		all.addEventListener("click",function(){
+			rsform.children[0].value="all"
+			rsform.submit();
+		})
+		noreply.addEventListener("click",function(){
+			rsform.children[0].value="noreply"
+			rsform.submit();
+		})
+	})
 </script>
 
 <section>
 	<div class="admin-content_area">
-		<div class="admin-content">
-			<div class="admin-content_title">QnA 문의/공지사항 관리</div>
+		<div class="admin-content ">
+			<div class="admin-content_title a_bth">QnA 문의/공지사항 관리 
+
+			<%if(type!=null&&type.equals("noreply")){ %>			
+			<a class="noreply on">미답변</a>
+			<a class="all">전체</a>
+			<%}else{ %>
+			<a class="noreply">미답변</a>
+			<a class="all on">전체</a>
+			<%} %>
+			</div>
+			<form class="rsform" action="" method="get">
+				<input type="hidden" value="all" name="type">
+			</form>
 		</div>
 	</div>
 		<div class="admin-content_area">
