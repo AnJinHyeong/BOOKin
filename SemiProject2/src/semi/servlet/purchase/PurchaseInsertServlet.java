@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import semi.beans.BookDao;
 import semi.beans.BookDto;
+import semi.beans.CartDao;
+import semi.beans.CartDto;
 import semi.beans.PurchaseDao;
 import semi.beans.PurchaseDto;
 
@@ -18,8 +20,6 @@ public class PurchaseInsertServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
-
-			
 			 req.setCharacterEncoding("UTF-8"); 
 			 PurchaseDao purchaseDao=new PurchaseDao();
 			 int no= purchaseDao.getNumber();
@@ -28,6 +28,8 @@ public class PurchaseInsertServlet extends HttpServlet{
 			 String[] amountList = req.getParameterValues("purchaseAmount");
 			 int count= -1;
 			 int bookNo=0;
+			 CartDao cartDao = new CartDao();
+			 
 			 for(int i = 0;i<bookNoList.length;i++) {				 
 				 PurchaseDto purchaseDto= new PurchaseDto();
 				 purchaseDto.setPurchaseNo(no);
@@ -40,6 +42,13 @@ public class PurchaseInsertServlet extends HttpServlet{
 				 count++;
 				 purchaseDao.insert(purchaseDto);
 				 bookNo=purchaseDto.getPurchaseBook();
+				 
+				 CartDto cartDto = new CartDto(); 
+				 cartDto.setBookNo(Integer.parseInt(bookNoList[i]));
+				 cartDto.setMemberNo(Integer.parseInt(req.getParameter("purchaseMember")));
+				 
+				 if(cartDao.check(cartDto))
+					 cartDao.delete(cartDto.getMemberNo(), cartDto.getBookNo());
 			 }
 			 resp.sendRedirect("purchaseSuccess.jsp?purchaseNo="+no+"&no="+bookNo+"&amount="+count);
 

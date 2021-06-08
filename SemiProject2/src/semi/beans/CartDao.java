@@ -77,6 +77,21 @@ public class CartDao {
 		return count > 0;
 	}
 	
+	// 구매 후 장바구니에서 삭제
+		public boolean delete(int memberNo, int bookNo) throws Exception{
+			Connection con = JdbcUtils.getConnection();
+			
+			String sql = "delete cart where member_no = ? and book_no = ?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(1, memberNo);
+			ps.setInt(2, bookNo	);
+			int count = ps.executeUpdate();
+			
+			con.close();
+			
+			return count > 0;
+		}
+	
 	public boolean deleteAll(int memberNo) throws Exception{
 		Connection con = JdbcUtils.getConnection();
 		

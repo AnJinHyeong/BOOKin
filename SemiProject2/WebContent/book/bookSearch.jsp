@@ -212,9 +212,8 @@
 				<span class="author_pub"><%=bookDto.getBookAuthor()%> | <%=bookDto.getBookPublisher()%> | <%=bookDto.getBookPubDate() %></span>
 				<span><%=bookDto.getBookDescription()%></span>
 			</div>
-			<div class="search-book-review">
-				<span>4/5</span>
-				<span>리뷰 200</span>
+			<div class="search-book-review">				
+				<span>조회수 <%=bookDto.getBookView()%></span>
 			</div>
 			<div class="search-book-price">
 			
@@ -269,9 +268,8 @@
 				<span class="author_pub"><%=bookDto.getBookAuthor()%> | <%=bookDto.getBookPublisher()%> | <%=bookDto.getBookPubDate() %></span>
 				<span><%=bookDto.getBookDescription()%></span>
 			</div>
-			<div class="search-book-review">
-				<span>4/5</span>
-				<span>리뷰 200</span>
+			<div class="search-book-review">				
+				<span>조회수 <%=bookDto.getBookView()%></span>
 			</div>
 			<div class="search-book-price">
 			
@@ -326,9 +324,8 @@
 				<span class="author_pub"><%=bookDto.getBookAuthor()%> | <%=bookDto.getBookPublisher()%> | <%=bookDto.getBookPubDate() %></span>
 				<span><%=bookDto.getBookDescription()%></span>
 			</div>
-			<div class="search-book-review">
-				<span>4/5</span>
-				<span>리뷰 200</span>
+			<div class="search-book-review">				
+				<span>조회수 <%=bookDto.getBookView()%></span>
 			</div>
 			<div class="search-book-price">
 			
