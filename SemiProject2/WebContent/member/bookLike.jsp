@@ -203,7 +203,10 @@
 					$(this).next().click();
 				}				
 			});
-			location.replace("bookLike.jsp");
+			
+			setTimeout(function(){
+				location.replace("bookLike.jsp");
+			},50);		
 		});		
 		
 		$(window).bind("pageshow", function(event){

@@ -38,7 +38,7 @@ public class BookDto {
 	}
 	public void setBookImage(String bookImage) {
 		if(bookImage==null) {
-			this.bookImage="nullbook.png";
+			this.bookImage="https://bookthumb-phinf.pstatic.net/cover/156/577/15657724.jpg?type=m1&udate=20191231";
 			return;
 		}
 		this.bookImage = bookImage;

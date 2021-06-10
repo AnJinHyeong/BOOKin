@@ -234,8 +234,8 @@
 		
 		left_img.addEventListener("click",function(){
 			slide_num-=1;
-			if(slide_num==-3){
-				slide_num=2;
+			if(slide_num<=-3){
+				slide_num=1;
 			}
 			event_container.style.transition="0.3s";
 			event_container.style.transform= "translateX("+-720*slide_num+"px)";
@@ -245,7 +245,7 @@
 			slide_num+=1;
 			
 			if(slide_num==(div_img.length-3)){
-				slide_num=-3;
+				slide_num=-2;
 			}
 			event_container.style.transition="0.3s";
 			event_container.style.transform= "translateX("+-720*slide_num+"px)";
@@ -256,6 +256,7 @@
 		};
 		
 		event_container.onmouseout = function(){
+			clearInterval(interval);
 			interval = setInterval(function() {
 
 				right_img.click();
