@@ -494,8 +494,6 @@
                                  
                                  <!-- 가격부분 -->
                              <td>
-                                    
-                                    
                                     <%if(cartListDto.getBookDiscount() > 0){%>
 	                                     <span class="c1" style="text-decoration: line-through;" >
                                       		판매가 : <%=cartListDto.getBookPrice() %>원

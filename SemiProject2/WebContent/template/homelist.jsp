@@ -45,23 +45,12 @@
 %>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
-	$(function(){
-		<%if(isLogin){%>
-			<%for(BookLikeDto bookLikeDto : bookLikeList){%>
-				$("#like<%=bookLikeDto.getBookOrigin()%>").removeClass("book-good");
-				$("#like<%=bookLikeDto.getBookOrigin()%>").addClass("book-good-on");
-			<%}%>
-		<%}%>
-		
-		$.fn.initBookLike = function(){
-			<%if(isLogin){%>
-				<%for(BookLikeDto bookLikeDto : bookLikeList){%>
-					$("#like<%=bookLikeDto.getBookOrigin()%>").removeClass("book-good");
-					$("#like<%=bookLikeDto.getBookOrigin()%>").addClass("book-good-on");
-				<%}%>
-			<%}%>
-		
+	$(function(){		
+		$.fn.initBookLike = function(){			
+			$(".book-like").off("click");
+			
 			$(".book-like").click(function(){
+				console.log("click");
 				if(<%=member %> == 0){
 					alert("로그인이 필요한 기능입니다.");
 					return;
@@ -106,19 +95,29 @@
 <div class=" book-list inf-list">
 	<%for(BookDto bookDto : bookList){ %>
 	<div class="book-item">	
-		<a href="<%=root%>/book/bookDetail.jsp?no=<%=bookDto.getBookNo()%>" class="book-img-a" >
-		<%if(bookDto.getBookImage()==null){
-			bookDto.setBookImage(root+"/image/nullbook.png");
-		} %>
+		<a href="<%=root%>/book/bookDetail.jsp?no=<%=bookDto.getBookNo()%>" class="book-img-a" >		
 			<%if(bookDto.getBookImage().startsWith("https")){ %>
-			<img title="<%=bookDto.getBookTitle() %>" class="book-img" src="<%=bookDto.getBookImage()%>">
+				<img title="<%=bookDto.getBookTitle() %>" class="book-img" src="<%=bookDto.getBookImage()%>">
 			<%}else{ %>
-			<img title="<%=bookDto.getBookTitle() %>" class="book-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">
+				<img title="<%=bookDto.getBookTitle() %>" class="book-img" src="<%=root%>/book/bookImage.kh?bookNo=<%=bookDto.getBookNo()%>">
 			<%} %>
-
 		</a>
 		
-		<a href="javascript:void(0);" class="book-like book-good" id="like<%=bookDto.getBookNo()%>"></a> 
+		<%if(isLogin){%>
+			<%boolean isLike = false; %>
+			<%for(BookLikeDto bookLikeDto : bookLikeList){%>
+				<%if(bookLikeDto.getBookOrigin() == bookDto.getBookNo()){ %>
+					<%isLike = true; %>					 					
+				<%} %>
+			<%}%>
+			
+			<%if(isLike){ %>
+				<a href="javascript:void(0);" class="book-like book-good-on" id="like<%=bookDto.getBookNo()%>"></a>
+			<%} else{%>
+				<a href="javascript:void(0);" class="book-like book-good" id="like<%=bookDto.getBookNo()%>"></a>
+			<%} %>
+		<%}%>		
+				
 		<a class="book-publisher"><span><%=bookDto.getBookPublisher() %></span></a>
 		<a href="<%=root%>/book/bookDetail.jsp?no=<%=bookDto.getBookNo()%>" class="book-title overflow"  title="<%=bookDto.getBookTitle() %>"><%=bookDto.getBookTitle() %></a>
 		<%if(bookDto.getBookAuthor()==null){
@@ -139,7 +138,7 @@
 	<%} %>
 	</div>   
 	<%} %>
-	</div>
+</div>
 </div>
 <div class="inf-pagination"></div>
 <script>
@@ -158,7 +157,7 @@
 			
 			if (fullHeight-screenHeight/2 <= scrollPosition && !oneTime) {
 				 oneTime = true;
-				 madeBox(); 
+				 madeBox();	
 			}
 		});
 		
@@ -175,7 +174,43 @@
 				if (xhr.readyState === xhr.DONE) { 
 				    if (xhr.status === 200 || xhr.status === 201) {
 				      const data = xhr.response; // 다음페이지의 정보
-				      const addList = data.querySelector('.inf-list'); // 다음페이지에서 list아이템을 획득
+				      const addList = data.querySelector('.inf-list'); // 다음페이지에서 list아이템을 획득				      
+				      
+				      $(addList).find(".book-like").click(function(){
+					        console.log("click");
+							if(<%=member %> == 0){
+								alert("로그인이 필요한 기능입니다.");
+								return;
+							}
+							var type;
+							
+							if($(this).hasClass("book-good")){
+								$(this).removeClass("book-good");
+								$(this).addClass("book-good-on");
+								type = "insert";
+							}
+							else{
+								$(this).removeClass("book-good-on");
+								$(this).addClass("book-good");
+								type = "delete";
+							}			
+							
+							var url = "<%=root%>/book/bookLike.kh";
+							$.ajax({
+								type:"GET",
+								url:url,
+								dataType:"html",
+								data:{
+									type : type,
+									memberNo : <%=member%>,
+									bookOrigin : $(this).attr("id")
+								},
+								error : function(request,status,error){
+									alert("이미 좋아요한 상품입니다."); //에러 상태에 대한 세부사항 출력						
+								}
+							});
+				      });				      
+				      
 				      inf_container.appendChild(addList); // infinite에 list를 더해주기
 				      oneTime = false; // oneTime을 다시 false로 돌려서 madeBox를 불러올 수 있게 해주기
 				    } else {
@@ -186,9 +221,9 @@
 			
 			xhr.open('GET', nextURL); 
 			xhr.send();
-			xhr.responseType = "document";		
-	         $.fn.initBookLike();
-	         }
+			xhr.responseType = "document";			
+	      
+	        }
 		};
 	});
 </script>
